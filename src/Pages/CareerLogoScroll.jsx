@@ -14,7 +14,7 @@ import {
   LinkedInLogo,
   kpmglogo,
   metalogo,
-  capitalonelogo,
+  CapitalOneLogo,
   BandCLogo,
   doordashlogo,
   bloomberglogo,
@@ -60,7 +60,7 @@ const CareerLogoScroller = () => {
         <img src={LinkedInLogo} alt="LinkedIn" />
         <img src={AmazonLogo} alt="Amazon" />
         <img src={metalogo} alt="Meta" />
-        <img src={capitalonelogo} alt="Capital One" />
+        <img src={CapitalOneLogo} alt="Capital One" />
         <img src={BandCLogo} alt="Bain and Co" />
         <img src={doordashlogo} alt="Doordash" />
         <img src={hpLogo} alt="HP" />

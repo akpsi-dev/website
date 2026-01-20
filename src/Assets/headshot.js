@@ -61,6 +61,15 @@ import HenryLee from "./ActiveHeadshots/Henry Lee.webp";
 import RishiMurumkar from "./ActiveHeadshots/Rishi Murumkar.webp";
 import SamanthaLee from "./ActiveHeadshots/Samantha Lee.webp";
 import NicoleKwan from "./ActiveHeadshots/Nicole Kwan.webp";
+import EthanLe from "./ActiveHeadshots/Ethan Le.webp";
+import EthanLee from "./ActiveHeadshots/Ethan Lee.webp";
+import ChristineLee from "./ActiveHeadshots/Christine Lee.webp";
+import AshtonCreveling from "./ActiveHeadshots/Ashton Creveling.webp";
+import LuisEsparza from "./ActiveHeadshots/Luis Esparza.webp";
+import AvaLilyTran from "./ActiveHeadshots/Ava Lily Tran.webp";
+import MeganYung from "./ActiveHeadshots/Megan Yung.webp";
+import MaxTruong from "./ActiveHeadshots/Max Truong.webp";
+import JamesFitzpatrick from "./ActiveHeadshots/James Fitzpatrick.webp";
 
 import DefaultHeadshot from "./ActiveHeadshots/Default Headshot.webp";
 
@@ -128,5 +137,14 @@ export const headshotHash = {
   "Rishi Murumkar": RishiMurumkar,
   "Samantha Lee": SamanthaLee,
   "Nicole Kwan": NicoleKwan,
+  'Ethan Le': EthanLe,
+  'Ethan Lee': EthanLee,
+  'Christine Lee': ChristineLee,
+  'Ashton Creveling': AshtonCreveling,
+  'Luis Esparza': LuisEsparza,
+  'Ava Lily Tran': AvaLilyTran,
+  'Megan Yung': MeganYung,
+  'Max Truong': MaxTruong,
+  'James Fitzpatrick': JamesFitzpatrick,
   "Default Headshot": DefaultHeadshot,
 };
