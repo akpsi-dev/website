@@ -48,7 +48,8 @@ import {
     CapitalOneLogo,
     EpicSystemsLogo,
     StrykerLogo,
-    DormRoomFundLogo
+    DormRoomFundLogo,
+    OCHealthLogo
   } from "../Assets";
   import DefaultHeadshot from "./ActiveHeadshots/Default Headshot.webp";
   
@@ -105,7 +106,7 @@ export const companyHash = {
     "Max Truong": L3HarrisLogo,
     "Ethan Le": STMicroelectronicsLogo,
     "Ethan Lee": UCIRotcLogo,
-    "Megan Yung": BiologicalSciencesLogo,
+    "Megan Yung": OCHealthLogo,
     "Christine Lee": UnicornPerformLogo,
     "James Fitzpatrick": UtahSoccerLogo,
     "Ava Lily Tran": VinaCapitalLogo,

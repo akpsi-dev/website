@@ -217,6 +217,7 @@ export { default as VinaCapitalLogo } from "./Logos/VinaCapitalLogo.webp";
 export { default as EpicSystemsLogo } from "./Logos/EpicSystemsLogo.webp";
 export { default as StrykerLogo } from "./Logos/StrykerLogo.webp";
 export { default as DormRoomFundLogo } from "./Logos/DormRoomFundLogo.webp";
+export { default as OCHealthLogo } from "./Logos/OCHealthLogo.webp";
 
 export { default as Fall23RushVideo } from "./Videos/FallRush2023Website.mp4";
 export { default as CruiseReel } from "./Videos/CruiseReelWebsite.mp4";
