@@ -1,3 +1,4 @@
+import { Apple } from "lucide-react";
 import {
     DeloitteLogo,
     AdobeLogo,
@@ -49,9 +50,16 @@ import {
     EpicSystemsLogo,
     StrykerLogo,
     DormRoomFundLogo,
-    OCHealthLogo
+    OCHealthLogo,
+    CenterviewPartnersLogo,
+    BarclaysLogo,
+    SanPasqualLogo,
+    DisneyLogo,
+    WellsFargoLogo,
+    OneStreamLogo,
   } from "../Assets";
   import DefaultHeadshot from "./ActiveHeadshots/Default Headshot.webp";
+import { YoutubeSearchedFor } from "@mui/icons-material";
   
 
 export const companyHash = {
@@ -81,34 +89,34 @@ export const companyHash = {
     "Alex Sriprathum": KimleyHornLogo,
     "Nico Simonian": StrykerLogo,
     "Carl Qiao": PWCLogo,
-    "Logan Kim": DormRoomFundLogo,
+    "Logan Kim": CenterviewPartnersLogo,
     "Ryan Park": ExperianLogo,
     "Melinda Do": SAPLogo,
     "Travis Yen": JobrightLogo,
-    "Tyler Ho": DeloitteLogo,
+    "Tyler Ho": BarclaysLogo,
     "Erin Tran": ReitLogo,
     "Bradly Ho": HORLogo,
     "Brandon Koh": YouTubeLogo,
     "David Kim": BachemLogo,
-    "Ashley Kang": PartifulLogo,
+    "Ashley Kang": WellsFargoLogo,
     "Millicent Mei": FritoLayLogo,
-    "Brandon Peng": ACCLogo,
+    "Brandon Peng": CapitalOneLogo,
     "Nicole Kwan": AmazonLogo,
-    "Ashlyn Wong": FlowspaceLogo,
+    "Ashlyn Wong": DisneyLogo,
     "Gabrielle Reyes": UCIAthleticsLogo,
     "Grace Ryu": RadixLogo,
     "Samantha Lee": AmplifySurgicalLogo,
-    "Henry Lee": SBSLogo,
-    "Rishi Murumkar": BioRadLogo,
+    "Henry Lee": OneStreamLogo,
+    "Rishi Murumkar": CapitalOneLogo,
     "Izella Han": RippleMatchLogo,
     "Ashton Creveling": EvrymanLogo,
-    "Luis Esparza": FourMNurseryLogo,
+    "Luis Esparza": SanPasqualLogo,
     "Max Truong": L3HarrisLogo,
     "Ethan Le": STMicroelectronicsLogo,
     "Ethan Lee": UCIRotcLogo,
     "Megan Yung": OCHealthLogo,
     "Christine Lee": UnicornPerformLogo,
-    "James Fitzpatrick": UtahSoccerLogo,
+    "James Fitzpatrick": YouTubeLogo,
     "Ava Lily Tran": VinaCapitalLogo,
     "Default Headshot": DefaultHeadshot,
   };
