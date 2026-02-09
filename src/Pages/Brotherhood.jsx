@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
+import useVideo from "../lib/useVideo";
 import "./Brotherhood.css";
-import { Fall23RushVideo, CruiseReel } from "../Assets";
 import { useMobile } from "../Components/Navbar";
 import { motion } from "framer-motion";
 import {
@@ -61,6 +61,8 @@ export default function Brotherhood() {
   const videoRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
   const [activeImage, setActiveImage] = useState(null);
+  const { video: SpringRushVideo } = useVideo("Videos/SpringRush2024Website.mp4");
+  const { video: CruiseReel } = useVideo("Videos/CruiseReelWebsite.mp4");
 
   //Make SURE every image you are using has a centered subject, or else it will look very awkward
   const carouselImages = [
@@ -221,10 +223,10 @@ export default function Brotherhood() {
             </div>
           </motion.div>
           <div className="background-video">
-            {!isMobile && (
+            {!isMobile && SpringRushVideo && (
               <video
                 ref={videoRef}
-                src={Fall23RushVideo}
+                src={SpringRushVideo.presignedUrl}
                 autoPlay
                 muted
                 playsInline
@@ -232,8 +234,8 @@ export default function Brotherhood() {
                 Your browser does not support the video tag.
               </video>
             )}
-            {isMobile && (
-              <video ref={videoRef} src={CruiseReel} autoPlay muted playsInline>
+            {isMobile && CruiseReel && (
+              <video ref={videoRef} src={CruiseReel.presignedUrl} autoPlay muted playsInline>
                 Your browser does not support the video tag.
               </video>
             )}
