@@ -1,20 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-import useVideo from "../lib/useVideo";
 import "./Brotherhood.css";
 import { useMobile } from "../Components/Navbar";
 import { motion } from "framer-motion";
 import {
   BrotherhoodImage69,
   BrotherhoodImage70,
-  BrotherhoodImage5,
-  BrotherhoodImage6,
-  BrotherhoodImage17,
-  BrotherhoodImage7,
-  BrotherhoodImage8,
-  BrotherhoodImage3,
-  BrotherhoodImage22,
-  BrotherhoodImage10,
-  BrotherhoodImage11,
   BrotherhoodImage30,
   BrotherhoodImage65,
   BrotherhoodImage67,
@@ -56,13 +46,10 @@ import {
 } from "../Assets";
 
 export default function Brotherhood() {
-  const trackRef = useRef(null);
   const { isMobile } = useMobile();
   const videoRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
   const [activeImage, setActiveImage] = useState(null);
-  const { video: SpringRushVideo } = useVideo("Videos/SpringRush2024Website.mp4");
-  const { video: CruiseReel } = useVideo("Videos/CruiseReelWebsite.mp4");
 
   //Make SURE every image you are using has a centered subject, or else it will look very awkward
   const carouselImages = [
@@ -223,10 +210,10 @@ export default function Brotherhood() {
             </div>
           </motion.div>
           <div className="background-video">
-            {!isMobile && SpringRushVideo && (
+            {!isMobile && (
               <video
                 ref={videoRef}
-                src={SpringRushVideo.presignedUrl}
+                src={"https://d395js6c4h8h6h.cloudfront.net/Videos/SpringRush2024Website.mp4"}
                 autoPlay
                 muted
                 playsInline
@@ -234,8 +221,13 @@ export default function Brotherhood() {
                 Your browser does not support the video tag.
               </video>
             )}
-            {isMobile && CruiseReel && (
-              <video ref={videoRef} src={CruiseReel.presignedUrl} autoPlay muted playsInline>
+            {isMobile && (
+              <video 
+              ref={videoRef} 
+              src={"https://d395js6c4h8h6h.cloudfront.net/Videos/CruiseReelWebsite.mp4"} 
+              autoPlay 
+              muted 
+              playsInline>
                 Your browser does not support the video tag.
               </video>
             )}

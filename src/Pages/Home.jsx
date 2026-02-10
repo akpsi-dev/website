@@ -6,13 +6,9 @@ import { knightAKYLogo } from "../Assets";
 import SleekButton from "../Components/SleekButton";
 import { OpenInNew } from "@mui/icons-material";
 import { Instagram, Facebook, LinkedIn } from "@mui/icons-material";
-import { useMobile } from "../Components/Navbar";
 import { BrotherhoodImage75 } from "../Assets";
-import useVideo from "../lib/useVideo";
 
 export default function Home() {
-  const { isMobile } = useMobile();
-  const { video } = useVideo("Videos/NewFall2025.mp4")
   const [isLoading, setIsLoading] = useState(true);
   const videoRef = useRef(null);
   
@@ -100,10 +96,10 @@ export default function Home() {
       )}
       <div className={`home-container ${isLoading ? "hidden" : ""}`}>
         <div className="background-video">
-            {video && (
+            
               <video
                 ref={videoRef}
-                src={video.presignedUrl}
+                src={"https://d395js6c4h8h6h.cloudfront.net/Videos/NewFall2025.mp4"}
                 autoPlay
                 muted
                 playsInline
@@ -112,7 +108,7 @@ export default function Home() {
               >
                 Your browser does not support the video tag.
               </video>
-            )}
+
         </div>
         <motion.div className="hero-section">
           <div className="hero-content">
