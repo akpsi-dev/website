@@ -217,6 +217,7 @@ export default function Brotherhood() {
                 autoPlay
                 muted
                 playsInline
+                loop
               >
                 Your browser does not support the video tag.
               </video>
@@ -227,6 +228,7 @@ export default function Brotherhood() {
               src={"https://d395js6c4h8h6h.cloudfront.net/Videos/CruiseReelWebsite.mp4"} 
               autoPlay 
               muted 
+              loop
               playsInline>
                 Your browser does not support the video tag.
               </video>
