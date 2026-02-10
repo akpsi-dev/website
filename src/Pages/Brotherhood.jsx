@@ -1,20 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./Brotherhood.css";
-import { Fall23RushVideo, CruiseReel } from "../Assets";
 import { useMobile } from "../Components/Navbar";
 import { motion } from "framer-motion";
 import {
   BrotherhoodImage69,
   BrotherhoodImage70,
-  BrotherhoodImage5,
-  BrotherhoodImage6,
-  BrotherhoodImage17,
-  BrotherhoodImage7,
-  BrotherhoodImage8,
-  BrotherhoodImage3,
-  BrotherhoodImage22,
-  BrotherhoodImage10,
-  BrotherhoodImage11,
   BrotherhoodImage30,
   BrotherhoodImage65,
   BrotherhoodImage67,
@@ -56,7 +46,6 @@ import {
 } from "../Assets";
 
 export default function Brotherhood() {
-  const trackRef = useRef(null);
   const { isMobile } = useMobile();
   const videoRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -224,16 +213,23 @@ export default function Brotherhood() {
             {!isMobile && (
               <video
                 ref={videoRef}
-                src={Fall23RushVideo}
+                src={"https://d395js6c4h8h6h.cloudfront.net/Videos/SpringRush2024Website.mp4"}
                 autoPlay
                 muted
                 playsInline
+                loop
               >
                 Your browser does not support the video tag.
               </video>
             )}
             {isMobile && (
-              <video ref={videoRef} src={CruiseReel} autoPlay muted playsInline>
+              <video 
+              ref={videoRef} 
+              src={"https://d395js6c4h8h6h.cloudfront.net/Videos/CruiseReelWebsite.mp4"} 
+              autoPlay 
+              muted 
+              loop
+              playsInline>
                 Your browser does not support the video tag.
               </video>
             )}

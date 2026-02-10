@@ -1,16 +1,14 @@
 import React, { useRef, useEffect, useState } from "react";
 import "./Home.css";
 import { motion } from "framer-motion";
-import { BrotherhoodImage66, BrotherhoodImage76, NewFall2025 } from "../Assets";
+import { BrotherhoodImage66, BrotherhoodImage76 } from "../Assets";
 import { knightAKYLogo } from "../Assets";
 import SleekButton from "../Components/SleekButton";
 import { OpenInNew } from "@mui/icons-material";
 import { Instagram, Facebook, LinkedIn } from "@mui/icons-material";
-import { useMobile } from "../Components/Navbar";
 import { BrotherhoodImage75 } from "../Assets";
 
 export default function Home() {
-  const { isMobile } = useMobile();
   const [isLoading, setIsLoading] = useState(true);
   const videoRef = useRef(null);
   
@@ -98,32 +96,19 @@ export default function Home() {
       )}
       <div className={`home-container ${isLoading ? "hidden" : ""}`}>
         <div className="background-video">
-          {!isMobile && (
-            <video
-              ref={videoRef}
-              src={NewFall2025}
-              autoPlay
-              muted
-              playsInline
-              loop
-              preload = "auto"
-            >
-              Your browser does not support the video tag.
-            </video>
-          )}
-          {isMobile && (
-            <video 
-              ref={videoRef} 
-              src={NewFall2025} 
-              autoPlay 
-              muted 
-              playsInline 
-              loop
-              preload = "auto"
-            >
-              Your browser does not support the video tag.
-            </video>
-          )}
+            
+              <video
+                ref={videoRef}
+                src={"https://d395js6c4h8h6h.cloudfront.net/Videos/NewFall2025.mp4"}
+                autoPlay
+                muted
+                playsInline
+                loop
+                preload="auto"
+              >
+                Your browser does not support the video tag.
+              </video>
+
         </div>
         <motion.div className="hero-section">
           <div className="hero-content">
