@@ -64,7 +64,7 @@ export const companyHash = {
     "Andrew Sou": BrenLogo,
     "Annie Nguyen": SAPLogo,
     "Alexis Lin": AmazonLogo,
-    "Catelynn Chen": SkylarLogo,
+    "Catelynn Chen": CapitalGroupLogo,
     "Elle Hsu": PurpleLogo,
     "Anuj Patel": nasalogo,
     "Andrew Hauber": CapitalOneLogo,
