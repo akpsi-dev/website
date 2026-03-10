@@ -49,6 +49,7 @@ import {
     DisneyLogo,
     WellsFargoLogo,
     OneStreamLogo,
+    HyundaiLogo
   } from "../Assets";
   import DefaultHeadshot from "./ActiveHeadshots/Default Headshot.webp";
 import { YoutubeSearchedFor } from "@mui/icons-material";
@@ -62,7 +63,7 @@ export const companyHash = {
     "Anna Shan": BlackrockLogo,
     "Mason Whang": LoroPianaLogo, 
     "Andrew Sou": BrenLogo,
-    "Annie Nguyen": SAPLogo,
+    "Annie Nguyen": AdobeLogo,
     "Alexis Lin": AmazonLogo,
     "Catelynn Chen": CapitalGroupLogo,
     "Elle Hsu": PurpleLogo,
@@ -97,7 +98,7 @@ export const companyHash = {
     "Ashlyn Wong": DisneyLogo,
     "Gabrielle Reyes": UCIAthleticsLogo,
     "Grace Ryu": RadixLogo,
-    "Samantha Lee": AmplifySurgicalLogo,
+    "Samantha Lee": HyundaiLogo,
     "Henry Lee": OneStreamLogo,
     "Rishi Murumkar": CapitalOneLogo,
     "Izella Han": RippleMatchLogo,

@@ -223,6 +223,7 @@ export { default as CenterviewPartnersLogo } from "./Logos/CenterViewPartnersLog
 export { default as BarclaysLogo } from "./Logos/BarclaysLogo.png";
 export { default as SanPasqualLogo } from "./Logos/SanPasqualTrustLogo.png";
 export { default as OneStreamLogo } from "./Logos/OneStreamLogo.png";
+export { default as HyundaiLogo } from "./Logos/HyundaiLogo.png"
 
 export { default as aboutImage1 } from "./AboutPhotos/aboutImage1.webp";
 export { default as aboutImage2 } from "./AboutPhotos/aboutImage2.webp";
@@ -236,3 +237,4 @@ export {default as LastGMFall24 } from "./Frames/LastGMFall24Fraternity.webp";
 export {default as WinterRetreatFraternity } from "./Frames/WinterRetreatFraternity.webp";
 
 export {default as BloodOrangeAudio } from "./Audios/Champagne Coast - Blood Orange.mp3";
+export { default as CloserAudio } from "./Audios/The Chainsmokers - Closer [Official Instrumental].mp3";
