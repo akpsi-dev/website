@@ -49,7 +49,11 @@ import {
     DisneyLogo,
     WellsFargoLogo,
     OneStreamLogo,
-    HyundaiLogo
+    HyundaiLogo,
+    paramountLogo,
+    MLBLogo,
+    CHRobinsonLogo,
+
   } from "../Assets";
   import DefaultHeadshot from "./ActiveHeadshots/Default Headshot.webp";
 import { YoutubeSearchedFor } from "@mui/icons-material";
@@ -99,11 +103,11 @@ export const companyHash = {
     "Gabrielle Reyes": UCIAthleticsLogo,
     "Grace Ryu": RadixLogo,
     "Samantha Lee": HyundaiLogo,
-    "Henry Lee": OneStreamLogo,
+    "Henry Lee": MLBLogo,
     "Rishi Murumkar": CapitalOneLogo,
     "Izella Han": RippleMatchLogo,
-    "Ashton Creveling": EvrymanLogo,
-    "Luis Esparza": SanPasqualLogo,
+    "Ashton Creveling": paramountLogo,
+    "Luis Esparza": CHRobinsonLogo,
     "Max Truong": L3HarrisLogo,
     "Ethan Le": STMicroelectronicsLogo,
     "Ethan Lee": UCIRotcLogo,

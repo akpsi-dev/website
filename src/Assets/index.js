@@ -223,7 +223,10 @@ export { default as CenterviewPartnersLogo } from "./Logos/CenterViewPartnersLog
 export { default as BarclaysLogo } from "./Logos/BarclaysLogo.png";
 export { default as SanPasqualLogo } from "./Logos/SanPasqualTrustLogo.png";
 export { default as OneStreamLogo } from "./Logos/OneStreamLogo.png";
-export { default as HyundaiLogo } from "./Logos/HyundaiLogo.png"
+export { default as HyundaiLogo } from "./Logos/HyundaiLogo.png";
+export { default as MLBLogo } from "./Logos/MLBLogo.png";
+export { default as AONLogo } from "./Logos/AONLogo.png";
+export { default as CHRobinsonLogo } from "./Logos/CHRobinsonLogo.svg";
 
 export { default as aboutImage1 } from "./AboutPhotos/aboutImage1.webp";
 export { default as aboutImage2 } from "./AboutPhotos/aboutImage2.webp";
