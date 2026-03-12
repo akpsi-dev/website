@@ -53,6 +53,7 @@ import {
     paramountLogo,
     MLBLogo,
     CHRobinsonLogo,
+    CreditKarmaLogo,
 
   } from "../Assets";
   import DefaultHeadshot from "./ActiveHeadshots/Default Headshot.webp";
@@ -82,9 +83,9 @@ export const companyHash = {
     "Max Vano": SiemensLogo,
     "Pranay Macherla": AmazonLogo,
     "Mina Nguyen": KaiserPermanenteLogo,
-    "Tommy Nguyen": MeetTheFlockersLogo,
+    "Tommy Nguyen": CreditKarmaLogo,
     "Alex Sriprathum": KimleyHornLogo,
-    "Nico Simonian": StrykerLogo,
+    "Nico Simonian": GlobalFoundriesLogo,
     "Carl Qiao": PWCLogo,
     "Logan Kim": CenterviewPartnersLogo,
     "Ryan Park": ExperianLogo,
@@ -92,7 +93,7 @@ export const companyHash = {
     "Travis Yen": JobrightLogo,
     "Tyler Ho": BarclaysLogo,
     "Erin Tran": ReitLogo,
-    "Bradly Ho": HORLogo,
+    "Bradly Ho": PWCLogo,
     "Brandon Koh": YouTubeLogo,
     "David Kim": BachemLogo,
     "Ashley Kang": WellsFargoLogo,
