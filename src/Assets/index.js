@@ -228,6 +228,8 @@ export { default as MLBLogo } from "./Logos/MLBLogo.png";
 export { default as AONLogo } from "./Logos/AONLogo.png";
 export { default as CHRobinsonLogo } from "./Logos/CHRobinsonLogo.svg";
 export { default as CreditKarmaLogo } from "./Logos/CreditKarmaLogo.png";
+export { default as TeslaLogo } from "./Logos/TeslaLogo.png";
+export { default as VisaLogo } from "./Logos/VisaLogo.png";
 
 export { default as aboutImage1 } from "./AboutPhotos/aboutImage1.webp";
 export { default as aboutImage2 } from "./AboutPhotos/aboutImage2.webp";
