@@ -213,7 +213,7 @@ export default function Brotherhood() {
             {!isMobile && (
               <video
                 ref={videoRef}
-                src={"https://d395js6c4h8h6h.cloudfront.net/Videos/SpringRush2024Website.mp4"}
+                src={"https://d395js6c4h8h6h.cloudfront.net/Videos/CruiseVideo2026.mp4"}
                 autoPlay
                 muted
                 playsInline
