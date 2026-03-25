@@ -110,7 +110,7 @@ export const companyHash = {
     "Rishi Murumkar": CapitalOneLogo,
     "Izella Han": RippleMatchLogo,
     "Ashton Creveling": paramountLogo,
-    "Luis Esparza": CHRobinsonLogo,
+    "Luis Esparza": DisneyLogo,
     "Max Truong": VisaLogo,
     "Ethan Le": EikonTherapeuticsLogo,
     "Ethan Lee": CapitalGroupLogo,
