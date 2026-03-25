@@ -231,6 +231,7 @@ export { default as CreditKarmaLogo } from "./Logos/CreditKarmaLogo.png";
 export { default as TeslaLogo } from "./Logos/TeslaLogo.png";
 export { default as VisaLogo } from "./Logos/VisaLogo.png";
 export { default as EikonTherapeuticsLogo } from "./Logos/EikonTherapeuticsLogo.webp";
+export { default as HPELogo } from "./Logos/IMG_5517.png";
 
 export { default as aboutImage1 } from "./AboutPhotos/aboutImage1.webp";
 export { default as aboutImage2 } from "./AboutPhotos/aboutImage2.webp";
