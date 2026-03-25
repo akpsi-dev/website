@@ -56,7 +56,8 @@ import {
     CreditKarmaLogo,
     TeslaLogo,
     VisaLogo,
-    EikonTherapeuticsLogo
+    EikonTherapeuticsLogo,
+    HPELogo
   } from "../Assets";
   import DefaultHeadshot from "./ActiveHeadshots/Default Headshot.webp";
 import { YoutubeSearchedFor } from "@mui/icons-material";
@@ -112,7 +113,7 @@ export const companyHash = {
     "Ashton Creveling": paramountLogo,
     "Luis Esparza": DisneyLogo,
     "Max Truong": VisaLogo,
-    "Ethan Le": EikonTherapeuticsLogo,
+    "Ethan Le": HPELogo,
     "Ethan Lee": CapitalGroupLogo,
     "Megan Yung": OCHealthLogo,
     "Christine Lee": UnicornPerformLogo,
