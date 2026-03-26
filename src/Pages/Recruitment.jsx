@@ -139,9 +139,9 @@ export default function Recruitment() {
             splitBy="characters"
             staggerFrom="last"
             staggerDuration={0.06}
-            initial={{ y: "75%", opacity: 0 }}
+            initial={{ y: "60%", opacity: 0 }}
             animate={{ y: "0%", opacity: 1 }}
-            exit={{ y: "-75%", opacity: 0 }}
+            exit={{ y: "-60%", opacity: 0 }}
             transition={{
               type: "spring",
               damping: 25,
