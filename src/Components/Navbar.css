@@ -1,11 +1,10 @@
 .navbar {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    padding: 15px;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-  }
-  
-  
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 15px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  overflow: visible;
+}

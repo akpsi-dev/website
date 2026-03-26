@@ -11,6 +11,7 @@ import { BrotherhoodImage75 } from "../Assets";
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const videoRef = useRef(null);
+  const infoSectionRef = useRef(null);
   
   // Animation variants
   const fadeInVariants = {
@@ -112,12 +113,12 @@ export default function Home() {
         </div>
         <motion.div className="hero-section">
           <div className="hero-content">
-            <motion.h1 className="hero-title" initial={{ y: -150 }}>
+            <motion.h1 className="hero-title" initial={{ y: -150 }} onClick={() => infoSectionRef.current?.scrollIntoView({ behavior: 'smooth' })} style={{ cursor: 'pointer' }}>
               ΑΚΨ - UCI
             </motion.h1>
           </div>
         </motion.div>
-        <div className="section-background info-background">
+        <div className="section-background info-background" ref={infoSectionRef}>
           <div className="section-overlay"></div>
           <div className="info-section">
             <h2 className="section-title">THE FIRST AND LARGEST BUSINESS FRATERNITY</h2>

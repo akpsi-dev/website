@@ -13,7 +13,7 @@ const RushEventInfo = ({ event }) => {
     FaMapMarkerAlt: <FaMapMarkerAlt />,
     FaClock: <FaClock />,
     FaTshirt: <FaTshirt />,
-    FaDoorOpen: <FaDoorOpen />
+    FaDoorOpen: <FaDoorOpen />,
   };
 
   const eventDetails = [
@@ -21,7 +21,7 @@ const RushEventInfo = ({ event }) => {
     { icon: "FaMapMarkerAlt", text: event.location },
     { icon: "FaClock", text: event.time },
     { icon: "FaTshirt", text: event.attire },
-    { icon: "FaDoorOpen", text: event["open-ness"] }
+    { icon: "FaDoorOpen", text: event["open-ness"] },
   ];
 
   return (
@@ -58,7 +58,11 @@ const RushEventInfo = ({ event }) => {
           max-width: 600px;
           margin: 2rem auto;
           padding: 3px;
-          background: linear-gradient(145deg, rgba(192, 192, 192, 0.2), rgba(128, 128, 128, 0.1));
+          background: linear-gradient(
+            145deg,
+            rgba(192, 192, 192, 0.2),
+            rgba(128, 128, 128, 0.1)
+          );
           border-radius: 0px;
           box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
           animation: cardAppear 0.8s ease-out forwards;
@@ -78,32 +82,36 @@ const RushEventInfo = ({ event }) => {
         .card-frame {
           position: relative;
           padding: 2px;
-          background: linear-gradient(145deg, rgba(192, 192, 192, 0.3), rgba(128, 128, 128, 0.1));
+          background: linear-gradient(
+            145deg,
+            rgba(192, 192, 192, 0.3),
+            rgba(128, 128, 128, 0.1)
+          );
           border-radius: 0px;
           overflow: hidden;
         }
 
-        .card-frame::before {
-          content: '';
-          position: absolute;
-          top: -50%;
-          left: -50%;
-          width: 200%;
-          height: 200%;
-          background: conic-gradient(
-            from 0deg,
-            transparent 0deg,
-            rgba(192, 192, 192, 0.1) 90deg,
-            transparent 180deg
-          );
-          animation: frameSpin 8s linear infinite;
-        }
+        // .card-frame::before {
+        //   content: "";
+        //   position: absolute;
+        //   top: -50%;
+        //   left: -50%;
+        //   width: 200%;
+        //   height: 200%;
+        //   background: conic-gradient(
+        //     from 0deg,
+        //     transparent 0deg,
+        //     rgba(192, 192, 192, 0.1) 90deg,
+        //     transparent 180deg
+        //   );
+        //   animation: frameSpin 8s linear infinite;
+        // }
 
-        @keyframes frameSpin {
-          100% {
-            transform: rotate(360deg);
-          }
-        }
+        // @keyframes frameSpin {
+        //   100% {
+        //     transform: rotate(360deg);
+        //   }
+        // }
 
         // .card-inner {
         //   position: relative;
@@ -150,7 +158,7 @@ const RushEventInfo = ({ event }) => {
         }
 
         .card-inner::before {
-          content: '';
+          content: "";
           position: absolute;
           top: 0;
           left: 0;
@@ -187,25 +195,28 @@ const RushEventInfo = ({ event }) => {
         }
 
         .event-title {
-          font-family: 'Playfair Display', 'Bookman Old Style', Bookman, 'Goudy Old Style', Garamond, 'Hoefler Text', 'Bitstream Charter', Georgia, serif;
+          font-family: "Anton", "Arial Narrow", Arial, sans-serif;
           font-size: 2.5rem;
           color: white;
           text-align: center;
           letter-spacing: 2px;
           text-transform: uppercase;
-          text-shadow: 0 0 10px rgba(192, 192, 192, 0.3),
-                       2px 2px 4px rgba(0, 0, 0, 0.5);
+          text-shadow:
+            0 0 10px rgba(192, 192, 192, 0.3),
+            2px 2px 4px rgba(0, 0, 0, 0.5);
           animation: titleGlow 2s ease-in-out infinite alternate;
         }
 
         @keyframes titleGlow {
           0% {
-            text-shadow: 0 0 10px rgba(192, 192, 192, 0.3),
-                        2px 2px 4px rgba(0, 0, 0, 0.5);
+            text-shadow:
+              0 0 10px rgba(192, 192, 192, 0.3),
+              2px 2px 4px rgba(0, 0, 0, 0.5);
           }
           100% {
-            text-shadow: 0 0 15px rgba(192, 192, 192, 0.5),
-                        2px 2px 4px rgba(0, 0, 0, 0.5);
+            text-shadow:
+              0 0 15px rgba(192, 192, 192, 0.5),
+              2px 2px 4px rgba(0, 0, 0, 0.5);
           }
         }
 
@@ -232,11 +243,21 @@ const RushEventInfo = ({ event }) => {
           opacity: 0;
         }
 
-        .event-detail:nth-child(1) { animation-delay: 0.1s; }
-        .event-detail:nth-child(2) { animation-delay: 0.2s; }
-        .event-detail:nth-child(3) { animation-delay: 0.3s; }
-        .event-detail:nth-child(4) { animation-delay: 0.4s; }
-        .event-detail:nth-child(5) { animation-delay: 0.5s; }
+        .event-detail:nth-child(1) {
+          animation-delay: 0.1s;
+        }
+        .event-detail:nth-child(2) {
+          animation-delay: 0.2s;
+        }
+        .event-detail:nth-child(3) {
+          animation-delay: 0.3s;
+        }
+        .event-detail:nth-child(4) {
+          animation-delay: 0.4s;
+        }
+        .event-detail:nth-child(5) {
+          animation-delay: 0.5s;
+        }
 
         @keyframes detailAppear {
           0% {
@@ -275,7 +296,7 @@ const RushEventInfo = ({ event }) => {
         }
 
         .detail-text {
-          font-family: 'Playfair Display', 'Bookman Old Style', Bookman, 'Goudy Old Style', Garamond, 'Hoefler Text', 'Bitstream Charter', Georgia, serif;
+          font-family: "Anton", "Arial Narrow", Arial, sans-serif;
           font-size: 1.1rem;
           color: white;
           letter-spacing: 1px;
@@ -289,11 +310,11 @@ const RushEventInfo = ({ event }) => {
           .event-card {
             margin: 1rem;
           }
-          
+
           .event-title {
             font-size: 2rem;
           }
-          
+
           .detail-text {
             font-size: 1rem;
           }

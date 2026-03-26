@@ -4,7 +4,7 @@
   gap: 25px;
   margin: 0;
   padding: 0;
-  color: #121212
+  color: #121212;
 }
 
 .nav-links li {
@@ -17,7 +17,9 @@
   color: aliceblue;
   font-size: 16px;
   font-weight: 500;
-  transition: background-color 0.3s ease, transform 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    transform 0.3s ease;
   text-shadow: 1px 1px 2px black;
 }
 
@@ -32,7 +34,7 @@
 
 /* Standard underline effect for all NavLinks */
 .nav-links li .NavLink::after {
-  content: '';
+  content: "";
   position: absolute;
   width: 100%;
   height: 3px;
@@ -47,11 +49,6 @@
 .nav-links li .NavLink:hover::after,
 .nav-links li .NavLink.active::after {
   transform: scaleX(1);
-}
-
-.nav-links li .NavLink.active:hover::after {
-  background-color: #302ad6;
-  backdrop-filter: blur(70px);
 }
 
 /* Special styling for Rush NavLink */
@@ -75,19 +72,29 @@
 
 @keyframes rushGlow {
   0% {
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7), 0 0 10px rgba(255, 215, 0, 0.3);
+    text-shadow:
+      1px 1px 2px rgba(0, 0, 0, 0.7),
+      0 0 10px rgba(255, 215, 0, 0.3);
   }
   25% {
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7), 0 0 20px rgba(255, 215, 0, 0.7);
+    text-shadow:
+      1px 1px 2px rgba(0, 0, 0, 0.7),
+      0 0 20px rgba(255, 215, 0, 0.7);
   }
   50% {
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7), 0 0 30px rgba(255, 215, 0, 1);
+    text-shadow:
+      1px 1px 3px rgba(0, 0, 0, 0.7),
+      0 0 30px rgba(255, 215, 0, 1);
   }
   75% {
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7), 0 0 20px rgba(255, 215, 0, 0.7);
+    text-shadow:
+      1px 1px 2px rgba(0, 0, 0, 0.7),
+      0 0 20px rgba(255, 215, 0, 0.7);
   }
   100% {
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7), 0 0 10px rgba(255, 215, 0, 0.3);
+    text-shadow:
+      1px 1px 2px rgba(0, 0, 0, 0.7),
+      0 0 10px rgba(255, 215, 0, 0.3);
   }
 }
 
@@ -109,39 +116,37 @@
     flex-direction: column;
     position: absolute;
     top: 60px;
-    /* center horizontally and size to content where possible */
-    left: 50%;
-    transform: translateX(-50%);
-    /* prefer fitting content, but cap to viewport */
-    width: -moz-fit-content;
-    width: fit-content;
-    min-width: 180px;
-    max-width: calc(100% - 2rem);
+    right: 0.75rem;
+    left: auto;
+    transform: none;
+    width: min(220px, calc(100vw - 1.5rem));
+    max-width: calc(100vw - 1.5rem);
     background-color: rgba(0, 0, 0, 0.8);
     backdrop-filter: blur(0.75rem);
     padding: 1rem;
     box-sizing: border-box;
-    box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.4),
-                0 0 15px rgba(255, 215, 0, 0.2); /* Slight golden glow */
-    /* If content is wider than max-width, allow horizontal scroll instead of wrapping */
-    overflow-x: auto;
+    box-shadow:
+      0 0.2rem 0.5rem rgba(0, 0, 0, 0.4),
+      0 0 15px rgba(255, 215, 0, 0.2); /* Slight golden glow */
+    overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
   }
 
   .nav-links.mobile li {
     margin: 0.5rem 0;
     display: flex;
-    justify-content: center; /* center the item horizontally */
+    justify-content: flex-start;
   }
 
-  /* Keep link text on a single line so words don't break; center text in each link */
+  /* Keep link text on a single line so words don't break; align text inside the panel */
   .nav-links.mobile li .NavLink {
     white-space: nowrap;
-    display: inline-block;
+    display: block;
+    width: 100%;
     padding: 0.5rem 0.5rem;
-    text-align: center; /* center label text */
+    text-align: left;
   }
-  
+
   /* Ensure the Rush NavLink still stands out on mobile */
   /* .nav-links.mobile li:last-child {
     margin-top: 12px;
@@ -153,6 +158,6 @@
     display: flex;
     flex-direction: column;
     gap: 0.1rem;
-    padding: 0 1.4rem;
+    padding: 0 0.75rem;
   }
 }

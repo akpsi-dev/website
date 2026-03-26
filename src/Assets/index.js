@@ -244,5 +244,4 @@ export { default as aboutImage7 } from "./AboutPhotos/aboutImages7.webp";
 export {default as LastGMFall24 } from "./Frames/LastGMFall24Fraternity.webp";
 export {default as WinterRetreatFraternity } from "./Frames/WinterRetreatFraternity.webp";
 
-export {default as BloodOrangeAudio } from "./Audios/Champagne Coast - Blood Orange.mp3";
-export { default as CloserAudio } from "./Audios/The Chainsmokers - Closer [Official Instrumental].mp3";
+export { default as SummerAudio } from "./Audios/Calvin Harris - Summer.mp3";
