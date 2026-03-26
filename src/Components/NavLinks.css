@@ -114,12 +114,13 @@
   .nav-links.mobile {
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
     position: absolute;
     top: 60px;
     right: 0.75rem;
     left: auto;
     transform: none;
-    width: min(220px, calc(100vw - 1.5rem));
+    width: max-content;
     max-width: calc(100vw - 1.5rem);
     background-color: rgba(0, 0, 0, 0.8);
     backdrop-filter: blur(0.75rem);
@@ -136,13 +137,13 @@
     margin: 0.5rem 0;
     display: flex;
     justify-content: flex-start;
+    width: 100%;
   }
 
   /* Keep link text on a single line so words don't break; align text inside the panel */
   .nav-links.mobile li .NavLink {
     white-space: nowrap;
-    display: block;
-    width: 100%;
+    display: inline-block;
     padding: 0.5rem 0.5rem;
     text-align: left;
   }
