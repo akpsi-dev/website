@@ -83,6 +83,22 @@ export { default as BrotherhoodImage80 } from "./BrotherhoodPhotos/broho41.webp"
 export { default as BrotherhoodImage81 } from "./BrotherhoodPhotos/broho42.webp";
 export { default as BrotherhoodImage82 } from "./BrotherhoodPhotos/broho43.webp";
 export { default as BrotherhoodImage83 } from "./BrotherhoodPhotos/broho44.webp";
+export { default as BrotherhoodImage84 } from "./BrotherhoodPhotos/nyc_phis.webp";
+export { default as BrotherhoodImage85 } from "./BrotherhoodPhotos/san_diego_2026.webp";
+export { default as BrotherhoodImage86 } from "./BrotherhoodPhotos/annie_ensenada_2026.webp";
+export { default as BrotherhoodImage87 } from "./BrotherhoodPhotos/phi_seattle_hike.webp";
+export { default as BrotherhoodImage88 } from "./BrotherhoodPhotos/phi_seattle_tower.webp";
+export { default as BrotherhoodImage89 } from "./BrotherhoodPhotos/lpn_bta.webp";
+export { default as BrotherhoodImage90 } from "./BrotherhoodPhotos/basketball.webp";
+export { default as BrotherhoodImage91 } from "./BrotherhoodPhotos/girls_cruise_2026.webp";
+export { default as BrotherhoodImage92 } from "./BrotherhoodPhotos/hauber_vano_color_gradient.webp";
+export { default as BrotherhoodImage93 } from "./BrotherhoodPhotos/james_is_a_fan.webp";
+export { default as BrotherhoodImage94 } from "./BrotherhoodPhotos/jersey_swap.webp";
+export { default as BrotherhoodImage95 } from "./BrotherhoodPhotos/soccer_2026.webp";
+export { default as BrotherhoodImage96 } from "./BrotherhoodPhotos/alexis_mel_formal.webp";
+export { default as BrotherhoodImage97 } from "./BrotherhoodPhotos/tuffskis.webp";
+export { default as BrotherhoodImage98 } from "./BrotherhoodPhotos/chis_cruise_2026.webp";
+
 
 export { default as CoreValueB} from "./AboutPhotos/CoreValueS.jpeg";
 export { default as CoreValueK} from "./AboutPhotos/CoreValueK.webp";
