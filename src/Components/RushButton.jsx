@@ -48,13 +48,38 @@ const ChromeButton = styled(Button)(({ theme }) => ({
   boxShadow: "0 2px 10px rgba(0, 0, 0, 0.2)", // Exact same shadow as calendar button
   // backdropFilter: 'blur(2px)', // Exact same backdrop filter as calendar button
   marginBottom: "0.5rem", // Same margin as calendar button
+  WebkitTapHighlightColor: "transparent",
 
-  "&:hover": {
-    backgroundColor: "rgba(255, 255, 255, 0.2)", // Exact same hover background as calendar button
-    borderColor: "rgba(192, 192, 192, 0.6)", // Exact same hover border as calendar button
+  "&:focus-visible": {
+    backgroundColor: "transparent",
+    borderColor: "rgb(255, 255, 255)",
     color: "white", // Exact same hover color as calendar button
-    transform: "translateY(-2px)", // Exact same transform as calendar button
-    boxShadow: "0 4px 15px rgba(0, 0, 0, 0.3)", // Exact same hover shadow as calendar button
+  },
+
+  "&:active": {
+    backgroundColor: "transparent",
+    borderColor: "rgb(255, 255, 255)",
+    color: "white",
+  },
+
+  "@media (hover: hover)": {
+    "&:hover": {
+      backgroundColor: "rgba(255, 255, 255, 0.2)", // Exact same hover background as calendar button
+      borderColor: "rgba(192, 192, 192, 0.6)", // Exact same hover border as calendar button
+      color: "white", // Exact same hover color as calendar button
+      transform: "translateY(-2px)", // Exact same transform as calendar button
+      boxShadow: "0 4px 15px rgba(0, 0, 0, 0.3)", // Exact same hover shadow as calendar button
+    },
+  },
+
+  "@media (hover: none)": {
+    "&:hover": {
+      backgroundColor: "transparent",
+      borderColor: "rgb(255, 255, 255)",
+      color: "white",
+      transform: "none",
+      boxShadow: "0 2px 10px rgba(0, 0, 0, 0.2)",
+    },
   },
 
   "@media (max-width: 768px)": {

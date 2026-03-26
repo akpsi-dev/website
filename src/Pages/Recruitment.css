@@ -11,6 +11,7 @@ html {
 
 .recruitmentContainer {
   height: 100vh;
+  height: 100dvh;
   overflow-y: scroll;
   scroll-snap-type: y mandatory;
   position: relative;
@@ -39,6 +40,7 @@ html {
 
 .viewport {
   height: 100vh;
+  height: 100dvh;
   scroll-snap-align: start;
   display: flex;
   flex-direction: column;
@@ -49,6 +51,7 @@ html {
   padding: 0rem 2rem;
   position: relative;
   z-index: 2;
+  box-sizing: border-box;
 }
 
 .hero-recruitment-Section {
@@ -93,6 +96,16 @@ html {
 
 /* Media queries for responsiveness */
 @media (max-width: 768px) {
+  .recruitmentContainer {
+    background-attachment: scroll;
+  }
+
+  .viewport {
+    min-height: 100svh;
+    padding-top: calc(env(safe-area-inset-top) + 4.5rem);
+    padding-bottom: calc(env(safe-area-inset-bottom) + 6rem);
+  }
+
   .main-recruitment-Title {
     font-size: 3.5rem;
   }
