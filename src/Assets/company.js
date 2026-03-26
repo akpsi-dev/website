@@ -57,7 +57,8 @@ import {
     TeslaLogo,
     VisaLogo,
     EikonTherapeuticsLogo,
-    HPELogo
+    HPELogo,
+    ConcordiaLogo
   } from "../Assets";
   import DefaultHeadshot from "./ActiveHeadshots/Default Headshot.webp";
 import { YoutubeSearchedFor } from "@mui/icons-material";
