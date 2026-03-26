@@ -43,6 +43,7 @@ import {
   BrotherhoodImage95,
   BrotherhoodImage96,
   BrotherhoodImage97,
+  BrotherhoodImage98,
 } from "../Assets";
 
 export default function Brotherhood() {
@@ -85,7 +86,7 @@ export default function Brotherhood() {
     BrotherhoodImage80,
     BrotherhoodImage84,
     BrotherhoodImage82,
-    BrotherhoodImage15,
+    BrotherhoodImage98,
     BrotherhoodImage83,
     BrotherhoodImage16,
     BrotherhoodImage9,

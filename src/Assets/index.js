@@ -97,7 +97,7 @@ export { default as BrotherhoodImage94 } from "./BrotherhoodPhotos/jersey_swap.w
 export { default as BrotherhoodImage95 } from "./BrotherhoodPhotos/soccer_2026.webp";
 export { default as BrotherhoodImage96 } from "./BrotherhoodPhotos/alexis_mel_formal.webp";
 export { default as BrotherhoodImage97 } from "./BrotherhoodPhotos/tuffskis.webp";
-
+export { default as BrotherhoodImage98 } from "./BrotherhoodPhotos/chis_cruise_2026.webp";
 
 
 export { default as CoreValueB} from "./AboutPhotos/CoreValueS.jpeg";
