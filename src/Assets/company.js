@@ -118,7 +118,7 @@ export const companyHash = {
     "Ethan Lee": CapitalGroupLogo,
     "Megan Yung": OCHealthLogo,
     "Christine Lee": UnicornPerformLogo,
-    "James Fitzpatrick": UtahSoccerLogo,
+    "James Fitzpatrick": ConcordiaLogo,
     "Ava Lily Tran": VinaCapitalLogo,
     "Default Headshot": DefaultHeadshot,
   };
