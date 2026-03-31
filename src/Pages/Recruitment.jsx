@@ -15,7 +15,7 @@ export default function Recruitment() {
     {
       name: "Meet The Bros",
       date: "Tuesday, March 31",
-      location: "Merage Room TBD",
+      location: "SB1 1200",
       attire: "Casual",
       time: "6:00 PM - 9:00 PM",
       "open-ness": "Open Invite",
@@ -23,7 +23,7 @@ export default function Recruitment() {
     {
       name: "Alumni Night",
       date: "Thursday, April 2",
-      location: "Merage Room TBD",
+      location: "SB1 1200",
       attire: "Business Professional",
       time: "6:00 PM - 9:00 PM",
       "open-ness": "Open Invite",
@@ -31,7 +31,7 @@ export default function Recruitment() {
     {
       name: "Game Night",
       date: "Friday, April 3",
-      location: "Merage Room TBD",
+      location: "SB1 1200",
       attire: "Business Casual",
       time: "6:00 PM - 9:00 PM",
       "open-ness": "Open Invite",
