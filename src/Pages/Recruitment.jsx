@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Recruitment.css";
-import { NatureAscend } from "../Assets";
+import { PalmTreeCity } from "../Assets";
 import RushEventInfo from "../Components/RushEventInfo";
 import DownPointerButton from "../Components/DownPointerButton";
 import RushButton from "../Components/RushButton";
@@ -87,7 +87,7 @@ export default function Recruitment() {
 
   useEffect(() => {
     const img = new Image();
-    img.src = NatureAscend;
+    img.src = PalmTreeCity;
     img.onload = () => {
       setTimeout(() => {
         setIsLoading(false);

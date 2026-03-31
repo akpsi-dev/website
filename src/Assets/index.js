@@ -113,7 +113,7 @@ export { default as JacobTrollPhoto } from "./TrollPhotos/IMG_1040.PNG";
 
 export { default as Dune } from "./Frames/FALL RUSH 24 GRAPHIC DESIGN.webp";
 export { default as DuneMini } from "./Frames/FALL RUSH 24 SHIRT DESIGN.jpeg";
-export { default as NatureAscend } from "./Frames/FALL2025.jpeg";
+export { default as PalmTreeCity } from "./Frames/SPRING2026.jpg";
 export { default as AscendLogo } from "./Frames/ASCEND.webp";
 export { default as knightAKYLogo } from "./Logos/knightAKPsiLogo.png";
 export { default as instagramLogo } from "./Logos/instagramLogo.png";
@@ -249,6 +249,7 @@ export { default as VisaLogo } from "./Logos/VisaLogo.png";
 export { default as EikonTherapeuticsLogo } from "./Logos/EikonTherapeuticsLogo.webp";
 export { default as HPELogo } from "./Logos/IMG_5517.png";
 export { default as OLIPOPLogo } from "./Logos/OLIPOPLogo.png"
+export { default as ARMLogo } from "./Logos/ARMLogo.png"
 
 export { default as aboutImage1 } from "./AboutPhotos/aboutImage1.webp";
 export { default as aboutImage2 } from "./AboutPhotos/aboutImage2.webp";
