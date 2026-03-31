@@ -100,7 +100,7 @@ export default function Home() {
             
               <video
                 ref={videoRef}
-                src={"https://d395js6c4h8h6h.cloudfront.net/Videos/NewFall2025.mp4"}
+                src={"https://d395js6c4h8h6h.cloudfront.net/Videos/SpringRushVideo2026.mp4"}
                 autoPlay
                 muted
                 playsInline

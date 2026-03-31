@@ -113,7 +113,7 @@ export { default as JacobTrollPhoto } from "./TrollPhotos/IMG_1040.PNG";
 
 export { default as Dune } from "./Frames/FALL RUSH 24 GRAPHIC DESIGN.webp";
 export { default as DuneMini } from "./Frames/FALL RUSH 24 SHIRT DESIGN.jpeg";
-export { default as NatureAscend } from "./Frames/FALL2025.jpeg";
+export { default as PalmTreeCity } from "./Frames/SPRING2026.jpg";
 export { default as AscendLogo } from "./Frames/ASCEND.webp";
 export { default as knightAKYLogo } from "./Logos/knightAKPsiLogo.png";
 export { default as instagramLogo } from "./Logos/instagramLogo.png";
