@@ -93,7 +93,6 @@ html, body {
   position: relative;
   overflow: hidden;
   z-index: 1;
-  top: -150px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
 

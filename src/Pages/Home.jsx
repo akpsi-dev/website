@@ -113,7 +113,7 @@ export default function Home() {
         </div>
         <motion.div className="hero-section">
           <div className="hero-content">
-            <motion.h1 className="hero-title" initial={{ y: -150 }} onClick={() => infoSectionRef.current?.scrollIntoView({ behavior: 'smooth' })} style={{ cursor: 'pointer' }}>
+            <motion.h1 className="hero-title" onClick={() => infoSectionRef.current?.scrollIntoView({ behavior: 'smooth' })} style={{ cursor: 'pointer' }}>
               ΑΚΨ - UCI
             </motion.h1>
           </div>
