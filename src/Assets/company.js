@@ -42,6 +42,7 @@ import {
     HPELogo,
     ConcordiaLogo,
     AONLogo,
+    ARMLogo,
     OneStreamLogo,
     OLIPOPLogo
   } from "../Assets";
@@ -73,7 +74,7 @@ export const companyHash = {
     "Mina Nguyen": AONLogo,
     "Tommy Nguyen": CreditKarmaLogo,
     "Alex Sriprathum": KimleyHornLogo,
-    "Nico Simonian": GlobalFoundriesLogo,
+    "Nico Simonian": ARMLogo,
     "Carl Qiao": PWCLogo,
     "Logan Kim": CenterviewPartnersLogo,
     "Ryan Park": ExperianLogo,
