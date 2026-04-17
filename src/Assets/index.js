@@ -250,6 +250,7 @@ export { default as EikonTherapeuticsLogo } from "./Logos/EikonTherapeuticsLogo.
 export { default as HPELogo } from "./Logos/IMG_5517.png";
 export { default as OLIPOPLogo } from "./Logos/OLIPOPLogo.png"
 export { default as ARMLogo } from "./Logos/ARMLogo.png"
+export { default as SalesforceLogo } from "./Logos/SalesforceLogo.png"
 
 export { default as aboutImage1 } from "./AboutPhotos/aboutImage1.webp";
 export { default as aboutImage2 } from "./AboutPhotos/aboutImage2.webp";
