@@ -34,52 +34,70 @@ import {
   walmartlogo,
   warnbroslogo,
   GitHubLogo,
-  BainLogo, 
+  BainLogo,
   AmazonLogo,
-  BlackrockLogo
+  BlackrockLogo,
 } from "../Assets";
+
+const ROW_ONE = [
+  { src: bloomberglogo, alt: "Bloomberg" },
+  { src: GoogleLogo, alt: "Google" },
+  { src: AppleLogo, alt: "Apple" },
+  { src: DeloitteLogo, alt: "Deloitte" },
+  { src: AdobeLogo, alt: "Adobe" },
+  { src: EYLogo, alt: "EY" },
+  { src: MicrosoftLogo, alt: "Microsoft" },
+  { src: TiktokLogo, alt: "TikTok" },
+  { src: WellsFargoLogo, alt: "Wells Fargo" },
+  { src: BainLogo, alt: "Bain" },
+  { src: nasalogo, alt: "NASA" },
+  { src: GitHubLogo, alt: "GitHub" },
+  { src: TinderLogo, alt: "Tinder" },
+  { src: vmwarelogo, alt: "VMware" },
+  { src: LinkedInLogo, alt: "LinkedIn" },
+  { src: AmazonLogo, alt: "Amazon" },
+  { src: BlackrockLogo, alt: "BlackRock" },
+  { src: JPMorganLogo, alt: "JPMorgan" },
+];
+
+const ROW_TWO = [
+  { src: metalogo, alt: "Meta" },
+  { src: CapitalOneLogo, alt: "Capital One" },
+  { src: BandCLogo, alt: "Bain & Co" },
+  { src: doordashlogo, alt: "DoorDash" },
+  { src: hpLogo, alt: "HP" },
+  { src: oraclelogo, alt: "Oracle" },
+  { src: paramountLogo, alt: "Paramount" },
+  { src: intellogo, alt: "Intel" },
+  { src: kialogo, alt: "KIA" },
+  { src: walmartlogo, alt: "Walmart" },
+  { src: nbclogo, alt: "NBC" },
+  { src: kpmglogo, alt: "KPMG" },
+  { src: protivitilogo, alt: "Protiviti" },
+  { src: fazelogo, alt: "FaZe" },
+  { src: statefarmlogo, alt: "State Farm" },
+  { src: PWCLogo, alt: "PwC" },
+  { src: redbulllogo, alt: "Red Bull" },
+  { src: warnbroslogo, alt: "Warner Bros" },
+];
+
+function LogoRow({ logos, direction = "forward" }) {
+  return (
+    <div className="logos-track-wrapper">
+      <div className={`logos-slide ${direction === "reverse" ? "logos-slide-reverse" : ""}`}>
+        {[...logos, ...logos].map((logo, i) => (
+          <img key={i} src={logo.src} alt={logo.alt} loading="lazy" />
+        ))}
+      </div>
+    </div>
+  );
+}
 
 const CareerLogoScroller = () => {
   return (
     <div className="logos">
-      <div className="logos-slide">
-        <img src={bloomberglogo} alt="Bloomberg" />
-        <img src={GoogleLogo} alt="Google" />
-        <img src={AppleLogo} alt="Apple" />
-        <img src={DeloitteLogo} alt="Deloitte" />
-        <img src={AdobeLogo} alt="Adobe" />
-        <img src={EYLogo} alt="EY" />
-        <img src={MicrosoftLogo} alt="Microsoft" />
-        <img src={TiktokLogo} alt="Tiktok" />
-        <img src={WellsFargoLogo} alt="Wells Fargo" />
-        <img src={BainLogo} alt="Redbull" />
-        <img src={nasalogo} alt="NASA" />
-        <img src={GitHubLogo} alt="Warner Bros" />
-        <img src={TinderLogo} alt="Tinder" />
-        <img src={vmwarelogo} alt="vmware" />
-        <img src={LinkedInLogo} alt="LinkedIn" />
-        <img src={AmazonLogo} alt="Amazon" />
-        <img src={metalogo} alt="Meta" />
-        <img src={CapitalOneLogo} alt="Capital One" />
-        <img src={BandCLogo} alt="Bain and Co" />
-        <img src={doordashlogo} alt="Doordash" />
-        <img src={hpLogo} alt="HP" />
-        <img src={oraclelogo} alt="Oracle" />
-        <img src={paramountLogo} alt="Paramount" />
-        <img src={intellogo} alt="Intel" />
-        <img src={kialogo} alt="KIA" />
-        <img src={BlackrockLogo} alt="BlackRock" />
-        <img src={walmartlogo} alt="Walmart" />
-        <img src={nbclogo} alt="NBC" />
-        <img src={kpmglogo} alt="KPMG" />
-        <img src={JPMorganLogo} alt="JPMorgan" />
-        <img src={protivitilogo} alt="Protiviti" />
-        <img src={fazelogo} alt="Faze" />
-        <img src={statefarmlogo} alt="Statefarm" />
-        <img src={PWCLogo} alt="PWC" />
-        <img src={redbulllogo} alt="Redbull" />
-        <img src={warnbroslogo} alt="Warner Bros" />
-      </div>
+      <LogoRow logos={ROW_ONE} direction="forward" />
+      <LogoRow logos={ROW_TWO} direction="reverse" />
     </div>
   );
 };

@@ -1,74 +1,93 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+@keyframes slide {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
 }
 
-@keyframes slide {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-100%);
-  }
+@keyframes slideReverse {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
 }
 
 .logos {
   overflow: hidden;
   width: 90%;
   max-width: 1200px;
-  padding: 60px 0;
+  padding: 50px 0;
   background: #121212;
-  white-space: nowrap;
   position: relative;
   margin: 0 auto;
-  text-align: center;
-  margin-top: 0px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
-.logos:before,
-.logos:after {
+/* Fade masks on left and right edges */
+.logos::before,
+.logos::after {
+  content: "";
   position: absolute;
   top: 0;
-  width: 250px;
+  width: 200px;
   height: 100%;
-  content: "";
   z-index: 2;
+  pointer-events: none;
 }
-  
+
+.logos::before {
+  left: 0;
+  background: linear-gradient(to right, #121212 0%, transparent 100%);
+}
+
+.logos::after {
+  right: 0;
+  background: linear-gradient(to left, #121212 0%, transparent 100%);
+}
+
+.logos-track-wrapper {
+  overflow: hidden;
+  width: 100%;
+}
+
 .logos-slide {
   display: flex;
-  width: calc(300% + 200px);
-  animation: 50s slide linear infinite;
+  width: max-content;
+  animation: slide 55s linear infinite;
+}
+
+.logos-slide-reverse {
+  animation: slideReverse 65s linear infinite;
 }
 
 .logos-slide img {
-  height: 75px;
-  margin: 0 20px;
+  height: 60px;
+  margin: 0 24px;
+  object-fit: contain;
+  filter: grayscale(20%);
+  opacity: 0.85;
+  transition: opacity 0.3s, filter 0.3s;
+  flex-shrink: 0;
+}
+
+.logos-slide img:hover {
+  opacity: 1;
+  filter: grayscale(0%);
 }
 
 @media (max-width: 768px) {
-  body {
-    overflow-x: hidden;
-  }
-
   .logos {
     width: 100%;
     max-width: 100vw;
-    padding: 60px 10px;
+    padding: 40px 0;
+    gap: 1rem;
   }
 
-  .logos:before,
-  .logos:after {
-    width: 100px;
-  }
-
-  .logos-slide {
-    width: calc(300% + 100px);
+  .logos::before,
+  .logos::after {
+    width: 80px;
   }
 
   .logos-slide img {
-    height: 60px;
-    margin: 0 15px;
+    height: 44px;
+    margin: 0 16px;
   }
 }

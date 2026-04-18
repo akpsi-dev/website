@@ -1,10 +1,10 @@
+/* ── Desktop nav ─────────────────────────────────────────── */
 .nav-links {
   list-style: none;
   display: flex;
   gap: 25px;
   margin: 0;
   padding: 0;
-  color: #121212;
 }
 
 .nav-links li {
@@ -17,22 +17,14 @@
   color: aliceblue;
   font-size: 16px;
   font-weight: 500;
-  transition:
-    background-color 0.3s ease,
-    transform 0.3s ease;
+  transition: transform 0.3s ease;
   text-shadow: 1px 1px 2px black;
 }
 
 .nav-links li .NavLink:hover {
-  color: aliceblue;
   transform: translateY(-3px);
 }
 
-.nav-links li .NavLink.active {
-  color: rgb(255, 255, 255);
-}
-
-/* Standard underline effect for all NavLinks */
 .nav-links li .NavLink::after {
   content: "";
   position: absolute;
@@ -51,114 +43,137 @@
   transform: scaleX(1);
 }
 
-/* Special styling for Rush NavLink */
-/* .nav-links li:last-child .NavLink {
+/* Rush link — desktop */
+.nav-links li .NavLink.rush {
   color: #ffd700;
-  animation: rushGlow 3s infinite ease-in-out;
   font-weight: 600;
-  position: relative;
+  animation: rushGlow 3s infinite ease-in-out;
   letter-spacing: 0.03em;
 }
 
-.nav-links li:last-child .NavLink::after {
+.nav-links li .NavLink.rush::after {
   background: linear-gradient(90deg, #ffd700, #ffc800, #ffd700);
-  height: 3px;
 }
-
-.nav-links li:last-child .NavLink:hover::after,
-.nav-links li:last-child .NavLink.active::after {
-  transform: scaleX(1);
-} */
 
 @keyframes rushGlow {
-  0% {
-    text-shadow:
-      1px 1px 2px rgba(0, 0, 0, 0.7),
-      0 0 10px rgba(255, 215, 0, 0.3);
-  }
-  25% {
-    text-shadow:
-      1px 1px 2px rgba(0, 0, 0, 0.7),
-      0 0 20px rgba(255, 215, 0, 0.7);
+  0%,
+  100% {
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7), 0 0 10px rgba(255, 215, 0, 0.3);
   }
   50% {
-    text-shadow:
-      1px 1px 3px rgba(0, 0, 0, 0.7),
-      0 0 30px rgba(255, 215, 0, 1);
-  }
-  75% {
-    text-shadow:
-      1px 1px 2px rgba(0, 0, 0, 0.7),
-      0 0 20px rgba(255, 215, 0, 0.7);
-  }
-  100% {
-    text-shadow:
-      1px 1px 2px rgba(0, 0, 0, 0.7),
-      0 0 10px rgba(255, 215, 0, 0.3);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7), 0 0 28px rgba(255, 215, 0, 0.9);
   }
 }
 
-/* Mobile styles */
-.hamburger span {
-  width: 25px;
-  height: 3px;
-  background-color: #ffffff;
-  margin-bottom: 4px;
+/* ── Mobile nav (full-screen overlay) ───────────────────── */
+.mobile-nav-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+  padding-bottom: max(2.5rem, env(safe-area-inset-bottom));
 }
 
-@media (max-width: 768px) {
-  .nav-links {
-    display: none;
-  }
+.nav-links.mobile {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  flex: 1;
+}
 
-  .nav-links.mobile {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    position: absolute;
-    top: 60px;
-    right: 0.75rem;
-    left: auto;
-    transform: none;
-    width: max-content;
-    max-width: calc(100vw - 1.5rem);
-    background-color: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(0.75rem);
-    padding: 1rem;
-    box-sizing: border-box;
-    box-shadow:
-      0 0.2rem 0.5rem rgba(0, 0, 0, 0.4),
-      0 0 15px rgba(255, 215, 0, 0.2); /* Slight golden glow */
-    overflow-x: hidden;
-    -webkit-overflow-scrolling: touch;
-  }
+.nav-links.mobile li {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
 
-  .nav-links.mobile li {
-    margin: 0.5rem 0;
-    display: flex;
-    justify-content: flex-start;
-    width: 100%;
-  }
+.nav-links.mobile li:first-child {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
 
-  /* Keep link text on a single line so words don't break; align text inside the panel */
-  .nav-links.mobile li .NavLink {
-    white-space: nowrap;
-    display: inline-block;
-    padding: 0.5rem 0.5rem;
-    text-align: left;
-  }
+.nav-links.mobile li .NavLink.mobile {
+  display: block;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.82);
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(1.75rem, 6vw, 2.4rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  padding: 0.75rem 0;
+  transition: color 0.25s ease, padding-left 0.25s ease;
+  position: relative;
+}
 
-  /* Ensure the Rush NavLink still stands out on mobile */
-  /* .nav-links.mobile li:last-child {
-    margin-top: 12px;
-    padding-top: 8px;
-    border-top: 1px solid rgba(255, 215, 0, 0.5);
-  } */
+.nav-links.mobile li .NavLink.mobile::before {
+  content: "";
+  position: absolute;
+  left: -2.5rem;
+  top: 50%;
+  transform: translateY(-50%) scaleY(0);
+  width: 3px;
+  height: 60%;
+  background: #00a0dc;
+  border-radius: 2px;
+  transition: transform 0.25s ease;
+}
 
-  .hamburger {
-    display: flex;
-    flex-direction: column;
-    gap: 0.1rem;
-    padding: 0 0.75rem;
-  }
+.nav-links.mobile li .NavLink.mobile:hover,
+.nav-links.mobile li .NavLink.mobile.active {
+  color: #fff;
+  padding-left: 0.5rem;
+}
+
+.nav-links.mobile li .NavLink.mobile:hover::before,
+.nav-links.mobile li .NavLink.mobile.active::before {
+  transform: translateY(-50%) scaleY(1);
+}
+
+/* Rush — mobile pill */
+.nav-links.mobile li .NavLink.mobile.rush {
+  display: inline-block;
+  color: #1a1a1a;
+  font-weight: 700;
+  background: linear-gradient(135deg, #ffd700, #ffb800);
+  padding: 0.45rem 1.25rem;
+  border-radius: 999px;
+  margin: 0.6rem 0;
+  animation: none;
+  text-shadow: none;
+  transition: filter 0.25s ease, transform 0.25s ease;
+}
+
+.nav-links.mobile li .NavLink.mobile.rush::before {
+  display: none;
+}
+
+.nav-links.mobile li .NavLink.mobile.rush:hover {
+  filter: brightness(1.1);
+  transform: translateX(4px);
+  padding-left: 1.25rem;
+}
+
+.nav-links.mobile li:has(.NavLink.mobile.rush) {
+  border: none;
+  padding-top: 0.5rem;
+}
+
+/* Social icons row */
+.mobile-socials {
+  display: flex;
+  gap: 1.25rem;
+  align-items: center;
+  padding: 1.5rem 0 0.5rem;
+}
+
+.mobile-socials .social-icon {
+  color: rgba(255, 255, 255, 0.5);
+  display: flex;
+  align-items: center;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.mobile-socials .social-icon:hover {
+  color: #fff;
+  transform: translateY(-2px);
 }

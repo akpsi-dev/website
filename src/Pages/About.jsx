@@ -13,6 +13,7 @@ import {
 } from "../Assets";
 import { Instagram, Facebook, LinkedIn } from "@mui/icons-material";
 import { useMobile } from "../Components/Navbar";
+import { fadeInVariants, scaleInVariants } from "../utils/motion";
 import {
   PieChart,
   Pie,
@@ -44,43 +45,18 @@ const clubData = [
 ];
 
 const placementData = [
-  { year: "2019", oncampus: 63, beyondCampus: 70 },
-  { year: "2020", oncampus: 70, beyondCampus: 75 },
-  { year: "2021", oncampus: 72, beyondCampus: 77 },
-  { year: "2022", oncampus: 68, beyondCampus: 75 },
-  { year: "2023", oncampus: 77, beyondCampus: 83 },
-  { year: "2024", oncampus: 85, beyondCampus: 90 },
+  { year: "2021", oncampus: 63, beyondCampus: 68 },
+  { year: "2022", oncampus: 70, beyondCampus: 74 },
+  { year: "2023", oncampus: 72, beyondCampus: 81 },
+  { year: "2024", oncampus: 77, beyondCampus: 85 },
+  { year: "2025", oncampus: 77, beyondCampus: 83 },
+  { year: "2026", oncampus: 88, beyondCampus: 92 },
 ];
 
 const COLORS = ["#0066cc", "#00a86b", "#f39c12", "#8e44ad", "#e74c3c", "#3498db"];
 
 export default function About() {
   const { isMobile } = useMobile();
-  
-  // Animation variants
-  const fadeInVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { 
-        duration: 0.5,
-        ease: [0.16, 1, 0.3, 1]
-      }
-    }
-  };
-  
-  const scaleInVariants = {
-    hidden: { opacity: 0, scale: 0.95 },
-    visible: { 
-      opacity: 1, 
-      scale: 1,
-      transition: { 
-        duration: 0.5,
-        ease: [0.16, 1, 0.3, 1]
-      }
-    }
-  };
 
   useEffect(() => {
     const observerOptions = {
@@ -130,7 +106,65 @@ export default function About() {
       <div className="section-background info-background">
         <div className="section-overlay"></div>
         <div className="info-section">
-          <h2 className="section-title">Chapter Demographics</h2>
+          <h2 className="section-title">Our Story</h2>
+          <div className="timeline">
+            {[
+              {
+                year: "1904",
+                title: "AKΨ Founded",
+                description:
+                  "Alpha Kappa Psi is founded at New York University — the first professional business fraternity in the country.",
+              },
+              {
+                year: "1999",
+                title: "UCI Chapter Established",
+                description:
+                  "The Pi Psi chapter at UC Irvine is chartered, bringing AKΨ's mission of professional development to Anteaters.",
+              },
+              {
+                year: "2010",
+                title: "500+ Alumni",
+                description:
+                  "The chapter reaches a milestone of over 500 initiated brothers, building a growing network across industries nationwide.",
+              },
+              {
+                year: "2018",
+                title: "Top Chapter Recognition",
+                description:
+                  "Pi Psi earns national recognition for chapter excellence, professional programming, and community philanthropy.",
+              },
+              {
+                year: "2022",
+                title: "Record Placements",
+                description:
+                  "100% of graduating members secure internships or full-time roles at top-tier companies before commencement.",
+              },
+              {
+                year: "2026",
+                title: "Looking Ahead",
+                description:
+                  "With over 700 lifetime alumni and a vibrant active chapter, Pi Psi continues to grow its legacy at UCI and beyond.",
+              },
+            ].map((item, i) => (
+              <motion.div
+                key={item.year}
+                className={`timeline-item ${i % 2 === 0 ? "timeline-left" : "timeline-right"}`}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.3 }}
+                variants={fadeInVariants}
+                transition={{ delay: i * 0.05 }}
+              >
+                <div className="timeline-content">
+                  <span className="timeline-year">{item.year}</span>
+                  <h3 className="timeline-title">{item.title}</h3>
+                  <p className="timeline-desc">{item.description}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <h2 className="section-title" style={{ marginTop: "4rem" }}>Chapter Demographics</h2>
           <div className="charts-grid">
             <motion.div 
               className="chart-container"
