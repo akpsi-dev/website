@@ -94,7 +94,7 @@ export const companyHash = {
     "Grace Ryu": RadixLogo,
     "Samantha Lee": HyundaiLogo,
     "Henry Lee": OneStreamLogo,
-    "Rishi Murumkar": CapitalOneLogo,
+    "Rishi Murumkar": AmazonLogo,
     "Izella Han": RippleMatchLogo,
     "Ashton Creveling": paramountLogo,
     "Luis Esparza": DisneyLogo,
