@@ -44,7 +44,8 @@ import {
     AONLogo,
     ARMLogo,
     OneStreamLogo,
-    OLIPOPLogo
+    OLIPOPLogo,
+    TinderLogo
   } from "../Assets";
   import DefaultHeadshot from "./ActiveHeadshots/Default Headshot.webp";
   
@@ -60,7 +61,7 @@ export const companyHash = {
     "Annie Nguyen": AdobeLogo,
     "Alexis Lin": AmazonLogo,
     "Catelynn Chen": CapitalGroupLogo,
-    "Elle Hsu": PurpleLogo,
+    "Elle Hsu": TinderLogo,
     "Anuj Patel": nasalogo,
     "Andrew Hauber": CapitalOneLogo,
     "Allen Lai": CapitalGroupLogo,

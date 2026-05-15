@@ -127,7 +127,7 @@ export { default as JPMorganLogo } from "./Logos/JPMorganLogo.png";
 export { default as LinkedInLogo } from "./Logos/LinkedIn.png";
 export { default as MicrosoftLogo } from "./Logos/Microsoft_logo.png";
 export { default as TiktokLogo } from "./Logos/TikTokLogo.png";
-export { default as TinderLogo } from "./Logos/tinderLogo.png";
+export { default as TinderLogo } from "./Logos/TinderLogo.png";
 export { default as WellsFargoLogo } from "./Logos/WellsFargo.png";
 export { default as AmexLogo } from "./Logos/amexlogo.png";
 export { default as BandCLogo } from "./Logos/BainLogo.png";
