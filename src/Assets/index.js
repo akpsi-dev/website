@@ -218,7 +218,6 @@ export { default as TurboAILogo } from "./Logos/TurboAILogo.png";
 export { default as Wun2FreeLogo } from "./Logos/Wun2FreeLogo.png";
 export { default as SkylarLogo } from "./Logos/SkylarLogo.png";
 export { default as ReitLogo} from "./Logos/ReitLogo.png";
-export { default as PurpleLogo} from "./Logos/PurpleLogo.png";
 export { default as JobrightLogo } from "./Logos/JobrightLogo.png";
 export { default as FritoLayLogo } from "./Logos/FritoLayLogo.png";
 export { default as UCIAthleticsLogo } from "./Logos/UCIAthleticsLogo.webp";

@@ -21,7 +21,6 @@ import {
     BachemLogo,
     RadixLogo,
     ReitLogo,
-    PurpleLogo,
     JobrightLogo,
     BiologicalSciencesLogo,
     UCIAthleticsLogo,
