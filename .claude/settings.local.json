@@ -1,7 +1,5 @@
 {
   "permissions": {
-    "allow": [
-      "WebFetch(domain:reactbits.dev)"
-    ]
+    "allow": ["WebFetch(domain:reactbits.dev)"]
   }
 }

@@ -59,7 +59,7 @@ export default function Footer() {
           onClick={() => setUserToggle(!userToggled)}
           aria-pressed={userToggled}
         >
-          Motion: {userToggled ? "Reduced" : "On"}
+          Motion Effects: {userToggled ? "Reduced" : "On"}
         </button>
       </div>
       <div className="site-footer__row site-footer__row--legal">
