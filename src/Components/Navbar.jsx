@@ -4,10 +4,15 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import NavLinks from "./NavLinks";
+import { useMotionPrefs } from "../utils/useMotionPrefs";
 import "./Navbar.css";
 
 export function useMobile() {
-  const [isMobile, setIsMobile] = useState(false);
+  // Lazy init so the first render already knows the real viewport — pages
+  // pick video sources off this flag and must not fetch the wrong one first.
+  const [isMobile, setIsMobile] = useState(
+    () => typeof window !== "undefined" && window.innerWidth <= 768,
+  );
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
     handleResize();
@@ -20,6 +25,7 @@ export function useMobile() {
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { isMobile } = useMobile();
+  const { reducedMotion } = useMotionPrefs();
   const location = useLocation();
 
   useEffect(() => {
@@ -39,21 +45,17 @@ export default function Navbar() {
     <AnimatePresence>
       {isMobile && isMobileMenuOpen && (
         <motion.div
-          className="mobile-overlay"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          className="menu-takeover"
+          data-lenis-prevent
+          initial={reducedMotion ? { opacity: 0 } : { y: "100%" }}
+          animate={reducedMotion ? { opacity: 1 } : { y: "0%" }}
+          exit={reducedMotion ? { opacity: 0 } : { y: "100%" }}
+          transition={{
+            duration: reducedMotion ? 0.15 : 0.55,
+            ease: [0.83, 0, 0.17, 1],
+          }}
         >
-          <motion.div
-            className="mobile-panel"
-            initial={{ opacity: 0, scale: 0.97, y: -10 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.97, y: -10 }}
-            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <NavLinks isMobile={true} closeMobileMenu={closeMobileMenu} />
-          </motion.div>
+          <NavLinks isMobile={true} closeMobileMenu={closeMobileMenu} />
         </motion.div>
       )}
     </AnimatePresence>
@@ -61,7 +63,7 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="navbar">
+      <nav className="navbar" aria-label="Primary">
         {!isMobile && <NavLinks isMobile={false} />}
         {isMobile && (
           <motion.button
@@ -80,7 +82,7 @@ export default function Navbar() {
                   exit={{ rotate: 90, opacity: 0 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <X size={26} strokeWidth={2} color="#fff" />
+                  <X size={26} strokeWidth={1.75} color="#f4f1ea" />
                 </motion.span>
               ) : (
                 <motion.span
@@ -90,7 +92,7 @@ export default function Navbar() {
                   exit={{ rotate: -90, opacity: 0 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <Menu size={26} strokeWidth={2} color="#fff" />
+                  <Menu size={26} strokeWidth={1.75} color="#f4f1ea" />
                 </motion.span>
               )}
             </AnimatePresence>

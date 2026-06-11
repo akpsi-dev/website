@@ -1,91 +1,97 @@
-.careersContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  width: 100%;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  overflow-y: auto;
-  scroll-snap-type: y mandatory;
-  scroll-behavior: smooth;
+/* ==========================================================================
+   Careers — the recruiter page, with the site's one paper inversion
+   ========================================================================== */
+
+.careers {
+  background: var(--bg-base);
 }
 
-.careerstitleSection {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  width: 100%;
-  color: white;
-  text-align: center;
-  background: rgba(0, 0, 0, 0.3); /* Optional: Adds a dark overlay for better text visibility */
-  box-sizing: border-box;
-  scroll-snap-align: start;
-}
+/* ----- Hero ------------------------------------------------------------------ */
 
-.careersmainTitleSection {
-  width: 100%;
-  padding: 50px 20px;
-  background-color: #121212;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  scroll-snap-align: start;
-}
-
-.careersmainTitle {
-  font-size: 3rem;
-  font-family: 'Playfair Display';
-  color: rgb(255, 255, 255);
-  text-align: center;
-  margin: 0;
-}
-
-.careersContent {
+.careers-hero {
   position: relative;
-  z-index: 2;
+  min-height: 64svh;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
 }
 
+.careers-hero__bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center 30%;
+  filter: saturate(0.85) contrast(1.02);
+}
 
-.careers-subtitle1 {
-  font-family: 'Greek Font', sans-serif;
-  font-size: 24px;
+.careers-hero__grade {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom, rgba(11, 11, 12, 0.45), transparent 35%),
+    linear-gradient(to top, rgba(11, 11, 12, 0.85), transparent 60%);
+}
+
+.careers-hero__content {
+  position: relative;
+  z-index: 1;
+  padding: 0 var(--gutter) var(--space-6);
+}
+
+.careers-hero__eyebrow {
+  display: block;
+  color: var(--text-primary);
+  opacity: 0.85;
+  margin-bottom: var(--space-3);
+}
+
+.careers-hero__title {
   margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--type-display);
+  font-weight: 500;
+  font-variation-settings: "opsz" 144;
+  line-height: var(--leading-display);
+  text-transform: uppercase;
+  color: var(--text-primary);
 }
 
-.careers-section {
-  font-family: 'Greek Font', sans-serif;
-  font-size: 24px;
+/* ----- Logo wall ---------------------------------------------------------------- */
+
+.careers-logos {
+  padding: var(--space-7) 0;
+}
+
+.careers-logos__heading {
+  margin: 0 var(--gutter) var(--space-5);
+  padding-bottom: var(--space-3);
+}
+
+/* ----- Ledger (paper inversion) --------------------------------------------------- */
+
+.careers-ledger {
+  padding: var(--space-7) var(--gutter) var(--space-8);
+  background: var(--bg-base);
+}
+
+.careers-ledger__heading {
+  max-width: 1400px;
+  margin: 0 auto var(--space-6);
+}
+
+.careers-ledger__eyebrow {
+  display: block;
+  color: var(--accent-brass);
+  margin-bottom: var(--space-3);
+}
+
+.careers-ledger__title {
+  font-family: var(--font-display);
+  font-size: var(--type-h2);
+  font-weight: 520;
+  font-variation-settings: "opsz" 96;
+  text-transform: uppercase;
+  line-height: 1.05;
   margin: 0;
-  background: #121212;
-  margin: -1rem auto;
-}
-
-.table {
-  margin: 5rem auto;
-  border-radius: 2rem;
-  border: 1rem hidden blue;
-  border-collapse: collapse;
-  box-shadow:rgba(0, 0, 0, 0.6)
-}
-
-.thead {
-  font-size: 10px;
-  background-color: blue;
-  color: white;
-}
-
-.th, .td {
-  border: 1px solid #dbdbdb;
-  border-width: 0 0 1px;
-  padding: 0.5em 0.75em;
-  vertical-align: top;
-}
-
-.td {
-  font-size: 1.5rem;
+  color: var(--text-primary);
 }

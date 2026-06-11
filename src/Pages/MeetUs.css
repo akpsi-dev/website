@@ -1,175 +1,323 @@
-:root {
-  --primary-color: #0077b5;
-  --accent-color: #00a0dc;
-  --bg-dark: #121212;
-  --bg-card: #1e1e1e;
-  --text-light: #ffffff;
-  --text-muted: #b0b0b0;
-}
+/* ==========================================================================
+   Meet Us — the roster as an editorial index
+   ========================================================================== */
 
-.pageContainer {
-  padding-top: 80px;
-  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></svg>');  color: var(--text-light);
+.meet-us {
+  background: var(--bg-base);
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  font-family: 'Playfair Display';
-  position: relative;
-  overflow: hidden;
 }
 
-.pageContainer::before {
-  content: "";
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, var(--accent-color) 0%, transparent 70%);
-  opacity: 0.05;
-  z-index: 0;
-}
-
-.contentWrapper {
-  flex: 1;
-  padding: 2rem 4rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-width: 100rem;
+.meet-us__header {
+  padding: calc(76px + var(--space-6)) var(--gutter) 0;
+  max-width: 1400px;
   margin: 0 auto;
-  width: 100%;
-  position: relative;
-  z-index: 1;
 }
 
-.meet-us-title {
-  font-size: 3rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  margin-bottom: 2rem;
-  text-align: center;
-  color: var(--text-light);
-  position: relative;
-  padding-bottom: 0.5rem;
+.meet-us__eyebrow {
+  color: var(--accent-brass);
+  display: block;
+  margin-bottom: var(--space-3);
 }
 
-.meet-us-title::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100px;
-  height: 3px;
-  background: linear-gradient(to right, var(--primary-color), var(--accent-color));
-  border-radius: 1.5px;
-}
-
-.view-buttons {
-  display: inline-flex;
-  border-radius: 6px;
-  overflow: hidden;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-  margin-bottom: 1rem;
-}
-
-/* General Button Styles */
-.view-buttons button {
-  padding: 1rem 2rem;
-  background-color: var(--bg-card);
-  color: var(--text-light);
-  border: none;
+.meet-us__title {
+  font-family: var(--font-display);
+  font-size: var(--type-h1);
   font-weight: 500;
-  font-size: 1rem;
+  font-variation-settings: "opsz" 120;
+  text-transform: uppercase;
+  line-height: 1;
+  margin: 0 0 var(--space-5);
+}
+
+.meet-us__controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding-bottom: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.meet-us__tabs {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.meet-us__tab {
+  background: none;
+  border: 1px solid var(--line-hairline);
+  border-radius: 999px;
+  color: var(--text-secondary);
+  padding: 0.6em 1.2em;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition:
+    color var(--dur-micro) var(--ease-out),
+    border-color var(--dur-micro) var(--ease-out),
+    background-color var(--dur-micro) var(--ease-out);
+}
+
+.meet-us__tab:hover {
+  color: var(--text-primary);
+  border-color: var(--line-strong);
+}
+
+.meet-us__tab.is-active {
+  background: var(--text-primary);
+  border-color: var(--text-primary);
+  color: var(--bg-base);
+}
+
+.meet-us__views {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.meet-us__view {
+  background: none;
+  border: none;
+  color: var(--text-faint);
+  cursor: pointer;
+  padding: 0.4em 0;
   position: relative;
-  overflow: hidden;
+  transition: color var(--dur-micro) var(--ease-out);
 }
 
-/* Hover Effect */
-.view-buttons button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.4s ease;
-}
-
-.view-buttons button:hover::before {
-  left: 100%;
-}
-
-/* Active Button Styling */
-.view-buttons button.active, 
-.view-buttons button.active-tab {
-  background-color: var(--primary-color);
-  color: var(--text-light);
-}
-
-.view-buttons .MuiButtonBase-root.active-tab::after {
+.meet-us__view::after {
   content: "";
   position: absolute;
+  left: 0;
+  right: 0;
   bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  height: 1px;
+  background: var(--accent-brass);
+  transform: scaleX(0);
+  transition: transform 0.3s var(--ease-out);
+}
+
+.meet-us__view:hover {
+  color: var(--text-secondary);
+}
+
+.meet-us__view.is-active {
+  color: var(--text-primary);
+}
+
+.meet-us__view.is-active::after {
+  transform: scaleX(1);
+}
+
+.meet-us__body {
+  padding: var(--space-5) var(--gutter) var(--space-8);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* ----- Skeleton -------------------------------------------------------------- */
+
+.roster-skeleton__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-4) 0;
+}
+
+.roster-skeleton__bar {
+  display: block;
+  height: 1.4rem;
+  background: var(--bg-overlay);
+  border-radius: 2px;
+}
+
+.roster-skeleton__bar--meta {
+  width: 90px;
+  height: 0.8rem;
+}
+
+/* ----- INDEX view ------------------------------------------------------------ */
+
+.roster-index__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-3) 0;
+  text-decoration: none;
+  color: var(--text-secondary);
+  transition:
+    color var(--dur-micro) var(--ease-out),
+    padding-left 0.3s var(--ease-out);
+}
+
+.roster-index__name {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3.4vw, 2.8rem);
+  font-weight: 480;
+  font-variation-settings: "opsz" 96;
+  line-height: 1.1;
+}
+
+.roster-index__meta {
+  color: var(--text-faint);
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.roster-index__row:hover {
+  color: var(--text-primary);
+  padding-left: 10px;
+}
+
+.roster-index__row:hover .roster-index__meta {
+  color: var(--accent-brass);
+}
+
+/* ----- GRID view ------------------------------------------------------------- */
+
+.roster-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: var(--space-4);
+}
+
+.roster-card {
+  display: block;
+  text-decoration: none;
+  color: var(--text-secondary);
+}
+
+.roster-card__media {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: 2px;
+  background: var(--bg-raised);
+}
+
+.roster-card__photo {
   width: 100%;
-  height: 2px;
-  background-color: var(--color-accent);
-  transition: width 0.3s ease;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  transform: scale(1.01);
+  transition: transform 0.5s var(--ease-out);
 }
 
-/* Separator Between Buttons */
-.view-buttons button:not(:last-child) {
-  border-right: 1px solid rgba(255, 255, 255, 0.1);
+.roster-card:hover .roster-card__photo,
+.roster-card:focus-visible .roster-card__photo {
+  transform: scale(1.04);
 }
 
-/* Responsive Adjustments */
+/* Company logo appears over the photo on hover — the logos are PNGs
+   prepared to overlay the headshots directly. */
+.roster-card__chip {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.35s var(--ease-out);
+  pointer-events: none;
+}
+
+.roster-card__chip img {
+  width: 62%;
+  max-height: 55%;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 14px rgba(11, 11, 12, 0.45));
+}
+
+.roster-card:hover .roster-card__chip,
+.roster-card:focus-visible .roster-card__chip {
+  opacity: 1;
+}
+
+.roster-card__name {
+  display: block;
+  font-family: var(--font-text);
+  font-size: var(--type-small);
+  font-weight: 500;
+  color: var(--text-secondary);
+  padding: 0.8em 0.1em 0.2em;
+  transition: color var(--dur-micro) var(--ease-out);
+}
+
+.roster-card__position {
+  display: block;
+  color: var(--text-faint);
+  font-size: 0.62rem;
+  padding: 0 0.15em 0.8em;
+}
+
+.roster-card--static {
+  cursor: default;
+}
+
+.roster-card:hover .roster-card__name {
+  color: var(--text-primary);
+}
+
+/* ----- Leadership ------------------------------------------------------------- */
+
+.leadership__group {
+  margin-bottom: var(--space-6);
+}
+
+.leadership__type {
+  color: var(--accent-brass);
+  padding-bottom: var(--space-2);
+  margin: 0 0 var(--space-2);
+}
+
+.leadership__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-3) 0;
+  text-decoration: none;
+  color: var(--text-secondary);
+  transition:
+    color var(--dur-micro) var(--ease-out),
+    padding-left 0.3s var(--ease-out);
+}
+
+.leadership__row:not(.leadership__row--static):hover {
+  color: var(--text-primary);
+  padding-left: 10px;
+}
+
+.leadership__name {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 2.6vw, 2.2rem);
+  font-weight: 480;
+  font-variation-settings: "opsz" 80;
+  line-height: 1.15;
+}
+
+.leadership__position {
+  color: var(--text-faint);
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.leadership__row:not(.leadership__row--static):hover .leadership__position {
+  color: var(--accent-brass);
+}
+
+/* ----- Responsive --------------------------------------------------------------- */
+
 @media (max-width: 768px) {
-  .view-buttons {
-    width: 90%;
-    max-width: 400px;
-    flex-direction: column;
-    border-radius: 4px;
-    overflow: hidden;
+  .meet-us__header {
+    padding-top: calc(64px + var(--space-5));
   }
 
-  .view-buttons button {
-    width: 100%;
-    padding: 1.25rem 2rem;
-    border-right: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  .roster-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-2);
   }
 
-  .view-buttons button:last-child {
-    border-bottom: none;
-  }
-}
-
-@media (max-width: 480px) {
-  .view-buttons button {
-    padding: 1rem 1.5rem;
-    font-size: 0.9rem;
-  }
-}
-
-/* Content Wrapper for Small Screens */
-@media (max-width: 768px) {
-  .contentWrapper {
-    padding: 1.5rem;
-  }
-
-  .meet-us-title {
-    font-size: 2.5rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .meet-us-title {
-    font-size: 2rem;
+  .roster-card__name {
+    font-size: 0.8rem;
   }
 }

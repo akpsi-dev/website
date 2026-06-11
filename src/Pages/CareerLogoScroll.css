@@ -1,93 +1,78 @@
-@keyframes slide {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
+/* ==========================================================================
+   Logo wall — two counter-scrolling rows, grayscale at rest
+   ========================================================================== */
 
-@keyframes slideReverse {
-  from { transform: translateX(-50%); }
-  to { transform: translateX(0); }
-}
-
-.logos {
-  overflow: hidden;
-  width: 90%;
-  max-width: 1200px;
-  padding: 50px 0;
-  background: #121212;
-  position: relative;
-  margin: 0 auto;
+.logo-wall {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-}
-
-/* Fade masks on left and right edges */
-.logos::before,
-.logos::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  width: 200px;
-  height: 100%;
-  z-index: 2;
-  pointer-events: none;
-}
-
-.logos::before {
-  left: 0;
-  background: linear-gradient(to right, #121212 0%, transparent 100%);
-}
-
-.logos::after {
-  right: 0;
-  background: linear-gradient(to left, #121212 0%, transparent 100%);
-}
-
-.logos-track-wrapper {
+  gap: var(--space-5);
   overflow: hidden;
-  width: 100%;
 }
 
-.logos-slide {
+.logo-wall__row {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 8%,
+    #000 92%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 8%,
+    #000 92%,
+    transparent
+  );
+}
+
+.logo-wall__track {
   display: flex;
+  align-items: center;
+  gap: clamp(2.5rem, 5vw, 5rem);
   width: max-content;
-  animation: slide 55s linear infinite;
+  animation: logo-slide 55s linear infinite;
 }
 
-.logos-slide-reverse {
-  animation: slideReverse 65s linear infinite;
+.logo-wall__track--reverse {
+  animation: logo-slide-reverse 65s linear infinite;
 }
 
-.logos-slide img {
-  height: 60px;
-  margin: 0 24px;
+.logo-wall__row:hover .logo-wall__track {
+  animation-play-state: paused;
+}
+
+.logo-wall--paused .logo-wall__track {
+  animation-play-state: paused;
+}
+
+.logo-wall__track img {
+  height: 44px;
+  width: auto;
   object-fit: contain;
-  filter: grayscale(20%);
-  opacity: 0.85;
-  transition: opacity 0.3s, filter 0.3s;
-  flex-shrink: 0;
 }
 
-.logos-slide img:hover {
-  opacity: 1;
-  filter: grayscale(0%);
+@keyframes logo-slide {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes logo-slide-reverse {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
 }
 
 @media (max-width: 768px) {
-  .logos {
-    width: 100%;
-    max-width: 100vw;
-    padding: 40px 0;
-    gap: 1rem;
-  }
-
-  .logos::before,
-  .logos::after {
-    width: 80px;
-  }
-
-  .logos-slide img {
-    height: 44px;
-    margin: 0 16px;
+  .logo-wall__track img {
+    height: 32px;
   }
 }

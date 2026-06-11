@@ -1,387 +1,292 @@
-:root {
-  --primary-color: #0077b5;
-  --accent-color: #00a0dc;
-  --bg-dark: #121212;
-  --bg-card: #1e1e1e;
-  --text-light: #ffffff;
-  --text-muted: #b0b0b0;
+/* ==========================================================================
+   Brother profile — magazine feature spread
+   ========================================================================== */
+
+.profile {
+  background: var(--bg-base);
+  min-height: 100vh;
 }
 
-body {
-  background-color: var(--bg-dark);
-  color: var(--text-light);
-  font-family: 'Playfair Display';
+.profile__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: var(--space-7);
+  padding: calc(76px + var(--space-6)) var(--gutter) var(--space-7);
+  max-width: 1400px;
+  margin: 0 auto;
+  align-items: start;
+}
+
+/* ----- Portrait + holo sheen -------------------------------------------------- */
+
+.profile__left {
+  position: sticky;
+  top: calc(76px + var(--space-4));
+}
+
+.profile__portrait {
+  position: relative;
+  overflow: hidden;
+  border-radius: 2px;
+  --mx: 50%;
+  --my: 50%;
+  --sheen: 0;
+}
+
+.profile__portrait img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: saturate(0.92) contrast(1.03);
+}
+
+.profile__sheen {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: calc(var(--sheen) * 0.55);
+  transition: opacity 0.4s var(--ease-out);
+  background:
+    radial-gradient(
+      ellipse 60% 45% at var(--mx) var(--my),
+      rgba(227, 199, 126, 0.5),
+      transparent 60%
+    ),
+    conic-gradient(
+      from 0deg at var(--mx) var(--my),
+      rgba(78, 127, 255, 0.18),
+      rgba(227, 199, 126, 0.22),
+      rgba(244, 241, 234, 0.1),
+      rgba(78, 127, 255, 0.18)
+    );
+  mix-blend-mode: overlay;
+}
+
+.profile__stamp {
+  display: block;
+  margin-top: var(--space-3);
+  color: var(--text-faint);
+}
+
+/* ----- Right column ------------------------------------------------------------ */
+
+.profile__name {
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 6vw, 5rem);
+  font-weight: 520;
+  font-variation-settings: "opsz" 144;
+  line-height: 1.02;
+  margin: 0 0 var(--space-5);
+}
+
+.profile__meta {
+  margin: 0 0 var(--space-4);
+}
+
+.profile__meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-2) 0;
+}
+
+.profile__meta-row dt {
+  color: var(--text-faint);
+}
+
+.profile__meta-row dd {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: var(--type-small);
+  text-align: right;
+}
+
+.profile__company {
+  height: 26px;
+  width: auto;
+  max-width: 140px;
+  object-fit: contain;
+  background: rgba(244, 241, 234, 0.92);
+  border-radius: 2px;
+  padding: 3px 8px;
+}
+
+.profile__linkedin {
+  margin-bottom: var(--space-6);
+}
+
+/* ----- Sections ------------------------------------------------------------------ */
+
+.profile__section {
+  margin-bottom: var(--space-5);
+}
+
+.profile__section-label {
+  display: block;
+  color: var(--accent-brass);
+  margin: 0 0 var(--space-2);
+}
+
+.profile__list {
+  list-style: none;
   margin: 0;
   padding: 0;
-  line-height: 1.6;
 }
 
-.brother-container {
-  max-width: 90%; 
-  margin: 5rem auto;
-  padding: 3rem;
-  background-color: var(--bg-card);
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-  position: relative;
-  overflow: hidden;
+.profile__list-item {
+  padding: var(--space-2) 0;
+  color: var(--text-secondary);
+  font-size: var(--type-small);
+  line-height: 1.5;
 }
 
-.brother-container::before {
-  content: "";
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, var(--accent-color) 0%, transparent 50%);
-  opacity: 0.05;
-  z-index: 0;
+.profile__love {
+  margin: 0 0 var(--space-5);
 }
 
-.brother-header {
-  position: relative;
+.profile__love p {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1.15rem, 2vw, 1.5rem);
+  font-weight: 420;
+  line-height: 1.45;
+  color: var(--text-primary);
+  margin: var(--space-2) 0 0;
+}
+
+/* ----- Favorite song -------------------------------------------------------------- */
+
+.profile__song {
+  padding-top: var(--space-4);
+}
+
+.profile__song-head {
   display: flex;
-  align-items: flex-start;
-  margin-bottom: 4rem;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
 }
 
-/* For large screens: position the soundtrack absolutely in the top-right */
-.brother-soundtrack {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 22rem;
-  max-width: 100%;
-  padding: 0.5rem;
-  border-radius: 12px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+.profile__song-label {
+  color: var(--accent-brass);
 }
 
-/* Responsive adjustments for screens 1368px and below */
-@media (max-width: 1368px) {
-  .brother-header {
-    flex-wrap: wrap; /* Allow flex items to wrap */
-  }
-  .brother-soundtrack {
-    position: static; /* Remove absolute positioning so it flows naturally */
-    order: 2;        /* Ensure it appears after the photo/info */
-    width: 100%;     /* Span full available width */
-    margin-top: 1rem;/* Add spacing from above elements */
-  }
-  .brother-info {
-    order: 1;
-    width: 100%;
-  }
+.profile__eq {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 12px;
 }
 
-/* Responsive adjustments for mid-size screens (e.g., iPads) and smaller */
-@media (max-width: 1024px) {
-  .brother-header {
-    flex-wrap: wrap; /* Allow flex items to wrap */
-  }
-  .brother-soundtrack {
-    position: static; /* Remove absolute positioning */
-    order: 2;        /* Ensure it appears after the photo/info */
-    width: 100%;     /* Span full width */
-    margin-top: 1rem;/* Add spacing from above elements */
-  }
-  /* Ensure the photo/info container takes full width if needed */
-  .brother-info {
-    order: 1;
-    width: 100%;
-  }
+.profile__eq span {
+  width: 2px;
+  background: var(--accent-brass);
+  animation: eq-bounce 1s ease-in-out infinite;
 }
 
-/* Responsive adjustments for smaller screens */
-@media (max-width: 768px) {
-  .brother-header {
-    flex-wrap: wrap; /* Allow flex items to wrap */
-  }
-  .brother-soundtrack {
-    position: static; /* Remove absolute positioning */
-    order: 2;        /* Ensures it appears after the photo/info */
-    width: 100%;     /* Let it span the full width */
-    margin-top: 1rem;/* Add spacing from the elements above */
-  }
-  /* Optionally, force the photo/info container to take full width */
-  .brother-info {
-    order: 1;
-    width: 100%;
-  }
+.profile__eq span:nth-child(1) {
+  height: 60%;
+  animation-delay: 0s;
 }
-
-.brother-photo {
-  max-width: 300px;
-  height: auto;
-  object-fit: cover;
-  margin-right: 4rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  position: relative;
-}
-
-.brother-photo::after {
-  content: "";
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  right: -10px;
-  bottom: -10px;
-  border: 2px solid var(--accent-color);
-  z-index: -1;
-  transition: all 0.3s ease;
-}
-
-.brother-info {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.brother-name {
-  font-size: 3.5rem;
-  font-weight: 700;
-  margin: 0 0 1rem;
-  color: var(--text-light);
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-  position: relative;
-}
-
-.brother-name::after {
-  content: "";
-  position: absolute;
-  bottom: -10px;
-  left: 2rem;
-  width: 4rem;
-  height: 0.25rem;
-  background-color: var(--accent-color);
-  border-radius: 2px;
-}
-
-.brother-detail {
-  margin: 0.5rem 0;
-  font-size: 1.1rem;
-  color: var(--text-muted);
-}
-
-.linkedin-button {
-  display: inline-block;
-  padding: 0.75rem 1.5rem;
-  background-color: var(--primary-color);
-  color: var(--text-light);
-  text-decoration: none;
-  font-weight: 600;
-  margin-top: 1.5rem;
-  transition: all 0.3s ease;
-  border: 2px solid transparent;
-  position: relative;
-  overflow: hidden;
-}
-
-.linkedin-button::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
+.profile__eq span:nth-child(2) {
   height: 100%;
-  background: linear-gradient(
-    120deg,
-    transparent,
-    rgba(255, 255, 255, 0.3),
-    transparent
-  );
-  transition: all 0.4s ease;
+  animation-delay: 0.18s;
+}
+.profile__eq span:nth-child(3) {
+  height: 45%;
+  animation-delay: 0.32s;
+}
+.profile__eq span:nth-child(4) {
+  height: 80%;
+  animation-delay: 0.08s;
 }
 
-.linkedin-button:hover::before {
-  left: 100%;
+.profile__eq--still span {
+  animation: none;
 }
 
-.brother-details {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 3rem;
-  margin-bottom: 4rem;
-  position: relative;
-  z-index: 1;
+@keyframes eq-bounce {
+  0%,
+  100% {
+    transform: scaleY(0.5);
+  }
+  50% {
+    transform: scaleY(1);
+  }
 }
 
-.brother-section {
-  background-color: rgba(37, 37, 37, 0.7);
-  padding: 2rem;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.brother-section:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-}
-
-.brother-section h3 {
-  font-size: 1.8rem;
-  font-weight: 600;
-  margin-bottom: 1.5rem;
-  color: var(--text-light);
-  border-bottom: 2px solid var(--accent-color);
-  padding-bottom: 0.5rem;
-  position: relative;
-}
-
-.brother-section h3::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -2px;
-  width: 50px;
-  height: 2px;
-  background-color: var(--accent-color);
-  transition: width 0.3s ease;
-}
-
-.brother-section:hover h3::before {
+.profile__song-embed iframe {
+  border-radius: 12px;
   width: 100%;
 }
 
-.brother-list {
-  list-style-type: none;
-  padding-left: 0;
-  margin: 0;
+/* ----- Folios ----------------------------------------------------------------------- */
+
+.profile__folios {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--gutter);
+  max-width: 1400px;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
-.brother-list-item {
-  font-size: 1.1rem;
-  line-height: 1.6;
-  margin-bottom: 0.75rem;
-  color: var(--text-muted);
-  position: relative;
-  padding-left: 1.5rem;
-  transition: color 0.3s ease, transform 0.3s ease;
-  -webkit-user-select: none; /* Safari */
-  -ms-user-select: none; /* IE 10 and IE 11 */
-  user-select: none; /* Standard syntax */
+.profile__folio {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color var(--dur-micro) var(--ease-out);
+  min-width: 0;
 }
 
-.brother-list-item:hover {
-  color: var(--text-light);
-  transform: scale(1.03);
+.profile__folio:hover {
+  color: var(--brass-bright);
 }
 
-.brother-list-item::before {
-  content: "";
-  color: var(--accent-color);
-  position: absolute;
-  left: 0;
-  transition: transform 0.3s ease;
-}
+/* ----- Responsive --------------------------------------------------------------------- */
 
-.brother-love {
-  background-color: rgba(42, 42, 42, 0.7);
-  padding: 2.5rem;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  position: relative;
-  overflow: hidden;
-}
-
-.brother-love::before {
-  content: "\201C";
-  position: absolute;
-  top: -20px;
-  left: 20px;
-  font-size: 150px;
-  color: rgba(255, 255, 255, 0.05);
-  font-family: Georgia, serif;
-}
-
-.brother-love h3 {
-  font-size: 2rem;
-  font-weight: 600;
-  margin-bottom: 1.5rem;
-  color: var(--text-light);
-  text-align: center;
-  position: relative;
-}
-
-.brother-love p {
-  font-size: 1.1rem;
-  line-height: 1.8;
-  color: var(--text-muted);
-  text-align: justify;
-  position: relative;
-  z-index: 1;
-}
-
-.animate-on-scroll {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-}
-
-.animate-on-scroll.fade-in {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-@media (max-width: 768px) {
-  .brother-container {
-    padding: 2rem;
-  }
-
-  .brother-header {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
-  .brother-photo {
-    margin-right: 0;
-    margin-bottom: 2rem;
-  }
-
-  .brother-info {
-    align-items: center;
-  }
-
-  .brother-name {
-    font-size: 2.5rem;
-  }
-
-  .brother-name::after {
-    left: 50%;
-    transform: translateX(-50%);
-  }
-
-  .brother-details {
+@media (max-width: 900px) {
+  .profile__layout {
     grid-template-columns: 1fr;
-    gap: 2rem;
+    gap: var(--space-5);
+    padding-top: calc(64px + var(--space-4));
   }
 
-  .brother-section h3 {
-    font-size: 1.6rem;
+  .profile__left {
+    position: static;
   }
 
-  .brother-love {
-    padding: 2rem 1.5rem;
+  .profile__portrait {
+    max-height: 70vh;
   }
 
-  .brother-love::before {
-    font-size: 100px;
-    top: -10px;
-    left: 10px;
+  .profile__portrait img {
+    max-height: 70vh;
+    object-fit: cover;
+    width: 100%;
   }
 
-  .brother-love h3 {
-    font-size: 1.8rem;
-    margin-bottom: 1rem;
+  .profile__folios {
+    flex-wrap: wrap;
   }
 
-  .brother-love p {
-    font-size: 1rem;
-    line-height: 1.6;
-    text-align: left;
+  .profile__folio--next {
+    margin-left: auto;
   }
+}
+
+/* Legacy loader kept for any in-flight references */
+.loader-container {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-base);
+  z-index: 999;
 }

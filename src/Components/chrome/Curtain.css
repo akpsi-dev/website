@@ -1,0 +1,27 @@
+.curtain {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-curtain);
+  background: var(--bg-overlay);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: var(--space-5) var(--gutter);
+  pointer-events: all;
+}
+
+.curtain--static {
+  transform: none;
+}
+
+.curtain__folio {
+  color: var(--text-secondary);
+}
+
+.curtain__rule {
+  display: block;
+  width: clamp(3rem, 8vw, 7rem);
+  height: 1px;
+  background: var(--accent-brass);
+  margin-bottom: 0.35em;
+}

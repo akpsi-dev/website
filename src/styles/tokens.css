@@ -1,0 +1,202 @@
+/* ==========================================================================
+   AKPsi UCI — Design tokens ("THE RECORD")
+   Single source of truth for color, type, spacing, motion, and surfaces.
+   Every page stylesheet should consume these variables — no raw hexes.
+   ========================================================================== */
+
+/* Font-face declarations live in public/fonts/fonts.css (linked from
+   index.html) because CRA's css-loader cannot reference /public assets. */
+
+/* ----- Tokens ------------------------------------------------------------ */
+
+:root {
+  /* Backgrounds */
+  --bg-base: #0b0b0c;
+  --bg-raised: #141416;
+  --bg-overlay: #1c1c1f;
+  --bg-paper: #f4f1ea;
+
+  /* Text */
+  --text-primary: #f4f1ea;
+  --text-secondary: #a8a29a;
+  --text-faint: #6b665e;
+  --text-ink: #141414; /* on paper surfaces */
+
+  /* Accents — brass is scarce (≤2 elements per viewport), cobalt is the
+     single interactive blue, oxford tints duotones and panels */
+  --accent-brass: #c8a24b;
+  --brass-bright: #e3c77e;
+  --accent-cobalt: #4e7fff;
+  --oxford: #16243d;
+
+  /* Lines */
+  --line-hairline: rgba(244, 241, 234, 0.12);
+  --line-strong: rgba(244, 241, 234, 0.25);
+  --line-ink: rgba(20, 20, 20, 0.18); /* hairline on paper surfaces */
+
+  /* Typography */
+  --font-display: "Fraunces Variable", "Fraunces Fallback", Georgia, serif;
+  --font-text:
+    "Switzer Variable", "Switzer Fallback", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, sans-serif;
+  --font-mono: "Spline Sans Mono", "SF Mono", Menlo, Consolas, monospace;
+
+  --type-display: clamp(3.5rem, 10vw, 9rem);
+  --type-h1: clamp(2.5rem, 6vw, 4.5rem);
+  --type-h2: clamp(1.75rem, 3.5vw, 2.75rem);
+  --type-h3: clamp(1.25rem, 2vw, 1.6rem);
+  --type-body: 1rem;
+  --type-small: 0.875rem;
+  --type-mono-label: 0.72rem;
+
+  --tracking-mono: 0.14em;
+  --leading-display: 0.95;
+  --leading-body: 1.65;
+  --measure: 65ch;
+
+  /* Spacing scale */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 1rem;
+  --space-4: 1.5rem;
+  --space-5: 2.5rem;
+  --space-6: 4rem;
+  --space-7: 6rem;
+  --space-8: 9rem;
+  --gutter: clamp(1.25rem, 4vw, 4rem);
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.83, 0, 0.17, 1);
+  --dur-micro: 180ms;
+  --dur-reveal: 500ms;
+  --dur-hero: 900ms;
+  --dur-curtain: 650ms;
+
+  /* Layers */
+  --z-nav: 100;
+  --z-menu: 900;
+  --z-curtain: 1000;
+  --z-cursor: 1100;
+  --z-grain: 1200;
+
+  /* Grain — inline SVG turbulence, no asset request */
+  --grain-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="160" height="160" filter="url(%23n)" opacity="0.6"/></svg>');
+}
+
+/* ----- Base -------------------------------------------------------------- */
+
+::selection {
+  background: var(--accent-brass);
+  color: var(--bg-base);
+}
+
+:focus-visible {
+  outline: 2px solid var(--brass-bright);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Subtle branded scrollbar */
+@media (pointer: fine) {
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--bg-base);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--bg-overlay);
+    border-radius: 5px;
+    border: 2px solid var(--bg-base);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--text-faint);
+  }
+}
+
+/* ----- Shared utility classes -------------------------------------------- */
+
+.mono-label {
+  font-family: var(--font-mono);
+  font-size: var(--type-mono-label);
+  font-weight: 500;
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.hairline-top {
+  border-top: 1px solid var(--line-hairline);
+}
+
+.hairline-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  font-family: var(--font-mono);
+  font-size: var(--type-mono-label);
+  font-weight: 500;
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--text-primary);
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  padding: 0.85em 1.6em;
+  cursor: pointer;
+  background: none;
+  transition:
+    border-color var(--dur-micro) var(--ease-out),
+    background-color var(--dur-micro) var(--ease-out),
+    color var(--dur-micro) var(--ease-out);
+}
+
+.hairline-button:hover {
+  border-color: var(--accent-brass);
+  color: var(--brass-bright);
+}
+
+.hairline-bottom {
+  border-bottom: 1px solid var(--line-hairline);
+}
+
+/* Inverted editorial surface — max one per page */
+.surface-paper {
+  background: var(--bg-paper);
+  color: var(--text-ink);
+}
+
+.surface-paper .mono-label {
+  color: rgba(20, 20, 20, 0.55);
+}
+
+.surface-paper .hairline-top,
+.surface-paper .hairline-bottom {
+  border-color: var(--line-ink);
+}
+
+/* ----- Reduced motion ----------------------------------------------------
+   Effects are gated in JS by useMotionPrefs(); this is the CSS backstop.
+   The [data-reduced-motion] attribute mirrors the hook (OS setting OR the
+   footer toggle OR low-end device heuristics). */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+html[data-reduced-motion="true"] *,
+html[data-reduced-motion="true"] *::before,
+html[data-reduced-motion="true"] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}

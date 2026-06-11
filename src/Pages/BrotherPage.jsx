@@ -1,61 +1,84 @@
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useMemo } from "react";
 import { useParams } from "react-router-dom";
 import ActiveBrother from "./ActiveBrother";
 import NotFoundPage from "./NotFoundPage";
-import axios from "axios";
 import "./BrotherPage.css";
+import { useRoster } from "../utils/useSheet";
+
+function slugOf(name = "") {
+  return name.trim().replace(/\s+/g, "-");
+}
+
+function ProfileSkeleton() {
+  return (
+    <div className="profile-skeleton" aria-hidden="true">
+      <div className="profile-skeleton__portrait" />
+      <div className="profile-skeleton__lines">
+        {Array.from({ length: 7 }, (_, i) => (
+          <span
+            className="profile-skeleton__bar hairline-bottom"
+            key={i}
+            style={{ width: `${88 - ((i * 17) % 40)}%` }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function BrotherPage() {
-  const [brotherInfo, setBrotherInfo] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isNotFound, setIsNotFound] = useState(false);
   const { name } = useParams();
-  const SHEET_ID = "167TmecKc4cduWtdounqiXDkYgQjssu9cSz4QLljuKLg";
-  const API_KEY = process.env.REACT_APP_ACTIVE_INFO_KEY;
-  const range = "Form Responses 1!C2:M";
+  const { rows, isLoading, error } = useRoster();
 
-  const getBrotherInfo = useCallback(async () => {
-    setIsLoading(true);
-    setIsNotFound(false);
-    try {
-      const response = await axios.get(
-        `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${range}?key=${API_KEY}`,
-      );
-      const brotherIndex = response.data.values.findIndex(
-        (brother) => brother[0].replace(/ /g, "-") === name,
-      );
-      if (brotherIndex !== -1) {
-        setBrotherInfo(response.data.values[brotherIndex]);
-      } else {
-        setIsNotFound(true);
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-      setIsNotFound(true);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [name, API_KEY]);
+  const { brother, prevName, nextName } = useMemo(() => {
+    const valid = (rows ?? []).filter((row) => row.length > 0 && row[0]);
+    const index = valid.findIndex((row) => slugOf(row[0]) === name);
+    if (index === -1) return { brother: null };
+    return {
+      brother: valid[index],
+      prevName: valid[(index - 1 + valid.length) % valid.length]?.[0],
+      nextName: valid[(index + 1) % valid.length]?.[0],
+    };
+  }, [rows, name]);
 
-  useEffect(() => {
-    getBrotherInfo();
-  }, [getBrotherInfo]);
+  if (isLoading) return <ProfileSkeleton />;
 
-  if (isLoading) {
+  // Roster fetch failed with nothing cached — that's an outage, not a 404.
+  if (error && !rows) {
     return (
-      <div className="loader-container">
-        <div className="loader"></div>
+      <div className="profile-error">
+        <p className="mono-label">
+          THE ROSTER COULD NOT BE LOADED — PLEASE TRY AGAIN.
+        </p>
+        <button
+          type="button"
+          className="hairline-button"
+          onClick={() => window.location.reload()}
+        >
+          Retry
+        </button>
       </div>
     );
   }
 
-  if (isNotFound) {
-    return <NotFoundPage brother={true} />;
+  if (!brother) {
+    return (
+      <NotFoundPage
+        brotherSearch
+        attemptedName={name.replace(/-/g, " ")}
+        rosterNames={(rows ?? [])
+          .filter((row) => row.length > 0 && row[0])
+          .map((row) => row[0])}
+      />
+    );
   }
 
   return (
-    <div>
-      <ActiveBrother brotherInfo={brotherInfo} />
-    </div>
+    <ActiveBrother
+      key={brother[0]}
+      brotherInfo={brother}
+      prevName={prevName !== brother[0] ? prevName : null}
+      nextName={nextName !== brother[0] ? nextName : null}
+    />
   );
 }

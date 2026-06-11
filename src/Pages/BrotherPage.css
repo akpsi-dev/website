@@ -1,21 +1,54 @@
-.loader-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #121212; /* Dark background to match your theme */
+/* Brand-voice skeleton while the roster sheet resolves — no spinners. */
+
+.profile-skeleton {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: var(--space-7);
+  padding: calc(76px + var(--space-6)) var(--gutter) var(--space-8);
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.profile-skeleton__portrait {
+  aspect-ratio: 4 / 5;
+  background: var(--bg-raised);
+  border-radius: 2px;
+}
+
+.profile-skeleton__lines {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding-top: var(--space-3);
+}
+
+.profile-skeleton__bar {
+  display: block;
+  height: 1.6rem;
+  background: var(--bg-overlay);
+  border-radius: 2px;
+}
+
+@media (max-width: 900px) {
+  .profile-skeleton {
+    grid-template-columns: 1fr;
+    padding-top: calc(64px + var(--space-4));
   }
-  
-  .loader {
-    width: 50px;
-    height: 50px;
-    border: 3px solid #3a5f8e; /* Light navy blue to match your accent color */
-    border-top: 3px solid #121212; /* Make the top border invisible */
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-  }
-  
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
+}
+
+.profile-error {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  padding: calc(76px + var(--space-5)) var(--gutter);
+  text-align: center;
+}
+
+.profile-error .mono-label {
+  color: var(--text-secondary);
+}

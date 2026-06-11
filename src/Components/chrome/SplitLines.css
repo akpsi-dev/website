@@ -1,0 +1,22 @@
+.split-mask {
+  display: block;
+  overflow: hidden;
+}
+
+.split-lines .split-line {
+  display: block;
+  transform: translateY(115%);
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.split-lines.split-visible .split-line {
+  transform: translateY(0);
+}
+
+/* Until fonts resolve and the split arms, keep the element hidden so there
+   is no flash of unsplit text jumping into masks. */
+.split-lines:not(.split-ready):not(.split-reduced) {
+  visibility: hidden;
+}
