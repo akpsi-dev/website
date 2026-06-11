@@ -105,7 +105,7 @@ export default function NavLinks({ isMobile, closeMobileMenu }) {
       >
         <div className="menu-takeover__socials">
           <a
-            href="https://www.instagram.com/akpsi.uci/"
+            href="https://www.instagram.com/akpsiuci"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Instagram"
@@ -114,7 +114,7 @@ export default function NavLinks({ isMobile, closeMobileMenu }) {
             <Instagram size={20} />
           </a>
           <a
-            href="https://www.linkedin.com/company/akpsi-uci/"
+            href="https://www.linkedin.com/company/alpha-kappa-psi-uci"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="LinkedIn"
