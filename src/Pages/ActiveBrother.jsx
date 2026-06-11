@@ -182,15 +182,20 @@ export default function ActiveBrother({ brotherInfo, prevName, nextName }) {
                 <dd>{value}</dd>
               </div>
             ))}
-            {company && (
-              <div className="profile__meta-row hairline-bottom">
-                <dt className="mono-label">Company</dt>
-                <dd>
-                  <img className="profile__company" src={company} alt="" />
-                </dd>
-              </div>
-            )}
           </dl>
+
+          {company && (
+            <div className="profile__company-block hairline-bottom">
+              <span className="mono-label profile__company-label">Company</span>
+              <span className="profile__company-frame">
+                <img
+                  className="profile__company"
+                  src={company}
+                  alt={`${name}'s company`}
+                />
+              </span>
+            </div>
+          )}
 
           {linkedinUrl && (
             <a

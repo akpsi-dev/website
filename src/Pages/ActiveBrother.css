@@ -102,12 +102,33 @@
   text-align: right;
 }
 
-/* Company logos are PNGs prepared for dark backgrounds — show them as-is. */
+/* Company gets its own showcase block so wide wordmark logos aren't crushed
+   into a thin inline row. Logos are PNGs prepared for dark backgrounds. */
+.profile__company-block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4) 0;
+  margin-bottom: var(--space-4);
+}
+
+.profile__company-label {
+  color: var(--text-faint);
+}
+
+.profile__company-frame {
+  display: flex;
+  align-items: center;
+  min-height: 72px;
+}
+
 .profile__company {
-  height: 44px;
+  height: clamp(48px, 6vw, 72px);
   width: auto;
-  max-width: 220px;
+  max-width: min(280px, 100%);
   object-fit: contain;
+  object-position: left center;
+  display: block;
 }
 
 .profile__linkedin {
