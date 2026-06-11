@@ -1,126 +1,349 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import axios from "axios";
-import ActiveBrotherList from "./ActiveBrotherList";
-import ExecutiveBoardList from "./ExecutiveBoardList";
-import { Button, ButtonGroup } from "@mui/material";
+import { motion } from "framer-motion";
 import "./MeetUs.css";
+import Seo from "../Components/Seo";
+import Footer from "../Components/chrome/Footer";
+import Pic from "../Components/Pic";
+import { CurtainLink } from "../Components/chrome/Curtain";
+import FloatPreview from "../Components/effects/FloatPreview";
+import { useMobile } from "../Components/Navbar";
+import { headshotHash } from "../Assets/headshot";
+import { companyHash } from "../Assets/company";
+import { useSheet, ROSTER_SHEET_ID, LEADERSHIP_RANGE } from "../utils/useSheet";
 
-const SHEET_ID = "167TmecKc4cduWtdounqiXDkYgQjssu9cSz4QLljuKLg";
-const API_KEY = process.env.REACT_APP_ACTIVE_INFO_KEY;
-const RANGE_ACTIVES = "Form Responses 1!C2:L";
-const RANGE_EXECUTIVES = "Leadership Test!A2:C";
+const EASE_OUT_EXPO = [0.16, 1, 0.3, 1];
+const ACTIVES_RANGE = "Form Responses 1!C2:L";
 
 function createBrotherSlug(name = "") {
   return name.trim().replace(/\s+/g, "-");
 }
 
+function headshotFor(name) {
+  return headshotHash[name] ?? headshotHash["Default Headshot"];
+}
+
+function RosterSkeleton() {
+  return (
+    <div className="roster-skeleton" aria-hidden="true">
+      {Array.from({ length: 9 }, (_, i) => (
+        <div className="roster-skeleton__row hairline-bottom" key={i}>
+          <span
+            className="roster-skeleton__bar"
+            style={{ width: `${38 + ((i * 13) % 30)}%` }}
+          />
+          <span className="roster-skeleton__bar roster-skeleton__bar--meta" />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function RosterIndex({ brothers }) {
+  const [preview, setPreview] = useState({ src: null, visible: false });
+
+  return (
+    <div
+      className="roster-index"
+      onMouseLeave={() => setPreview((p) => ({ ...p, visible: false }))}
+    >
+      {brothers.map((row, i) => {
+        const [name, , major, pledgeClass] = row;
+        return (
+          <motion.div
+            key={`${name}-${i}`}
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.15 }}
+            transition={{
+              duration: 0.5,
+              delay: (i % 8) * 0.04,
+              ease: EASE_OUT_EXPO,
+            }}
+          >
+            <CurtainLink
+              to={`/${encodeURIComponent(createBrotherSlug(name))}`}
+              className="roster-index__row hairline-bottom"
+              onMouseEnter={() =>
+                setPreview({ src: headshotFor(name), visible: true })
+              }
+            >
+              <span className="roster-index__name">{name}</span>
+              <span className="roster-index__meta mono-label">
+                {[major, pledgeClass].filter(Boolean).join(" · ")}
+              </span>
+            </CurtainLink>
+          </motion.div>
+        );
+      })}
+      <FloatPreview src={preview.src} visible={preview.visible} />
+    </div>
+  );
+}
+
+function RosterGrid({ brothers }) {
+  return (
+    <div className="roster-grid">
+      {brothers.map((row, i) => {
+        const [name] = row;
+        const company = companyHash[name];
+        return (
+          <motion.div
+            key={`${name}-${i}`}
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{
+              duration: 0.55,
+              delay: (i % 4) * 0.06,
+              ease: EASE_OUT_EXPO,
+            }}
+          >
+            <CurtainLink
+              to={`/${encodeURIComponent(createBrotherSlug(name))}`}
+              className="roster-card"
+            >
+              <span className="roster-card__media">
+                <Pic
+                  src={headshotFor(name)}
+                  alt={name}
+                  aspectRatio="4 / 5"
+                  className="roster-card__photo"
+                />
+                {company && (
+                  <span className="roster-card__chip">
+                    <img src={company} alt="" loading="lazy" />
+                  </span>
+                )}
+              </span>
+              <span className="roster-card__name">{name}</span>
+            </CurtainLink>
+          </motion.div>
+        );
+      })}
+    </div>
+  );
+}
+
+function useLeadershipGroups(leaders) {
+  return useMemo(() => {
+    const map = new Map();
+    leaders.forEach((leader) => {
+      if (!map.has(leader.leadershipType)) map.set(leader.leadershipType, []);
+      map.get(leader.leadershipType).push(leader);
+    });
+    return [...map.entries()];
+  }, [leaders]);
+}
+
+function LeadershipGrid({ leaders, activeSlugs }) {
+  const groups = useLeadershipGroups(leaders);
+
+  return (
+    <div className="leadership">
+      {groups.map(([type, members]) => (
+        <section className="leadership__group" key={type}>
+          <h2 className="mono-label leadership__type hairline-bottom">
+            {type}
+          </h2>
+          <div className="roster-grid">
+            {members.map((member, i) => {
+              const hasProfile = activeSlugs.has(member.profileSlug);
+              const card = (
+                <>
+                  <span className="roster-card__media">
+                    <Pic
+                      src={headshotFor(member.fullName)}
+                      alt={member.fullName}
+                      aspectRatio="4 / 5"
+                      className="roster-card__photo"
+                    />
+                  </span>
+                  <span className="roster-card__name">{member.fullName}</span>
+                  <span className="roster-card__position mono-label">
+                    {member.position}
+                  </span>
+                </>
+              );
+              return (
+                <motion.div
+                  key={`${member.fullName}-${i}`}
+                  initial={{ opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.1 }}
+                  transition={{
+                    duration: 0.55,
+                    delay: (i % 4) * 0.06,
+                    ease: EASE_OUT_EXPO,
+                  }}
+                >
+                  {hasProfile ? (
+                    <CurtainLink
+                      to={`/${encodeURIComponent(member.profileSlug)}`}
+                      className="roster-card"
+                    >
+                      {card}
+                    </CurtainLink>
+                  ) : (
+                    <div className="roster-card roster-card--static">
+                      {card}
+                    </div>
+                  )}
+                </motion.div>
+              );
+            })}
+          </div>
+        </section>
+      ))}
+    </div>
+  );
+}
+
+function LeadershipList({ leaders, activeSlugs }) {
+  const groups = useLeadershipGroups(leaders);
+
+  return (
+    <div className="leadership">
+      {groups.map(([type, members]) => (
+        <section className="leadership__group" key={type}>
+          <h2 className="mono-label leadership__type hairline-bottom">
+            {type}
+          </h2>
+          {members.map((member, i) => {
+            const hasProfile = activeSlugs.has(member.profileSlug);
+            const inner = (
+              <>
+                <span className="leadership__name">{member.fullName}</span>
+                <span className="leadership__position mono-label">
+                  {member.position}
+                </span>
+              </>
+            );
+            return hasProfile ? (
+              <CurtainLink
+                key={`${member.fullName}-${i}`}
+                to={`/${encodeURIComponent(member.profileSlug)}`}
+                className="leadership__row hairline-bottom"
+              >
+                {inner}
+              </CurtainLink>
+            ) : (
+              <div
+                key={`${member.fullName}-${i}`}
+                className="leadership__row leadership__row--static hairline-bottom"
+              >
+                {inner}
+              </div>
+            );
+          })}
+        </section>
+      ))}
+    </div>
+  );
+}
+
 export default function MeetUs() {
   const [searchParams, setSearchParams] = useSearchParams();
   const viewLeadership = searchParams.get("tab") === "leadership";
-  const [activeBrothers, setActiveBrothers] = React.useState([]);
-  const [executiveBrothers, setExecutiveBrothers] = React.useState([]);
-  const [isLoading, setIsLoading] = React.useState(true);
+  const { isMobile } = useMobile();
+  const [view, setView] = useState("grid");
 
-  const fetchBrothers = useCallback(async (isLeadership) => {
-    setIsLoading(true);
-    try {
-      const range = isLeadership ? RANGE_EXECUTIVES : RANGE_ACTIVES;
-      const response = await axios.get(
-        `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${range}?key=${API_KEY}`,
-      );
-      if (isLeadership) {
-        const leadershipRows = (response.data.values || [])
-          .filter((row) => row.length > 0 && row[0])
-          .map(([fullName = "", leadershipType = "", position = ""]) => ({
-            fullName: fullName.trim(),
-            leadershipType: leadershipType.trim(),
-            position: position.trim(),
-            profileSlug: createBrotherSlug(fullName),
-          }));
-        setExecutiveBrothers(leadershipRows);
-      } else {
-        setActiveBrothers(response.data.values || []);
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+  const actives = useSheet(ROSTER_SHEET_ID, ACTIVES_RANGE);
+  const leadership = useSheet(ROSTER_SHEET_ID, LEADERSHIP_RANGE);
 
-  useEffect(() => {
-    if (activeBrothers.length === 0) {
-      fetchBrothers(false);
-    }
-  }, [fetchBrothers, activeBrothers.length]);
-
-  useEffect(() => {
-    if (viewLeadership && executiveBrothers.length === 0) {
-      fetchBrothers(true);
-    }
-  }, [viewLeadership, fetchBrothers, executiveBrothers.length]);
-
-  const makeLeadershipView = () => {
-    setSearchParams({ tab: "leadership" });
-    if (executiveBrothers.length === 0) {
-      fetchBrothers(true);
-    }
-  };
-
-  const makeActiveView = () => {
-    setSearchParams({});
-  };
-
-  const activeBrotherSlugSet = new Set(
-    activeBrothers
-      .filter((brother) => brother.length > 0 && brother[0])
-      .map((brother) => createBrotherSlug(brother[0])),
+  const brothers = useMemo(
+    () => (actives.rows ?? []).filter((row) => row.length > 0 && row[0]),
+    [actives.rows],
   );
 
-  const displayedLeadership = executiveBrothers.map((brother) => ({
-    ...brother,
-    hasProfile: activeBrotherSlugSet.has(brother.profileSlug),
-  }));
+  const leaders = useMemo(
+    () =>
+      (leadership.rows ?? [])
+        .filter((row) => row.length > 0 && row[0])
+        .map(([fullName = "", leadershipType = "", position = ""]) => ({
+          fullName: fullName.trim(),
+          leadershipType: leadershipType.trim(),
+          position: position.trim(),
+          profileSlug: createBrotherSlug(fullName),
+        })),
+    [leadership.rows],
+  );
+
+  const activeSlugs = useMemo(
+    () => new Set(brothers.map((row) => createBrotherSlug(row[0]))),
+    [brothers],
+  );
+
+  const effectiveView = isMobile ? "grid" : view;
+  const isLoading = viewLeadership ? leadership.isLoading : actives.isLoading;
 
   return (
-    <div className="meet-us-page pageContainer">
-      <div className="content-wrapper">
-        <div className="meet-us-header">
-          <h1 className="meet-us-title">
-            {viewLeadership ? "Leadership" : "Active Brothers"}
-          </h1>
-          <ButtonGroup className="view-buttons">
-            <Button
-              onClick={makeActiveView}
-              variant={!viewLeadership ? "contained" : "outlined"}
-              className={!viewLeadership ? "active-tab" : ""}
+    <div className="meet-us">
+      <Seo title="Meet Us" />
+
+      <header className="meet-us__header">
+        <span className="mono-label meet-us__eyebrow">PI PSI — UC IRVINE</span>
+        <h1 className="meet-us__title">
+          {viewLeadership ? "Leadership" : "Active Brothers"}
+        </h1>
+
+        <div className="meet-us__controls hairline-bottom">
+          <div className="meet-us__tabs" role="tablist" aria-label="Roster">
+            <button
+              type="button"
+              role="tab"
+              aria-selected={!viewLeadership}
+              className={`meet-us__tab mono-label${!viewLeadership ? " is-active" : ""}`}
+              onClick={() => setSearchParams({})}
             >
-              {"Active Brothers"}
-            </Button>
-            <Button
-              onClick={makeLeadershipView}
-              variant={viewLeadership ? "contained" : "outlined"}
-              className={viewLeadership ? "active-tab" : ""}
+              Active Brothers
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={viewLeadership}
+              className={`meet-us__tab mono-label${viewLeadership ? " is-active" : ""}`}
+              onClick={() => setSearchParams({ tab: "leadership" })}
             >
-              {"Leadership"}
-            </Button>
-          </ButtonGroup>
+              Leadership
+            </button>
+          </div>
+
+          {!isMobile && (
+            <div className="meet-us__views">
+              {["index", "grid"].map((v) => (
+                <button
+                  key={v}
+                  type="button"
+                  className={`meet-us__view mono-label${effectiveView === v ? " is-active" : ""}`}
+                  onClick={() => setView(v)}
+                  aria-pressed={effectiveView === v}
+                >
+                  {v}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
+      </header>
+
+      <main className="meet-us__body">
         {isLoading ? (
-          <div className="loader-container">
-            <div className="loader"></div>
-          </div>
+          <RosterSkeleton />
         ) : viewLeadership ? (
-          <div>
-            <ExecutiveBoardList brothers={displayedLeadership} />
-          </div>
+          effectiveView === "index" ? (
+            <LeadershipList leaders={leaders} activeSlugs={activeSlugs} />
+          ) : (
+            <LeadershipGrid leaders={leaders} activeSlugs={activeSlugs} />
+          )
+        ) : effectiveView === "index" ? (
+          <RosterIndex brothers={brothers} />
         ) : (
-          <div>
-            <ActiveBrotherList brothers={activeBrothers} />
-          </div>
+          <RosterGrid brothers={brothers} />
         )}
-      </div>
+      </main>
+
+      <Footer />
     </div>
   );
 }

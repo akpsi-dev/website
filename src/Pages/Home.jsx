@@ -1,336 +1,279 @@
 import React, { useRef, useEffect, useState } from "react";
 import "./Home.css";
-import { motion } from "framer-motion";
-import { BrotherhoodImage66, BrotherhoodImage76 } from "../Assets";
-import { knightAKYLogo } from "../Assets";
-import SleekButton from "../Components/SleekButton";
-import { OpenInNew } from "@mui/icons-material";
-import { Instagram, Facebook, LinkedIn } from "@mui/icons-material";
-import { BrotherhoodImage75 } from "../Assets";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  AnimatePresence,
+} from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
+import {
+  BrotherhoodImage66,
+  BrotherhoodImage75,
+  BrotherhoodImage76,
+  knightAKYLogo,
+} from "../Assets";
+import Seo from "../Components/Seo";
+import Pic from "../Components/Pic";
+import SplitLines from "../Components/chrome/SplitLines";
+import Marquee from "../Components/chrome/Marquee";
+import Magnetic from "../Components/chrome/Magnetic";
+import Footer from "../Components/chrome/Footer";
+import { CurtainLink } from "../Components/chrome/Curtain";
+import { useMotionPrefs } from "../utils/useMotionPrefs";
 
-export default function Home() {
-  const [isLoading, setIsLoading] = useState(true);
-  const videoRef = useRef(null);
-  const infoSectionRef = useRef(null);
-  
-  // Animation variants
-  const fadeInVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { 
-        duration: 0.5,
-        ease: [0.16, 1, 0.3, 1]
-      }
-    }
-  };
-  
-  const scaleInVariants = {
-    hidden: { opacity: 0, scale: 0.95 },
-    visible: { 
-      opacity: 1, 
-      scale: 1,
-      transition: { 
-        duration: 0.5,
-        ease: [0.16, 1, 0.3, 1]
-      }
-    }
-  };
+const EASE_OUT_EXPO = [0.16, 1, 0.3, 1];
+
+const TICKER_ITEMS = [
+  "ALPHA KAPPA PSI",
+  "PI PSI CHAPTER",
+  "UC IRVINE",
+  "EST. 1904",
+  "THE FIRST AND LARGEST BUSINESS FRATERNITY",
+];
+
+const PILLARS = [
+  {
+    index: "01",
+    title: "Brotherhood",
+    image: BrotherhoodImage76,
+    copy: "In Alpha Kappa Psi, you meet as strangers but leave as lifelong friends. Our brotherhood sets us apart and shapes us into who we are.",
+    to: "/meet-us",
+    label: "Brothers",
+  },
+  {
+    index: "02",
+    title: "Professionalism",
+    image: BrotherhoodImage66,
+    copy: "We inspire one another to chase our passions with confidence by equipping ourselves with the tools necessary to succeed in any industry.",
+    to: "/careers",
+    label: "Careers",
+  },
+  {
+    index: "03",
+    title: "Personal Growth",
+    image: BrotherhoodImage75,
+    copy: "Our unique culture inspires, encourages, and motivates you to step out of your comfort zone and live the life you've always imagined.",
+    to: "/rush",
+    label: "Recruitment",
+  },
+];
+
+/** Bone veil with the monogram knocked out — the video plays inside the
+ *  letterforms, then the veil dissolves to full bleed. */
+function HeroVeil({ onDone }) {
+  const [leaving, setLeaving] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 5000);
-
-    const handleCanPlay = () => {
-      clearTimeout(timer);
-      setIsLoading(false);
-    };
-
-    const videoElement = videoRef.current;
-    if (videoElement) {
-      videoElement.addEventListener("canplay", handleCanPlay);
-    }
-
+    let dissolveTimer;
+    const arm = setTimeout(() => setLeaving(true), 2000);
     return () => {
-      clearTimeout(timer);
-      if (videoElement) {
-        videoElement.removeEventListener("canplay", handleCanPlay);
-      }
-    };
-  }, []);
-
-  useEffect(() => {
-    const observerOptions = {
-      root: null,
-      rootMargin: "0px",
-      threshold: 0.1,
-    };
-
-    const animateOnScroll = (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.style.animationPlayState = "running";
-        }
-      });
-    };
-
-    const observer = new IntersectionObserver(animateOnScroll, observerOptions);
-
-    const sections = document.querySelectorAll(
-      ".info-content, .info-image-container, .info-button-container, .wrapup-section, .summary-item, .final-statements, .social-links"
-    );
-    sections.forEach((section) => observer.observe(section));
-
-    return () => {
-      sections.forEach((section) => observer.unobserve(section));
+      clearTimeout(arm);
+      clearTimeout(dissolveTimer);
     };
   }, []);
 
   return (
-    <>
-      {isLoading && (
-        <div className="loader-container">
-          <div className="loader"></div>
-        </div>
-      )}
-      <div className={`home-container ${isLoading ? "hidden" : ""}`}>
-        <div className="background-video">
-            
-              <video
-                ref={videoRef}
-                src={"https://d395js6c4h8h6h.cloudfront.net/Videos/SpringRushVideo2026.mp4"}
-                autoPlay
-                muted
-                playsInline
-                loop
-                preload="auto"
-              >
-                Your browser does not support the video tag.
-              </video>
+    <motion.div
+      className="hero-veil"
+      initial={{ opacity: 1 }}
+      animate={leaving ? { opacity: 0, scale: 1.05 } : { opacity: 1 }}
+      transition={{ duration: 1.1, ease: EASE_OUT_EXPO }}
+      onAnimationComplete={() => {
+        if (leaving) onDone();
+      }}
+      aria-hidden="true"
+    >
+      <span className="hero-veil__glyphs">ΑΚΨ</span>
+    </motion.div>
+  );
+}
 
-        </div>
-        <motion.div className="hero-section">
-          <div className="hero-content">
-            <motion.h1 className="hero-title" onClick={() => infoSectionRef.current?.scrollIntoView({ behavior: 'smooth' })} style={{ cursor: 'pointer' }}>
-              ΑΚΨ - UCI
-            </motion.h1>
-          </div>
+export default function Home() {
+  const videoRef = useRef(null);
+  const heroRef = useRef(null);
+  const { reducedMotion } = useMotionPrefs();
+  const [videoReady, setVideoReady] = useState(false);
+  const [veilDone, setVeilDone] = useState(reducedMotion);
+
+  // If motion preferences flip to reduced while the veil is mid-flight, its
+  // exit animation never completes — force the hero content through.
+  useEffect(() => {
+    if (reducedMotion) setVeilDone(true);
+  }, [reducedMotion]);
+
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+  const videoY = useTransform(scrollYProgress, [0, 1], ["0%", "16%"]);
+  const titleY = useTransform(scrollYProgress, [0, 1], ["0%", "60%"]);
+  const titleOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
+
+  useEffect(() => {
+    const videoElement = videoRef.current;
+    if (!videoElement) return undefined;
+    const handleCanPlay = () => setVideoReady(true);
+    if (videoElement.readyState >= 3) setVideoReady(true);
+    videoElement.addEventListener("canplay", handleCanPlay);
+    return () => videoElement.removeEventListener("canplay", handleCanPlay);
+  }, []);
+
+  return (
+    <div className="home">
+      <Seo title="Home" />
+
+      <section className="home-hero" ref={heroRef}>
+        <motion.div
+          className="home-hero__media"
+          style={reducedMotion ? undefined : { y: videoY }}
+        >
+          <video
+            ref={videoRef}
+            src="https://d395js6c4h8h6h.cloudfront.net/Videos/SpringRushVideo2026.mp4"
+            autoPlay
+            muted
+            playsInline
+            loop
+            preload="auto"
+            className={videoReady ? "is-ready" : ""}
+          >
+            Your browser does not support the video tag.
+          </video>
+          <div className="home-hero__grade" aria-hidden="true" />
         </motion.div>
-        <div className="section-background info-background" ref={infoSectionRef}>
-          <div className="section-overlay"></div>
-          <div className="info-section">
-            <h2 className="section-title">THE FIRST AND LARGEST BUSINESS FRATERNITY</h2>
-            <motion.div 
-              className="info-content"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
-              variants={{
-                hidden: { opacity: 0, y: 20 },
-                visible: { 
-                  opacity: 1, 
-                  y: 0,
-                  transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] }
-                }
-              }}
-            >
-              <p>
-                The organization of Alpha Kappa Psi was founded in New York
-                University in 1904. Spanning decades, Alpha Kappa Psi has helped
-                over 300,000 individuals create lifelong friends and pursue their
-                dreams. Our goal is to help Anteaters become the best versions of
-                themselves.
-              </p>
-            </motion.div>
-            <motion.div 
-              className="info-image-container"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
-              variants={{
-                hidden: { opacity: 0, scale: 0.9 },
-                visible: { 
-                  opacity: 1, 
-                  scale: 1,
-                  transition: { duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }
-                }
-              }}
-            >
-              <img
-                className="info-image"
-                src={knightAKYLogo}
-                alt="Knight Logo of Alpha Kappa Psi"
-              />
-              <div className="image-glow"></div>
-            </motion.div>
-            <motion.div 
-              className="info-button-container"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
-              variants={{
-                hidden: { opacity: 0, y: 20 },
-                visible: { 
-                  opacity: 1, 
-                  y: 0,
-                  transition: { duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }
-                }
-              }}
-            >
-              <SleekButton
-                variant="outlined"
+
+        {!veilDone && !reducedMotion && (
+          <AnimatePresence>
+            <HeroVeil onDone={() => setVeilDone(true)} />
+          </AnimatePresence>
+        )}
+
+        <motion.div
+          className="home-hero__content"
+          style={
+            reducedMotion ? undefined : { y: titleY, opacity: titleOpacity }
+          }
+        >
+          <motion.span
+            className="mono-label home-hero__eyebrow"
+            initial={reducedMotion ? false : { opacity: 0, y: 12 }}
+            animate={veilDone ? { opacity: 1, y: 0 } : {}}
+            transition={{
+              duration: reducedMotion ? 0 : 0.6,
+              delay: reducedMotion ? 0 : 0.1,
+              ease: EASE_OUT_EXPO,
+            }}
+          >
+            ALPHA KAPPA PSI — PI PSI CHAPTER
+          </motion.span>
+          <h1 className="home-hero__title" aria-label="Alpha Kappa Psi UCI">
+            <span className="home-hero__mask">
+              <motion.span
+                className="home-hero__line"
+                initial={reducedMotion ? false : { y: "115%" }}
+                animate={veilDone ? { y: "0%" } : {}}
+                transition={{
+                  duration: reducedMotion ? 0 : 0.9,
+                  delay: reducedMotion ? 0 : 0.15,
+                  ease: EASE_OUT_EXPO,
+                }}
+              >
+                ΑΚΨ — UCI
+              </motion.span>
+            </span>
+          </h1>
+        </motion.div>
+
+        <div className="home-hero__ticker hairline-top">
+          <Marquee items={TICKER_ITEMS} speed={36} />
+        </div>
+      </section>
+
+      <section className="home-info">
+        <span className="mono-label home-info__eyebrow">EST. 1904</span>
+        <SplitLines as="h2" className="home-info__title">
+          The first and largest business fraternity
+        </SplitLines>
+        <div className="home-info__body">
+          <div className="home-info__copy">
+            <p>
+              The organization of Alpha Kappa Psi was founded in New York
+              University in 1904. Spanning decades, Alpha Kappa Psi has helped
+              over 300,000 individuals create lifelong friends and pursue their
+              dreams. Our goal is to help Anteaters become the best versions of
+              themselves.
+            </p>
+            <Magnetic strength={0.25}>
+              <a
+                className="hairline-button"
                 href="https://akpsi.org/"
                 target="_blank"
-                endIcon={<OpenInNew />}
-                className="sleekButton"
+                rel="noopener noreferrer"
               >
                 Learn More
-              </SleekButton>
-            </motion.div>
+                <ArrowUpRight size={16} strokeWidth={1.75} />
+              </a>
+            </Magnetic>
           </div>
+          <motion.div
+            className="home-info__emblem"
+            initial={{ opacity: 0, scale: 0.94 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ duration: 0.8, ease: EASE_OUT_EXPO }}
+          >
+            <Pic src={knightAKYLogo} alt="Knight Logo of Alpha Kappa Psi" />
+          </motion.div>
         </div>
-        <div className="pillar-background">
-          <div className="pillar-overlay"></div>
-          <div className="wrapup-section">
-            <h2 className="pillar-title">OUR PILLARS</h2>
-            <div className="summary-section">
-              <motion.div 
-                className="summary-item brotherhood"
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.3 }}
-                variants={scaleInVariants}
-                custom={0}
-              >
-                <div className="item-content">
-                  <h2>BROTHERHOOD</h2>
-                  <div className="image-container">
-                    <img src={BrotherhoodImage76} alt="Brotherhood" />
-                    <div className="image-overlay"></div>
-                  </div>
-                  <p>
-                    In Alpha Kappa Psi, you meet as strangers but leave as lifelong
-                    friends. Our brotherhood sets us apart and shapes us into who we
-                    are.
-                  </p>
-                  <SleekButton className="sleekButton" href="/meet-us">
-                    Brothers
-                  </SleekButton>
-                </div>
-              </motion.div>
+      </section>
 
-              <motion.div 
-                className="summary-item professionalism"
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.3 }}
-                variants={scaleInVariants}
-                custom={1}
-                transition={{ delay: 0.2 }}
-              >
-                <div className="item-content">
-                  <h2>PROFESSIONALISM</h2>
-                  <div className="image-container">
-                    <img src={BrotherhoodImage66} alt="Professionalism" />
-                    <div className="image-overlay"></div>
-                  </div>
-                  <p>
-                    We inspire one another to chase our passions with confidence by
-                    equipping ourselves with the tools necessary to succeed in any
-                    industry.
-                  </p>
-                  <SleekButton className="sleekButton" href="/careers">
-                    Careers
-                  </SleekButton>
-                </div>
-              </motion.div>
+      <section className="home-pillars">
+        <div className="home-pillars__heading hairline-bottom">
+          <span className="mono-label">OUR PILLARS</span>
+        </div>
+        {PILLARS.map((pillar) => (
+          <PillarRow key={pillar.index} {...pillar} />
+        ))}
+      </section>
 
-              <motion.div 
-                className="summary-item personal-growth"
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.3 }}
-                variants={scaleInVariants}
-                custom={2}
-                transition={{ delay: 0.4 }}
-              >
-                <div className="item-content">
-                  <h2>PERSONAL GROWTH</h2>
-                  <div className="image-container">
-                    <img src={BrotherhoodImage75} alt="Personal Growth" />
-                    <div className="image-overlay"></div>
-                  </div>
-                  <p>
-                    Our unique culture inspires, encourages, and motivates you to
-                    step out of your comfort zone and live the life you've always
-                    imagined.
-                  </p>
-                  <SleekButton className="sleekButton" href="/recruitment">
-                    Recruitment
-                  </SleekButton>
-                </div>
-              </motion.div>
-            </div>
-            <footer className="site-footer">
-              <div className="footer-content">
-                <motion.div 
-                  className="social-links"
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                  variants={fadeInVariants}
-                >
-                  <a
-                    href="https://www.instagram.com/akpsiuci"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="social-icon"
-                  >
-                    <Instagram />
-                  </a>
-                  <a
-                    href="https://facebook.com/akpsiuci"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="social-icon"
-                  >
-                    <Facebook />
-                  </a>
-                  <a
-                    href="https://www.linkedin.com/company/alpha-kappa-psi-uci"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="social-icon"
-                  >
-                    <LinkedIn />
-                  </a>
-                  <a href="mailto:akpsi.uci.rush@gmail.com" className="email-link">
-                    akpsi.uci.rush@gmail.com
-                  </a>
-                </motion.div>
-                <motion.div 
-                  className="final-statements"
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                  variants={fadeInVariants}
-                >
-                  <p className="statement-one">
-                    Our members strive to uphold the highest standards in
-                    everything they do.
-                  </p>
-                  <p className="statement-two">
-                    Site designed and developed in-house, on 7000 lines of code
-                    and counting...
-                  </p>
-                </motion.div>
-              </div>
-            </footer>
-          </div>
+      <Footer />
+    </div>
+  );
+}
+
+function PillarRow({ index, title, image, copy, to, label }) {
+  const rowRef = useRef(null);
+  const { reducedMotion } = useMotionPrefs();
+  const { scrollYProgress } = useScroll({
+    target: rowRef,
+    offset: ["start end", "end start"],
+  });
+  const imageY = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"]);
+
+  return (
+    <CurtainLink to={to} className="pillar-row">
+      <div className="pillar-row__inner hairline-bottom" ref={rowRef}>
+        <div className="pillar-row__text">
+          <span className="mono-label pillar-row__index">{index}</span>
+          <SplitLines as="h3" className="pillar-row__title" stagger={0.05}>
+            {title}
+          </SplitLines>
+          <p className="pillar-row__copy">{copy}</p>
+          <span className="mono-label pillar-row__link">
+            {label}
+            <ArrowUpRight size={14} strokeWidth={1.75} />
+          </span>
+        </div>
+        <div className="pillar-row__media">
+          <motion.div
+            className="pillar-row__media-inner"
+            style={reducedMotion ? undefined : { y: imageY }}
+          >
+            <Pic src={image} alt={title} aspectRatio="4 / 3" />
+          </motion.div>
         </div>
       </div>
-    </>
+    </CurtainLink>
   );
 }

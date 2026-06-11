@@ -1,9 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useRef } from "react";
 import "./About.css";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import FAQ from "../Components/FAQ";
 import {
-  aboutImage5,
   CoreValueB,
   CoreValueI,
   CoreValueK,
@@ -11,9 +10,11 @@ import {
   CoreValueU,
   WinterRetreatFraternity,
 } from "../Assets";
-import { Instagram, Facebook, LinkedIn } from "@mui/icons-material";
-import { useMobile } from "../Components/Navbar";
-import { fadeInVariants, scaleInVariants } from "../utils/motion";
+import Seo from "../Components/Seo";
+import Pic from "../Components/Pic";
+import Footer from "../Components/chrome/Footer";
+import SplitLines from "../Components/chrome/SplitLines";
+import { useMotionPrefs } from "../utils/useMotionPrefs";
 import {
   PieChart,
   Pie,
@@ -22,10 +23,49 @@ import {
   Line,
   XAxis,
   YAxis,
-  Tooltip,
-  Legend,
   ResponsiveContainer,
 } from "recharts";
+
+const EASE_OUT_EXPO = [0.16, 1, 0.3, 1];
+
+const TIMELINE = [
+  {
+    year: "1904",
+    title: "AKΨ Founded",
+    description:
+      "Alpha Kappa Psi is founded at New York University — the first professional business fraternity in the country.",
+  },
+  {
+    year: "1999",
+    title: "UCI Chapter Established",
+    description:
+      "The Pi Psi chapter at UC Irvine is chartered, bringing AKΨ's mission of professional development to Anteaters.",
+  },
+  {
+    year: "2010",
+    title: "500+ Alumni",
+    description:
+      "The chapter reaches a milestone of over 500 initiated brothers, building a growing network across industries nationwide.",
+  },
+  {
+    year: "2018",
+    title: "Top Chapter Recognition",
+    description:
+      "Pi Psi earns national recognition for chapter excellence, professional programming, and community philanthropy.",
+  },
+  {
+    year: "2022",
+    title: "Record Placements",
+    description:
+      "100% of graduating members secure internships or full-time roles at top-tier companies before commencement.",
+  },
+  {
+    year: "2026",
+    title: "Looking Ahead",
+    description:
+      "With over 700 lifetime alumni and a vibrant active chapter, Pi Psi continues to grow its legacy at UCI and beyond.",
+  },
+];
 
 const majorData = [
   { name: "Business", value: 34 },
@@ -53,452 +93,285 @@ const placementData = [
   { year: "2026", oncampus: 88, beyondCampus: 92 },
 ];
 
-const COLORS = ["#0066cc", "#00a86b", "#f39c12", "#8e44ad", "#e74c3c", "#3498db"];
+const CHART_COLORS = [
+  "#c8a24b",
+  "#4e7fff",
+  "#e3c77e",
+  "#7fa0ff",
+  "#a8a29a",
+  "#6b665e",
+];
+
+const CORE_VALUES = [
+  {
+    letter: "B",
+    title: "Brotherhood",
+    image: CoreValueB,
+    copy: "Foster lifelong connections",
+  },
+  {
+    letter: "I",
+    title: "Integrity",
+    image: CoreValueI,
+    copy: "Uphold ethical standards",
+  },
+  {
+    letter: "K",
+    title: "Knowledge",
+    image: CoreValueK,
+    copy: "Pursue continuous learning",
+  },
+  {
+    letter: "S",
+    title: "Service",
+    image: CoreValueS,
+    copy: "Give back to the community",
+  },
+  {
+    letter: "U",
+    title: "Unity",
+    image: CoreValueU,
+    copy: "Strengthen through collaboration",
+  },
+];
+
+function Donut({ title, data }) {
+  return (
+    <motion.figure
+      className="about-chart"
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.25 }}
+      transition={{ duration: 0.7, ease: EASE_OUT_EXPO }}
+    >
+      <figcaption className="mono-label about-chart__title">{title}</figcaption>
+      <ResponsiveContainer width="100%" height={260}>
+        <PieChart>
+          <Pie
+            data={data}
+            dataKey="value"
+            cx="50%"
+            cy="50%"
+            innerRadius="68%"
+            outerRadius="96%"
+            paddingAngle={2}
+            stroke="none"
+            isAnimationActive
+          >
+            {data.map((entry, index) => (
+              <Cell
+                key={`cell-${index}`}
+                fill={CHART_COLORS[index % CHART_COLORS.length]}
+              />
+            ))}
+          </Pie>
+        </PieChart>
+      </ResponsiveContainer>
+      <ul className="about-chart__legend">
+        {data.map((entry, i) => (
+          <li key={entry.name}>
+            <span
+              className="about-chart__swatch"
+              style={{ background: CHART_COLORS[i % CHART_COLORS.length] }}
+            />
+            <span className="about-chart__legend-name">{entry.name}</span>
+            <span className="about-chart__legend-value">{entry.value}%</span>
+          </li>
+        ))}
+      </ul>
+    </motion.figure>
+  );
+}
 
 export default function About() {
-  const { isMobile } = useMobile();
-
-  useEffect(() => {
-    const observerOptions = {
-      root: null,
-      rootMargin: "0px",
-      threshold: 0.1,
-    };
-
-    const animateOnScroll = (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.style.animationPlayState = "running";
-        }
-      });
-    };
-
-    const observer = new IntersectionObserver(animateOnScroll, observerOptions);
-
-    const sections = document.querySelectorAll(
-      ".info-content, .info-image-container, .info-button-container, .wrapup-section, .summary-a-item, .final-statements, .social-links",
-    );
-    sections.forEach((section) => observer.observe(section));
-
-    return () => {
-      sections.forEach((section) => observer.unobserve(section));
-    };
-  }, []);
+  const timelineRef = useRef(null);
+  const { reducedMotion } = useMotionPrefs();
+  const { scrollYProgress } = useScroll({
+    target: timelineRef,
+    offset: ["start 0.75", "end 0.6"],
+  });
+  const lineScale = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   return (
-    <div className="home-container">
-      <div className="background-image">
-        {!isMobile && <img src={WinterRetreatFraternity} />}
-        {isMobile && <img src={WinterRetreatFraternity} />}
-      </div>
-      <motion.div className="hero-section">
-        <div className="hero-content">
-          <motion.h1
-            className="hero-title"
-            initial={{ y: -130 }}
-            animate={{ y: -150 }}
-            transition={{ duration: 1, ease: "easeOut" }}
-          >
+    <div className="about">
+      <Seo title="About" />
+
+      <section className="about-hero">
+        <div className="about-hero__media" aria-hidden="true">
+          <Pic src={WinterRetreatFraternity} alt="" priority />
+        </div>
+        <div className="about-hero__grade" aria-hidden="true" />
+        <div className="about-hero__content">
+          <span className="mono-label about-hero__eyebrow">
+            EST. 1904 — PI PSI, UC IRVINE
+          </span>
+          <SplitLines as="h1" className="about-hero__title" stagger={0.06}>
             About ΑΚΨ
-          </motion.h1>
+          </SplitLines>
         </div>
-      </motion.div>
-      <div className="section-background info-background">
-        <div className="section-overlay"></div>
-        <div className="info-section">
-          <h2 className="section-title">Our Story</h2>
-          <div className="timeline">
-            {[
-              {
-                year: "1904",
-                title: "AKΨ Founded",
-                description:
-                  "Alpha Kappa Psi is founded at New York University — the first professional business fraternity in the country.",
-              },
-              {
-                year: "1999",
-                title: "UCI Chapter Established",
-                description:
-                  "The Pi Psi chapter at UC Irvine is chartered, bringing AKΨ's mission of professional development to Anteaters.",
-              },
-              {
-                year: "2010",
-                title: "500+ Alumni",
-                description:
-                  "The chapter reaches a milestone of over 500 initiated brothers, building a growing network across industries nationwide.",
-              },
-              {
-                year: "2018",
-                title: "Top Chapter Recognition",
-                description:
-                  "Pi Psi earns national recognition for chapter excellence, professional programming, and community philanthropy.",
-              },
-              {
-                year: "2022",
-                title: "Record Placements",
-                description:
-                  "100% of graduating members secure internships or full-time roles at top-tier companies before commencement.",
-              },
-              {
-                year: "2026",
-                title: "Looking Ahead",
-                description:
-                  "With over 700 lifetime alumni and a vibrant active chapter, Pi Psi continues to grow its legacy at UCI and beyond.",
-              },
-            ].map((item, i) => (
-              <motion.div
-                key={item.year}
-                className={`timeline-item ${i % 2 === 0 ? "timeline-left" : "timeline-right"}`}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.3 }}
-                variants={fadeInVariants}
-                transition={{ delay: i * 0.05 }}
-              >
-                <div className="timeline-content">
-                  <span className="timeline-year">{item.year}</span>
-                  <h3 className="timeline-title">{item.title}</h3>
-                  <p className="timeline-desc">{item.description}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+      </section>
 
-          <h2 className="section-title" style={{ marginTop: "4rem" }}>Chapter Demographics</h2>
-          <div className="charts-grid">
-            <motion.div 
-              className="chart-container"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
-              variants={fadeInVariants}
-            >
-              <h3>Major Breakdown</h3>
-              <ResponsiveContainer width="90%" height={500}>
-                <PieChart>
-                  <Pie
-                    data={majorData}
-                    cx="50%"
-                    cy="50%"
-                    labelLine={false}
-                    outerRadius={200}
-                    fill="#8884d8"
-                    label={({
-                      cx,
-                      cy,
-                      midAngle,
-                      innerRadius,
-                      outerRadius,
-                      percent,
-                      name,
-                    }) => {
-                      const RADIAN = Math.PI / 180;
-                      const radius =
-                        innerRadius + (outerRadius - innerRadius) * 0.5;
-                      const x = cx + radius * Math.cos(-midAngle * RADIAN);
-                      const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-                      return (
-                        <text
-                          x={x}
-                          y={y}
-                          fill="white"
-                          textAnchor="middle"
-                          dominantBaseline="central"
-                        >
-                          <tspan x={x} dy="-0.5em">
-                            {name}
-                          </tspan>
-                          <tspan
-                            x={x}
-                            dy="1.2em"
-                          >{`${(percent * 100).toFixed(0)}%`}</tspan>
-                        </text>
-                      );
-                    }}
-                  >
-                    {majorData.map((entry, index) => (
-                      <Cell
-                        key={`cell-${index}`}
-                        fill={COLORS[index % COLORS.length]}
-                      />
-                    ))}
-                  </Pie>
-                  <Legend />
-                </PieChart>
-              </ResponsiveContainer>
-            </motion.div>
-            <motion.div 
-              className="chart-container"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
-              variants={fadeInVariants}
-              transition={{ delay: 0.1 }}
-            >
-              <h3>Club Involvement</h3>
-              <ResponsiveContainer width="100%" height={500}>
-                <PieChart>
-                  <Pie
-                    data={clubData}
-                    cx="50%"
-                    cy="50%"
-                    labelLine={false}
-                    outerRadius={200}
-                    fill="#8884d8"
-                    label={({
-                      cx,
-                      cy,
-                      midAngle,
-                      innerRadius,
-                      outerRadius,
-                      percent,
-                      name,
-                    }) => {
-                      const RADIAN = Math.PI / 180;
-                      const radius =
-                        innerRadius + (outerRadius - innerRadius) * 0.5;
-                      const x = cx + radius * Math.cos(-midAngle * RADIAN);
-                      const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-                      return (
-                        <text
-                          x={x}
-                          y={y}
-                          fill="white"
-                          textAnchor="middle"
-                          dominantBaseline="central"
-                        >
-                          <tspan x={x} dy="-0.5em">
-                            {name}
-                          </tspan>
-                          <tspan
-                            x={x}
-                            dy="1.2em"
-                          >{`${(percent * 100).toFixed(0)}%`}</tspan>
-                        </text>
-                      );
-                    }}
-                  >
-                    {clubData.map((entry, index) => (
-                      <Cell
-                        key={`cell-${index}`}
-                        fill={COLORS[index % COLORS.length]}
-                      />
-                    ))}
-                  </Pie>
-                  <Legend />
-                </PieChart>
-              </ResponsiveContainer>
-            </motion.div>
-            <motion.div 
-              className="chart-container"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
-              variants={fadeInVariants}
-              transition={{ delay: 0.2 }}
-            >
-              <h3>Leadership Involvement Rates</h3>
-              <ResponsiveContainer width="100%" height={500}>
-                <LineChart
-                  data={placementData}
-                  margin={{ top: 5, right: 30, left: 15, bottom: 5 }}
-                >
-                  <XAxis dataKey="year" />
-                  <YAxis />
-                  <Legend />
-                  <Line
-                    type="monotone"
-                    dataKey="oncampus"
-                    stroke="#0066cc"
-                    name="On-campus (%)"
-                    strokeWidth={2}
-                  />
-                  <Line
-                    type="monotone"
-                    dataKey="beyondCampus"
-                    stroke="#00a86b"
-                    name="Campus and Beyond (%)"
-                    strokeWidth={2}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
-            </motion.div>
-          </div>
+      <section className="about-record">
+        <div className="about-record__heading hairline-bottom">
+          <span className="mono-label">OUR STORY</span>
         </div>
-      </div>
-      <div className="pillar-background">
-        <div className="pillar-overlay"></div>
-        <div className="wrapup-section">
-          <h2 className="pillar-title">Our Core Values</h2>
-          <div className="summary-section">
-            <motion.div 
-              className="summary-item"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.3 }}
-              variants={scaleInVariants}
-              custom={0}
-            >
-              <div className="item-content">
-                <h2>BROTHERHOOD</h2>
-                <div className="image-container">
-                  <img src={CoreValueB} alt="Brotherhood" />
-                  <div className="image-overlay"></div>
-                </div>
-                <p>Foster lifelong connections</p>
-              </div>
-            </motion.div>
-            
-            <motion.div 
-              className="summary-item"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.3 }}
-              variants={scaleInVariants}
-              custom={1}
-              transition={{ delay: 0.1 }}
-            >
-              <div className="item-content">
-                <h2>INTEGRITY</h2>
-                <div className="image-container">
-                  <img src={CoreValueI} alt="Integrity" />
-                  <div className="image-overlay"></div>
-                </div>
-                <p>Uphold ethical standards</p>
-              </div>
-            </motion.div>
-            
-            <motion.div 
-              className="summary-item"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.3 }}
-              variants={scaleInVariants}
-              custom={2}
-              transition={{ delay: 0.2 }}
-            >
-              <div className="item-content">
-                <h2>KNOWLEDGE</h2>
-                <div className="image-container">
-                  <img src={CoreValueK} alt="Knowledge" />
-                  <div className="image-overlay"></div>
-                </div>
-                <p>Pursue continuous learning</p>
-              </div>
-            </motion.div>
-            
-            <motion.div 
-              className="summary-item"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.3 }}
-              variants={scaleInVariants}
-              custom={3}
-              transition={{ delay: 0.3 }}
-            >
-              <div className="item-content">
-                <h2>SERVICE</h2>
-                <div className="image-container">
-                  <img src={CoreValueS} alt="Service" />
-                  <div className="image-overlay"></div>
-                </div>
-                <p>Give back to the community</p>
-              </div>
-            </motion.div>
-            
-            <motion.div 
-              className="summary-item"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.3 }}
-              variants={scaleInVariants}
-              custom={4}
-              transition={{ delay: 0.4 }}
-            >
-              <div className="item-content">
-                <h2>UNITY</h2>
-                <div className="image-container">
-                  <img src={CoreValueU} alt="Unity" />
-                  <div className="image-overlay"></div>
-                </div>
-                <p>Strengthen through collaboration</p>
-              </div>
-            </motion.div>
+        <div className="about-record__timeline" ref={timelineRef}>
+          <div className="about-record__rail" aria-hidden="true">
+            <motion.span
+              className="about-record__rail-fill"
+              style={reducedMotion ? { scaleY: 1 } : { scaleY: lineScale }}
+            />
           </div>
-          
-          <div className="section-background faq-background">
-            <div className="section-overlay"></div>
-            <div className="info-section faq-section">
-              <motion.div
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                variants={fadeInVariants}
-              >
-                <FAQ />
-              </motion.div>
-            </div>
-          </div>
+          {TIMELINE.map((item, i) => (
+            <motion.article
+              className="about-era"
+              key={item.year}
+              initial={{ opacity: 0, y: 28 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.4 }}
+              transition={{ duration: 0.7, ease: EASE_OUT_EXPO }}
+            >
+              <span className="about-era__node" aria-hidden="true" />
+              <span className="about-era__year">{item.year}</span>
+              <div className="about-era__body">
+                <h3 className="about-era__title">{item.title}</h3>
+                <p className="about-era__desc">{item.description}</p>
+              </div>
+            </motion.article>
+          ))}
+        </div>
+      </section>
 
-          <footer className="site-footer">
-            <div className="footer-content">
-              <motion.div 
-                className="social-links"
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                variants={fadeInVariants}
+      <section className="about-demo">
+        <div className="about-demo__heading hairline-bottom">
+          <span className="mono-label">CHAPTER DEMOGRAPHICS</span>
+        </div>
+        <div className="about-demo__grid">
+          <Donut title="MAJOR BREAKDOWN" data={majorData} />
+          <Donut title="CLUB INVOLVEMENT" data={clubData} />
+          <motion.figure
+            className="about-chart about-chart--wide"
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.25 }}
+            transition={{ duration: 0.7, ease: EASE_OUT_EXPO }}
+          >
+            <figcaption className="mono-label about-chart__title">
+              LEADERSHIP INVOLVEMENT RATES
+            </figcaption>
+            <ResponsiveContainer width="100%" height={300}>
+              <LineChart
+                data={placementData}
+                margin={{ top: 10, right: 10, left: -16, bottom: 0 }}
               >
-                <a
-                  href="https://www.instagram.com/akpsiuci"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="social-icon"
-                >
-                  <Instagram />
-                </a>
-                <a
-                  href="https://facebook.com/akpsiuci"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="social-icon"
-                >
-                  <Facebook />
-                </a>
-                <a
-                  href="https://www.linkedin.com/company/alpha-kappa-psi-uci"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="social-icon"
-                >
-                  <LinkedIn />
-                </a>
-                <a href="mailto:akpsi.uci.rush@gmail.com" className="email-link">
-                  akpsi.uci.rush@gmail.com
-                </a>
-              </motion.div>
-              <motion.div 
-                className="final-statements"
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                variants={fadeInVariants}
-              >
-                <p className="statement-one">
-                  "Forging tomorrow's leaders through the crucible of brotherhood,
-                  integrity, and professional excellence."
-                </p>
-                <p className="statement-two">
-                  Join us in writing the next chapter of business innovation and
-                  ethical leadership.
-                </p>
-              </motion.div>
-            </div>
+                <XAxis
+                  dataKey="year"
+                  tick={{
+                    fill: "#6b665e",
+                    fontSize: 11,
+                    fontFamily: "Spline Sans Mono",
+                  }}
+                  axisLine={{ stroke: "rgba(244,241,234,0.12)" }}
+                  tickLine={false}
+                />
+                <YAxis
+                  tick={{
+                    fill: "#6b665e",
+                    fontSize: 11,
+                    fontFamily: "Spline Sans Mono",
+                  }}
+                  axisLine={{ stroke: "rgba(244,241,234,0.12)" }}
+                  tickLine={false}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="oncampus"
+                  stroke="#c8a24b"
+                  name="On-campus (%)"
+                  strokeWidth={1.5}
+                  dot={false}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="beyondCampus"
+                  stroke="#4e7fff"
+                  name="Campus and Beyond (%)"
+                  strokeWidth={1.5}
+                  dot={false}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+            <ul className="about-chart__legend about-chart__legend--row">
+              <li>
+                <span
+                  className="about-chart__swatch"
+                  style={{ background: "#c8a24b" }}
+                />
+                <span className="about-chart__legend-name">On-campus (%)</span>
+              </li>
+              <li>
+                <span
+                  className="about-chart__swatch"
+                  style={{ background: "#4e7fff" }}
+                />
+                <span className="about-chart__legend-name">
+                  Campus and Beyond (%)
+                </span>
+              </li>
+            </ul>
+          </motion.figure>
+        </div>
+      </section>
+
+      <section className="about-values">
+        <div className="about-values__heading hairline-bottom">
+          <span className="mono-label">OUR CORE VALUES</span>
+        </div>
+        <div className="about-values__grid">
+          {CORE_VALUES.map((value, i) => (
+            <motion.article
+              className="value-card"
+              key={value.letter}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{
+                duration: 0.6,
+                delay: (i % 5) * 0.06,
+                ease: EASE_OUT_EXPO,
+              }}
+            >
+              <span className="value-card__media">
+                <Pic src={value.image} alt={value.title} aspectRatio="4 / 3" />
+              </span>
+              <span className="value-card__letter" aria-hidden="true">
+                {value.letter}
+              </span>
+              <h3 className="value-card__title">{value.title}</h3>
+              <p className="value-card__copy">{value.copy}</p>
+            </motion.article>
+          ))}
+        </div>
+      </section>
+
+      <section className="about-faq">
+        <FAQ />
+      </section>
+
+      <section className="about-close hairline-top">
+        <blockquote className="about-close__quote">
+          <p>
+            "Forging tomorrow's leaders through the crucible of brotherhood,
+            integrity, and professional excellence."
+          </p>
+          <footer className="mono-label">
+            Join us in writing the next chapter of business innovation and
+            ethical leadership.
           </footer>
-        </div>
-      </div>
+        </blockquote>
+      </section>
+
+      <Footer />
     </div>
   );
 }

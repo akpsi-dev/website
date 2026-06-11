@@ -1,5 +1,6 @@
 import React from "react";
 import "./CareerLogoScroll.css";
+import { useMotionPrefs } from "../utils/useMotionPrefs";
 import {
   GoogleLogo,
   AppleLogo,
@@ -83,23 +84,30 @@ const ROW_TWO = [
 
 function LogoRow({ logos, direction = "forward" }) {
   return (
-    <div className="logos-track-wrapper">
-      <div className={`logos-slide ${direction === "reverse" ? "logos-slide-reverse" : ""}`}>
+    <div className="logo-wall__row">
+      <div
+        className={`logo-wall__track${direction === "reverse" ? " logo-wall__track--reverse" : ""}`}
+      >
         {[...logos, ...logos].map((logo, i) => (
-          <img key={i} src={logo.src} alt={logo.alt} loading="lazy" />
+          <img
+            key={i}
+            src={logo.src}
+            alt={i < logos.length ? logo.alt : ""}
+            aria-hidden={i >= logos.length}
+            loading="lazy"
+          />
         ))}
       </div>
     </div>
   );
 }
 
-const CareerLogoScroller = () => {
+export default function CareerLogoScroller() {
+  const { reducedMotion } = useMotionPrefs();
   return (
-    <div className="logos">
+    <div className={`logo-wall${reducedMotion ? " logo-wall--paused" : ""}`}>
       <LogoRow logos={ROW_ONE} direction="forward" />
       <LogoRow logos={ROW_TWO} direction="reverse" />
     </div>
   );
-};
-
-export default CareerLogoScroller;
+}

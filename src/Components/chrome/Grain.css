@@ -1,0 +1,9 @@
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-grain);
+  pointer-events: none;
+  background-image: var(--grain-image);
+  background-repeat: repeat;
+  opacity: 0.05;
+}

@@ -1,179 +1,160 @@
-/* ── Desktop nav ─────────────────────────────────────────── */
+/* ----- Desktop masthead links --------------------------------------------- */
+
 .nav-links {
-  list-style: none;
   display: flex;
-  gap: 25px;
+  align-items: center;
+  gap: clamp(1.25rem, 2.5vw, 2.5rem);
+  list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.nav-links li {
+.nav-link {
   position: relative;
-  padding: 5px;
-}
-
-.nav-links li .NavLink {
-  text-decoration: none;
-  color: aliceblue;
-  font-size: 16px;
+  font-family: var(--font-mono);
+  font-size: var(--type-mono-label);
   font-weight: 500;
-  transition: transform 0.3s ease;
-  text-shadow: 1px 1px 2px black;
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--text-secondary);
+  padding: 0.4em 0;
+  transition: color var(--dur-micro) var(--ease-out);
 }
 
-.nav-links li .NavLink:hover {
-  transform: translateY(-3px);
+.nav-link__index {
+  font-size: 0.58rem;
+  color: var(--text-faint);
+  margin-right: 0.5em;
+  letter-spacing: 0.08em;
+  transition: color var(--dur-micro) var(--ease-out);
 }
 
-.nav-links li .NavLink::after {
+.nav-link::after {
   content: "";
   position: absolute;
-  width: 100%;
-  height: 3px;
-  background-color: #0077b5;
   left: 0;
-  bottom: -6px;
+  right: 0;
+  bottom: -2px;
+  height: 1px;
+  background: currentColor;
   transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.3s ease;
+  transform-origin: left center;
+  transition: transform 0.35s var(--ease-out);
 }
 
-.nav-links li .NavLink:hover::after,
-.nav-links li .NavLink.active::after {
+.nav-link:hover,
+.nav-link.active {
+  color: var(--text-primary);
+}
+
+.nav-link:hover .nav-link__index,
+.nav-link.active .nav-link__index {
+  color: var(--accent-brass);
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
   transform: scaleX(1);
 }
 
-/* Rush link — desktop */
-.nav-links li .NavLink.rush {
-  color: #ffd700;
-  font-weight: 600;
-  animation: rushGlow 3s infinite ease-in-out;
-  letter-spacing: 0.03em;
+.nav-rush-chip {
+  font-family: var(--font-mono);
+  font-size: var(--type-mono-label);
+  font-weight: 500;
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--bg-base);
+  background: var(--accent-brass);
+  padding: 0.55em 1.1em;
+  border-radius: 999px;
+  display: inline-block;
+  transition: background-color var(--dur-micro) var(--ease-out);
 }
 
-.nav-links li .NavLink.rush::after {
-  background: linear-gradient(90deg, #ffd700, #ffc800, #ffd700);
+.nav-rush-chip:hover,
+.nav-rush-chip.active {
+  background: var(--brass-bright);
 }
 
-@keyframes rushGlow {
-  0%,
-  100% {
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7), 0 0 10px rgba(255, 215, 0, 0.3);
-  }
-  50% {
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7), 0 0 28px rgba(255, 215, 0, 0.9);
-  }
-}
+/* ----- Mobile ink takeover ------------------------------------------------ */
 
-/* ── Mobile nav (full-screen overlay) ───────────────────── */
-.mobile-nav-content {
+.menu-takeover__content {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  flex: 1;
-  padding-bottom: max(2.5rem, env(safe-area-inset-bottom));
+  height: 100%;
+  padding: calc(64px + var(--space-5)) var(--gutter) var(--space-5);
+  box-sizing: border-box;
 }
 
-.nav-links.mobile {
+.menu-takeover__list {
   list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
   margin: 0;
   padding: 0;
-  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4em;
 }
 
-.nav-links.mobile li {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.nav-links.mobile li:first-child {
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.nav-links.mobile li .NavLink.mobile {
+.menu-takeover__mask {
   display: block;
+  overflow: hidden;
+}
+
+.menu-takeover__line {
+  display: block;
+}
+
+.menu-link {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6em;
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 9vw, 3.6rem);
+  font-weight: 500;
+  font-variation-settings: "opsz" 72;
+  line-height: 1.12;
   text-decoration: none;
-  color: rgba(255, 255, 255, 0.82);
-  font-family: "Playfair Display", Georgia, serif;
-  font-size: clamp(1.75rem, 6vw, 2.4rem);
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  padding: 0.75rem 0;
-  transition: color 0.25s ease, padding-left 0.25s ease;
-  position: relative;
+  color: var(--text-secondary);
+  transition: color var(--dur-micro) var(--ease-out);
 }
 
-.nav-links.mobile li .NavLink.mobile::before {
-  content: "";
-  position: absolute;
-  left: -2.5rem;
-  top: 50%;
-  transform: translateY(-50%) scaleY(0);
-  width: 3px;
-  height: 60%;
-  background: #00a0dc;
-  border-radius: 2px;
-  transition: transform 0.25s ease;
+.menu-link.active {
+  color: var(--text-primary);
 }
 
-.nav-links.mobile li .NavLink.mobile:hover,
-.nav-links.mobile li .NavLink.mobile.active {
-  color: #fff;
-  padding-left: 0.5rem;
+.menu-link.rush {
+  color: var(--accent-brass);
 }
 
-.nav-links.mobile li .NavLink.mobile:hover::before,
-.nav-links.mobile li .NavLink.mobile.active::before {
-  transform: translateY(-50%) scaleY(1);
+.menu-link__index {
+  font-size: 0.7rem;
+  color: var(--text-faint);
+  min-width: 2ch;
 }
 
-/* Rush — mobile pill */
-.nav-links.mobile li .NavLink.mobile.rush {
-  display: inline-block;
-  color: #1a1a1a;
-  font-weight: 700;
-  background: linear-gradient(135deg, #ffd700, #ffb800);
-  padding: 0.45rem 1.25rem;
-  border-radius: 999px;
-  margin: 0.6rem 0;
-  animation: none;
-  text-shadow: none;
-  transition: filter 0.25s ease, transform 0.25s ease;
-}
-
-.nav-links.mobile li .NavLink.mobile.rush::before {
-  display: none;
-}
-
-.nav-links.mobile li .NavLink.mobile.rush:hover {
-  filter: brightness(1.1);
-  transform: translateX(4px);
-  padding-left: 1.25rem;
-}
-
-.nav-links.mobile li:has(.NavLink.mobile.rush) {
-  border: none;
-  padding-top: 0.5rem;
-}
-
-/* Social icons row */
-.mobile-socials {
-  display: flex;
-  gap: 1.25rem;
-  align-items: center;
-  padding: 1.5rem 0 0.5rem;
-}
-
-.mobile-socials .social-icon {
-  color: rgba(255, 255, 255, 0.5);
+.menu-takeover__footer {
   display: flex;
   align-items: center;
-  transition: color 0.2s ease, transform 0.2s ease;
+  justify-content: space-between;
+  border-top: 1px solid var(--line-hairline);
+  padding-top: var(--space-4);
 }
 
-.mobile-socials .social-icon:hover {
-  color: #fff;
-  transform: translateY(-2px);
+.menu-takeover__socials {
+  display: flex;
+  gap: var(--space-4);
+}
+
+.menu-social {
+  color: var(--text-secondary);
+  display: inline-flex;
+  padding: 0.4em;
+  transition: color var(--dur-micro) var(--ease-out);
+}
+
+.menu-social:hover {
+  color: var(--text-primary);
 }

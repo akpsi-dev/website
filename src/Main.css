@@ -1,12 +1,54 @@
 .main-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 5px;
-  background: transparent; 
-  z-index: 100;
-  position: absolute!important; 
+  position: fixed;
   top: 0;
-  width: 100%;
+  left: 0;
+  right: 0;
+  /* Above the mobile menu takeover (--z-menu) so the wordmark and the
+     hamburger/X toggle stay visible and tappable while it is open. */
+  z-index: calc(var(--z-menu) + 1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--gutter);
+  height: 76px;
   box-sizing: border-box;
+  border-bottom: 1px solid transparent;
+  transition:
+    height 0.35s var(--ease-out),
+    background-color 0.35s var(--ease-out),
+    border-color 0.35s var(--ease-out);
+}
+
+.main-header[data-scrolled="true"] {
+  height: 56px;
+  background: rgba(11, 11, 12, 0.72);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  border-bottom-color: var(--line-hairline);
+}
+
+.wordmark {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6em;
+  text-decoration: none;
+  color: var(--text-primary);
+}
+
+.wordmark__letters {
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  font-weight: 600;
+  font-variation-settings: "opsz" 40;
+  line-height: 1;
+}
+
+.wordmark__chapter {
+  color: var(--text-faint);
+}
+
+@media (max-width: 768px) {
+  .main-header {
+    height: 64px;
+  }
 }

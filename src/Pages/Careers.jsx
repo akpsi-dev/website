@@ -1,51 +1,50 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "./Careers.css";
-import { motion } from "framer-motion";
 import { alumni1 } from "../Assets";
+import Seo from "../Components/Seo";
+import Footer from "../Components/chrome/Footer";
+import SplitLines from "../Components/chrome/SplitLines";
 import CareerTable from "./CareerTable";
 import CareerLogoScroller from "./CareerLogoScroll";
 
 export default function Careers() {
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const img = new Image();
-    img.src = alumni1;
-    img.onload = () => {
-      setIsLoading(false);
-    };
-    // If the image fails to load, we still want to show the content
-    img.onerror = () => {
-      setIsLoading(false);
-    };
-  }, []);
-
-  if (isLoading) {
-    return (
-      <div className="loader-container">
-        <div className="loader"></div>
-      </div>
-    );
-  }
-
   return (
-    <div
-      className="careersContainer"
-      style={{ backgroundImage: `url(${alumni1})` }}
-    >
-      <motion.div className="careerstitleSection">
-        <div className="hero-title" style={{ top: "-150px" }}>
-          Careers
-        </div>
-      </motion.div>
+    <div className="careers">
+      <Seo title="Careers" />
 
-      <div className="careersmainTitleSection">
-        <h1 className="careersmainTitle">Our Professional Experience</h1>
-      </div>
-      <div className="careers-section">
+      <section className="careers-hero">
+        <div
+          className="careers-hero__bg"
+          style={{ backgroundImage: `url(${alumni1})` }}
+          aria-hidden="true"
+        />
+        <div className="careers-hero__grade" aria-hidden="true" />
+        <div className="careers-hero__content">
+          <span className="mono-label careers-hero__eyebrow">
+            PI PSI — UC IRVINE
+          </span>
+          <SplitLines as="h1" className="careers-hero__title" stagger={0.06}>
+            Careers
+          </SplitLines>
+        </div>
+      </section>
+
+      <section className="careers-logos">
+        <div className="careers-logos__heading hairline-bottom">
+          <span className="mono-label">WHERE OUR BROTHERS WORK</span>
+        </div>
         <CareerLogoScroller />
+      </section>
+
+      <section className="careers-ledger">
+        <header className="careers-ledger__heading">
+          <span className="mono-label careers-ledger__eyebrow">THE LEDGER</span>
+          <h2 className="careers-ledger__title">Our Professional Experience</h2>
+        </header>
         <CareerTable />
-      </div>
+      </section>
+
+      <Footer />
     </div>
   );
 }

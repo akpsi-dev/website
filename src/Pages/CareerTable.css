@@ -1,275 +1,185 @@
-:root {
-  --primary-color: #0077b5;
-  --primary-light: #0a8cd2;
-  --accent-color: #00a0dc;
-  --bg-dark: #121212;
-  --bg-card: #1e1e1e;
-  --text-light: #ffffff;
-  --text-muted: #b0b0b0;
-  --border-color: #2a2a2a;
-  --transition-speed: 0.3s;
+/* ==========================================================================
+   The Ledger — placement records (dark)
+   ========================================================================== */
+
+.ledger {
+  display: grid;
+  grid-template-columns: minmax(80px, auto) minmax(0, 1fr);
+  gap: var(--space-6);
+  max-width: 1400px;
+  margin: 0 auto;
+  align-items: start;
 }
 
-body {
-  background-color: var(--bg-dark);
-  color: var(--text-light);
-  font-family: 'Playfair Display';
-  line-height: 1.6;
-}
+/* ----- Year index ------------------------------------------------------------- */
 
-.tabs {
+.ledger__years {
   display: flex;
-  justify-content: center;
-  margin-bottom: 3rem;
+  flex-direction: column;
+  gap: var(--space-2);
+  position: sticky;
+  top: calc(76px + var(--space-4));
 }
 
-.years {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  border: 1px solid var(--border-color);
-  border-radius: 50px;
-  overflow: hidden;
-  background-color: var(--bg-card);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: box-shadow var(--transition-speed) ease;
-  -webkit-user-select: none; /* Safari */
-  -ms-user-select: none; /* IE 10 and IE 11 */
-  user-select: none; /* Standard syntax */
-}
-
-.years:hover {
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-}
-
-.years li {
-  display: inline-block;
-  color: var(--text-light);
-  font-size: 1rem;
-  padding: 1rem 1.5rem;
-  cursor: pointer;
-  transition: all var(--transition-speed) ease;
-  border-right: 1px solid var(--border-color);
+.ledger__year {
   position: relative;
-  overflow: hidden;
-}
-
-.years li::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: all 0.6s ease;
-}
-
-.years li:hover::before {
-  left: 100%;
-}
-
-.years li.is-active {
-  background-color: var(--primary-color);
-  color: var(--text-light);
-  font-weight: 600;
-}
-
-.tabs .years li:hover {
-  background-color: var(--primary-light);
-  transform: translateY(-2px);
-}
-
-.years li:last-child {
-  border-right: none;
-}
-
-.careers-container {
-  width: 80%;
-  margin: 0 auto 2rem auto;
-  background-color: var(--bg-card);
-  padding: 2.5rem;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  transition: box-shadow var(--transition-speed) ease;
-}
-
-.careers-container:hover {
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-}
-
-.careers-table {
-  width: 100%;
-  table-layout: fixed;
-  border-collapse: separate;
-  border-spacing: 0;
-  margin: 0 !important;
-}
-
-.careers-table th,
-.careers-table td {
-  padding: 1.2rem;
+  background: none;
+  border: none;
   text-align: left;
-  word-wrap: break-word;
-  border-bottom: 1px solid var(--border-color);
-  transition: background-color var(--transition-speed) ease;
+  color: var(--text-faint);
+  cursor: pointer;
+  padding: 0.45em 0 0.45em 1.2em;
+  font-size: 0.8rem;
+  transition: color var(--dur-micro) var(--ease-out);
 }
 
-.careers-table th {
-  background-color: var(--primary-color);
-  color: var(--text-light);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  position: relative;
-}
-
-.careers-table th::after {
-  content: '';
+.ledger__year::before {
+  content: "";
   position: absolute;
-  bottom: 0;
   left: 0;
-  width: 100%;
-  height: 2px;
-  background: var(--accent-color);
+  top: 50%;
+  width: 0.7em;
+  height: 1px;
+  background: var(--accent-brass);
   transform: scaleX(0);
-  transition: transform 0.3s ease;
+  transform-origin: left center;
+  transition: transform 0.3s var(--ease-out);
 }
 
-.careers-table th:hover::after {
+.ledger__year:hover {
+  color: var(--text-primary);
+}
+
+.ledger__year.is-active {
+  color: var(--text-primary);
+}
+
+.ledger__year.is-active::before {
   transform: scaleX(1);
 }
 
-.careers-table tbody tr {
-  transition: all var(--transition-speed) ease;
+/* ----- Sheet -------------------------------------------------------------------- */
+
+.ledger__sheet {
+  perspective: 900px;
 }
 
-.careers-table tbody tr:hover {
-  background-color: transparent;
-  transform: none;
-  box-shadow: none;
-  border-radius: 0;
+.ledger__head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: var(--space-4);
+  color: var(--text-faint);
+  border-bottom: 1px solid var(--line-hairline);
+  padding-bottom: var(--space-2);
+  margin-bottom: var(--space-3);
 }
 
-.careers-table tbody tr:last-child td {
-  border-bottom: none;
+.ledger__group {
+  margin-bottom: var(--space-5);
 }
 
-.subtitle {
-  font-weight: 600;
-  margin-top: 1.2rem;
+.ledger__sector {
+  color: var(--accent-brass);
+  margin: 0 0 var(--space-2);
+}
+
+.ledger__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: var(--space-4);
+  padding: 0.7em 0;
+  border-bottom: 1px solid var(--line-hairline);
+  font-size: var(--type-small);
+  color: var(--text-primary);
+  backface-visibility: hidden;
+}
+
+.ledger__name {
+  font-weight: 550;
+}
+
+.ledger__position,
+.ledger__company {
+  color: var(--text-secondary);
+}
+
+/* ----- Skeleton / empty ------------------------------------------------------------ */
+
+.ledger-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.ledger-skeleton__bar {
   display: block;
-  font-size: 1.25rem;
-  color: var(--accent-color);
-  width: 100%;
-  transition: color var(--transition-speed) ease;
+  height: 1.2rem;
+  background: var(--bg-overlay);
+  border-radius: 2px;
 }
 
-.subtitle:hover {
-  color: var(--primary-light);
+.ledger-empty {
+  color: var(--text-secondary);
 }
 
-.careers-table td:nth-child(1),
-.careers-table td:nth-child(2),
-.careers-table td:nth-child(3) {
-  max-width: 20rem;
-  white-space: normal;
-}
+/* ----- Responsive -------------------------------------------------------------------- */
 
 @media (max-width: 768px) {
-  body {
-    overflow-x: hidden;
+  .ledger {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
   }
 
-  .tabs {
-    flex-direction: column;
-    align-items: center;
-    padding: 1rem;
+  .ledger__years {
+    position: sticky;
+    top: 64px;
+    z-index: 5;
+    flex-direction: row;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: var(--space-2);
+    background: var(--bg-base);
+    padding: var(--space-2) var(--gutter);
+    margin: 0 calc(-1 * var(--gutter));
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
   }
 
-  .years {
-    flex-direction: column;
-    width: 100%;
-    border-radius: 12px;
-  }
-
-  .years li {
-    padding: 1rem;
-    border-right: none;
-    border-bottom: 1px solid var(--border-color);
-    text-align: center;
-  }
-
-  .years li:last-child {
-    border-bottom: none;
-  }
-
-  .careers-container {
-    width: 95%;
-    padding: 1.5rem;
-  }
-
-  .careers-table,
-  .careers-table tbody,
-  .careers-table tr {
-    display: block;
-    width: 100%;
-  }
-
-  .careers-table thead {
+  .ledger__years::-webkit-scrollbar {
     display: none;
   }
 
-  .careers-table tr {
-    margin-bottom: 1.5rem;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 0.5rem;
-    background-color: rgba(255, 255, 255, 0.02);
-    transition: all var(--transition-speed) ease;
+  .ledger__year {
+    scroll-snap-align: start;
+    border: 1px solid var(--line-hairline);
+    border-radius: 999px;
+    padding: 0.5em 1.1em;
+    white-space: nowrap;
   }
 
-  .careers-table tr:hover {
-    /* Mobile hover removed: no lift or shadow */
-    transform: none;
-    box-shadow: none;
+  .ledger__year::before {
+    display: none;
   }
 
-  .careers-table td {
-    display: flex;
-    flex-direction: column;
-    padding: 0.75rem;
-    text-align: left;
-    border-bottom: 1px solid var(--border-color);
+  .ledger__year.is-active {
+    background: var(--text-primary);
+    color: var(--bg-base);
+    border-color: var(--text-primary);
   }
 
-  .careers-table td::before {
-    content: attr(data-label);
-    font-weight: 600;
-    text-align: left;
-    margin-bottom: 0.5rem;
-    color: var(--accent-color);
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+  .ledger__head {
+    display: none;
   }
 
-  .careers-table td:last-child {
-    border-bottom: none;
+  .ledger__row {
+    grid-template-columns: 1fr;
+    gap: 0.2em;
+    padding: var(--space-3) 0;
   }
 
-  .subtitle {
-    font-size: 1.1rem;
-    margin: 0.75rem 0;
-    text-align: left;
-  }
-
-  .careers-table td,
-  .careers-table td:nth-child(1),
-  .careers-table td:nth-child(2),
-  .careers-table td:nth-child(3) {
-    max-width: none;
-    white-space: normal;
-    word-wrap: break-word;
+  .ledger__name {
+    font-size: 1rem;
   }
 }

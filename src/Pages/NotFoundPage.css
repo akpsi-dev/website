@@ -1,68 +1,120 @@
-.not-found-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background-color: #121212;
+/* ==========================================================================
+   404 — editorial correction notice
+   ========================================================================== */
+
+.not-found {
+  min-height: 100svh;
+  background: var(--bg-base);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-5);
+  padding: calc(76px + var(--space-5)) var(--gutter) var(--space-7);
+  box-sizing: border-box;
+  text-align: center;
 }
 
-.not-found-card {
-    max-width: 28rem;
-    width: 100%;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    border-radius: 0.5rem;
-    overflow: hidden;
+.not-found__numeral {
+  display: flex;
+  align-items: center;
+  gap: 0.06em;
+  font-family: var(--font-display);
+  font-size: clamp(7rem, 24vw, 18rem);
+  font-weight: 520;
+  font-variation-settings: "opsz" 144;
+  line-height: 1;
+  color: var(--text-primary);
 }
 
-.not-found-content {
-    padding: 1rem;
+.not-found__coin {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 0.78em;
+  height: 0.78em;
+  perspective: 800px;
 }
 
-.not-found-image {
-    width: 16rem;
-    height: auto;
-    object-fit: cover;
-    margin: 0 auto 1rem;
-    display: block;
+.not-found__coin img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  animation: coin-spin 6s linear infinite;
+  filter: drop-shadow(0 10px 30px rgba(22, 36, 61, 0.6));
 }
 
-.not-found-title {
-    font-size: 2.25rem;
-    font-weight: bold;
-    text-align: center;
-    color: #ffffff;
-    margin-bottom: 0.5rem;
+.not-found__coin--still img {
+  animation: none;
 }
 
-.not-found-message {
-    font-size: 1.25rem;
-    text-align: center;
-    color: #ffffff;
+@keyframes coin-spin {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(360deg);
+  }
 }
 
-.not-found-submessage {
-    text-align: center;
-    color: #6b7280;
-    margin-top: 0.5rem;
+.not-found__notice {
+  color: var(--text-secondary);
+  max-width: 44ch;
+  line-height: 1.8;
 }
 
-.not-found-action {
-    padding: 0.75rem 1rem;
+/* ----- Did-you-mean cards ---------------------------------------------------- */
+
+.not-found__suggest {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
 }
 
-.not-found-button {
-    display: block;
-    width: 100%;
-    text-align: center;
-    background-color: #3b82f6;
-    color: white;
-    font-weight: 600;
-    padding: 0.5rem 1rem;
-    border-radius: 0.25rem;
-    text-decoration: none;
+.not-found__suggest-label {
+  color: var(--accent-brass);
 }
 
-.not-found-button:hover {
-    background-color: #2563eb;
+.not-found__cards {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.not-found__card {
+  display: block;
+  width: 150px;
+  text-decoration: none;
+  background: var(--bg-raised);
+  border: 1px solid var(--line-hairline);
+  border-radius: 4px;
+  overflow: hidden;
+  transition: border-color var(--dur-micro) var(--ease-out);
+}
+
+.not-found__card:hover {
+  border-color: var(--accent-brass);
+}
+
+.not-found__card img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  display: block;
+}
+
+.not-found__card-name {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  padding: 0.9em 0.6em;
+}
+
+.not-found__home {
+  margin-top: var(--space-2);
 }

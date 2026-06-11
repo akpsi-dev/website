@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import "./FAQ.css";
 
 const faqData = [
@@ -40,7 +41,6 @@ const faqData = [
 ];
 
 export default function FAQ() {
-  // Only one open FAQ at a time for a sleek accordion feel.
   const [activeIndex, setActiveIndex] = useState(null);
 
   const toggleFAQ = (index) => {
@@ -48,29 +48,43 @@ export default function FAQ() {
   };
 
   return (
-    <section className="faq-section">
-      <div className="faq-header">
-        <h2>Frequently Asked Questions</h2>
-        <p>Your questions, answered.</p>
+    <section className="faq">
+      <div className="faq__heading hairline-bottom">
+        <span className="mono-label">FREQUENTLY ASKED QUESTIONS</span>
       </div>
-      <div className="faq-container">
-        {faqData.map((faq, index) => (
-          <div
-            className={`faq-item ${activeIndex === index ? "active" : ""}`}
-            key={index}
-          >
-            <button className="faq-question" onClick={() => toggleFAQ(index)}>
-              <span className="question-text">{faq.question}</span>
-              <span className="faq-icon">
-                {activeIndex === index ? "–" : "+"}
+      {faqData.map((faq, index) => {
+        const open = activeIndex === index;
+        return (
+          <div className="faq__item hairline-bottom" key={index}>
+            <button
+              className="faq__question"
+              onClick={() => toggleFAQ(index)}
+              aria-expanded={open}
+            >
+              <span className="faq__question-text">{faq.question}</span>
+              <span
+                className={`faq__icon${open ? " faq__icon--open" : ""}`}
+                aria-hidden="true"
+              >
+                +
               </span>
             </button>
-            <div className="faq-answer">
-              <p>{faq.answer}</p>
-            </div>
+            <AnimatePresence initial={false}>
+              {open && (
+                <motion.div
+                  className="faq__answer"
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  <p>{faq.answer}</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
-        ))}
-      </div>
+        );
+      })}
     </section>
   );
 }
