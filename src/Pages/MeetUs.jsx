@@ -64,7 +64,6 @@ function RosterIndex({ brothers }) {
             <CurtainLink
               to={`/${encodeURIComponent(createBrotherSlug(name))}`}
               className="roster-index__row hairline-bottom"
-              data-cursor="VIEW"
               onMouseEnter={() =>
                 setPreview({ src: headshotFor(name), visible: true })
               }
@@ -103,7 +102,6 @@ function RosterGrid({ brothers }) {
             <CurtainLink
               to={`/${encodeURIComponent(createBrotherSlug(name))}`}
               className="roster-card"
-              data-cursor="VIEW"
             >
               <span className="roster-card__media">
                 <Pic
@@ -183,7 +181,6 @@ function LeadershipGrid({ leaders, activeSlugs }) {
                     <CurtainLink
                       to={`/${encodeURIComponent(member.profileSlug)}`}
                       className="roster-card"
-                      data-cursor="VIEW"
                     >
                       {card}
                     </CurtainLink>
@@ -227,7 +224,6 @@ function LeadershipList({ leaders, activeSlugs }) {
                 key={`${member.fullName}-${i}`}
                 to={`/${encodeURIComponent(member.profileSlug)}`}
                 className="leadership__row hairline-bottom"
-                data-cursor="VIEW"
               >
                 {inner}
               </CurtainLink>

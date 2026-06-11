@@ -252,7 +252,7 @@ function PillarRow({ index, title, image, copy, to, label }) {
   const imageY = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"]);
 
   return (
-    <CurtainLink to={to} className="pillar-row" data-cursor="VIEW">
+    <CurtainLink to={to} className="pillar-row">
       <div className="pillar-row__inner hairline-bottom" ref={rowRef}>
         <div className="pillar-row__text">
           <span className="mono-label pillar-row__index">{index}</span>

@@ -8,7 +8,6 @@ import useLenis from "./utils/useLenis";
 import { CurtainProvider, ChunkCover } from "./Components/chrome/Curtain";
 import Preloader from "./Components/chrome/Preloader";
 import Grain from "./Components/chrome/Grain";
-import Cursor from "./Components/chrome/Cursor";
 import { Analytics } from "@vercel/analytics/react";
 
 const Home = lazy(() => import("./Pages/Home"));
@@ -26,7 +25,6 @@ function Chrome({ children }) {
     <>
       <Preloader />
       <Grain />
-      <Cursor />
       {children}
     </>
   );

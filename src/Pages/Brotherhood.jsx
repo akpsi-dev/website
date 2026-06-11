@@ -134,7 +134,6 @@ function CollageColumn({ images, indices, drift, onOpen }) {
           className="collage__item"
           key={indices[i]}
           onClick={() => onOpen(indices[i])}
-          data-cursor="VIEW"
           aria-label={`Open photo ${indices[i] + 1} of ${SCRAPBOOK_IMAGES.length}`}
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}

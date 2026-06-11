@@ -173,10 +173,17 @@
 
 /* ----- GRID view ------------------------------------------------------------- */
 
+/* Flex instead of grid so a partial last row centers its cards. */
 .roster-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: var(--space-4);
+}
+
+.roster-grid > * {
+  flex: 0 0 230px;
+  min-width: 0;
 }
 
 .roster-card {
@@ -313,8 +320,11 @@
   }
 
   .roster-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--space-2);
+  }
+
+  .roster-grid > * {
+    flex: 0 0 calc(50% - var(--space-2) / 2);
   }
 
   .roster-card__name {

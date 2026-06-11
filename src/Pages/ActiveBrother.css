@@ -102,14 +102,12 @@
   text-align: right;
 }
 
+/* Company logos are PNGs prepared for dark backgrounds — show them as-is. */
 .profile__company {
-  height: 26px;
+  height: 44px;
   width: auto;
-  max-width: 140px;
+  max-width: 220px;
   object-fit: contain;
-  background: rgba(244, 241, 234, 0.92);
-  border-radius: 2px;
-  padding: 3px 8px;
 }
 
 .profile__linkedin {
