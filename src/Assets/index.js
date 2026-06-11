@@ -99,11 +99,13 @@ export { default as BrotherhoodImage96 } from "./BrotherhoodPhotos/alexis_mel_fo
 export { default as BrotherhoodImage97 } from "./BrotherhoodPhotos/tuffskis.webp";
 export { default as BrotherhoodImage98 } from "./BrotherhoodPhotos/chis_cruise_2026.webp";
 
-export { default as CoreValueB } from "./AboutPhotos/CoreValueS.jpeg";
-export { default as CoreValueK } from "./AboutPhotos/CoreValueK.webp";
-export { default as CoreValueS } from "./AboutPhotos/CoreValueB.jpeg";
-export { default as CoreValueU } from "./AboutPhotos/CoreValueU.jpg";
-export { default as CoreValueI } from "./AboutPhotos/CoreValueI.jpg";
+
+export { default as CoreValueB} from "./AboutPhotos/CoreValueS.jpeg";
+export { default as CoreValueK} from "./AboutPhotos/CoreValueK.webp";
+export { default as CoreValueS} from "./AboutPhotos/CoreValueB.jpeg";
+export { default as CoreValueU} from "./AboutPhotos/CoreValueU.jpg";
+export { default as CoreValueI} from "./AboutPhotos/CoreValueI.jpg";
+
 
 export { default as AnujTrollPhoto } from "./TrollPhotos/IMG_1038.PNG";
 export { default as ChrisTrollPhoto } from "./TrollPhotos/IMG_1039.PNG";
@@ -163,19 +165,19 @@ export { default as AutodeskLogo } from "./Logos/AutodeskLogo.png";
 export { default as PfizerLogo } from "./Logos/PfizerLogo.png";
 export { default as SiemensLogo } from "./Logos/SiemensLogo.png";
 export { default as AmazonLogo } from "./Logos/AmazonLogo.png";
-export { default as RedbullLogo } from "./Logos/RedBullLogo.png";
-export { default as UBSLogo } from "./Logos/UBSLogo.png";
-export { default as RentazonLogo } from "./Logos/RentazonLogo.png";
-export { default as ThalesLogo } from "./Logos/ThalesLogo.png";
-export { default as ElevatedLogo } from "./Logos/ElevatedLogo.jpeg";
-export { default as OITLogo } from "./Logos/OITLogo.png";
-export { default as BiologicalSciencesLogo } from "./Logos/BiologicalSciencesLogo.png";
-export { default as EdisonLogo } from "./Logos/EdisonLogo.svg";
-export { default as YerbaMateLogo } from "./Logos/YerbaMateLogo.webp";
-export { default as CaliforniaISOLogo } from "./Logos/CaliforniaISOLogo.png";
-export { default as KumonLogo } from "./Logos/KumonLogo.png";
-export { default as MerageLogo } from "./Logos/MerageLogo.png";
-export { default as OriginsWorldFoodsLogo } from "./Logos/OriginsWorldFoodsLogo.png";
+export { default as RedbullLogo } from "./Logos/RedBullLogo.png"
+export { default as UBSLogo } from "./Logos/UBSLogo.png"
+export { default as RentazonLogo } from "./Logos/RentazonLogo.png"
+export { default as ThalesLogo } from "./Logos/ThalesLogo.png"
+export { default as ElevatedLogo } from "./Logos/ElevatedLogo.jpeg"
+export { default as OITLogo } from "./Logos/OITLogo.png"
+export { default as BiologicalSciencesLogo } from "./Logos/BiologicalSciencesLogo.png"
+export { default as EdisonLogo } from "./Logos/EdisonLogo.svg"
+export { default as YerbaMateLogo } from "./Logos/YerbaMateLogo.webp"
+export { default as CaliforniaISOLogo } from "./Logos/CaliforniaISOLogo.png"
+export { default as KumonLogo } from "./Logos/KumonLogo.png"
+export { default as MerageLogo } from "./Logos/MerageLogo.png"
+export { default as OriginsWorldFoodsLogo } from "./Logos/OriginsWorldFoodsLogo.png"
 export { default as WiseAssistantLogo } from "./Logos/WiseAssistantLogo.png";
 export { default as KimleyHornLogo } from "./Logos/KimleyHornLogo.webp";
 export { default as WiseLogo } from "./Logos/WiseAssistantLogo.png";
@@ -215,8 +217,7 @@ export { default as SBSLogo } from "./Logos/SBSLogo.png";
 export { default as TurboAILogo } from "./Logos/TurboAILogo.png";
 export { default as Wun2FreeLogo } from "./Logos/Wun2FreeLogo.png";
 export { default as SkylarLogo } from "./Logos/SkylarLogo.png";
-export { default as ReitLogo } from "./Logos/ReitLogo.png";
-export { default as PurpleLogo } from "./Logos/PurpleLogo.png";
+export { default as ReitLogo} from "./Logos/ReitLogo.png";
 export { default as JobrightLogo } from "./Logos/JobrightLogo.png";
 export { default as FritoLayLogo } from "./Logos/FritoLayLogo.png";
 export { default as UCIAthleticsLogo } from "./Logos/UCIAthleticsLogo.webp";
@@ -246,9 +247,9 @@ export { default as TeslaLogo } from "./Logos/TeslaLogo.png";
 export { default as VisaLogo } from "./Logos/VisaLogo.png";
 export { default as EikonTherapeuticsLogo } from "./Logos/EikonTherapeuticsLogo.webp";
 export { default as HPELogo } from "./Logos/IMG_5517.png";
-export { default as OLIPOPLogo } from "./Logos/OLIPOPLogo.png";
-export { default as ARMLogo } from "./Logos/ARMLogo.png";
-export { default as SalesforceLogo } from "./Logos/SalesforceLogo.png";
+export { default as OLIPOPLogo } from "./Logos/OLIPOPLogo.png"
+export { default as ARMLogo } from "./Logos/ARMLogo.png"
+export { default as SalesforceLogo } from "./Logos/SalesforceLogo.png"
 
 export { default as aboutImage1 } from "./AboutPhotos/aboutImage1.webp";
 export { default as aboutImage2 } from "./AboutPhotos/aboutImage2.webp";
@@ -258,7 +259,7 @@ export { default as aboutImage5 } from "./AboutPhotos/aboutImage5.webp";
 export { default as aboutImage6 } from "./AboutPhotos/aboutImage6.webp";
 export { default as aboutImage7 } from "./AboutPhotos/aboutImages7.webp";
 
-export { default as LastGMFall24 } from "./Frames/LastGMFall24Fraternity.webp";
-export { default as WinterRetreatFraternity } from "./Frames/WinterRetreatFraternity.webp";
+export {default as LastGMFall24 } from "./Frames/LastGMFall24Fraternity.webp";
+export {default as WinterRetreatFraternity } from "./Frames/WinterRetreatFraternity.webp";
 
 export { default as SummerAudio } from "./Audios/Calvin Harris - Summer.mp3";
