@@ -26,42 +26,24 @@ function writeCache(key, values) {
   }
 }
 
-// In development `npm start` has no /api routes (those need `vercel dev`),
-// so fall back to calling Google directly with the dev-only REACT_APP keys.
-// The NODE_ENV guard lets the production build drop this branch — and the
-// keys — from the bundle entirely.
-function devFallbackUrl(sheetId, range) {
-  if (process.env.NODE_ENV !== "development") return null;
-  const key =
-    sheetId === CAREERS_SHEET_ID
-      ? process.env.REACT_APP_CAREERS_INFO_KEY
-      : process.env.REACT_APP_ACTIVE_INFO_KEY;
-  if (!key) return null;
-  return `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}?key=${key}`;
+// The careers sheet and the roster sheet use separate Google API keys.
+function apiKeyFor(sheetId) {
+  return sheetId === CAREERS_SHEET_ID
+    ? process.env.REACT_APP_CAREERS_INFO_KEY
+    : process.env.REACT_APP_ACTIVE_INFO_KEY;
 }
 
 async function fetchSheet([sheetId, range]) {
-  const proxyUrl = `/api/sheet?id=${encodeURIComponent(sheetId)}&range=${encodeURIComponent(range)}`;
-  try {
-    const response = await axios.get(proxyUrl);
-    // CRA's dev server answers unknown routes with index.html, so insist on
-    // a real payload before trusting the proxy response.
-    if (!Array.isArray(response.data?.values)) {
-      throw new Error("Proxy unavailable");
-    }
-    return response.data.values;
-  } catch (error) {
-    const fallback = devFallbackUrl(sheetId, range);
-    if (!fallback) throw error;
-    const response = await axios.get(fallback);
-    return response.data.values ?? [];
-  }
+  const response = await axios.get(
+    `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}?key=${apiKeyFor(sheetId)}`,
+  );
+  return response.data.values ?? [];
 }
 
 /**
- * Cached Google Sheets fetch (via the /api/sheet proxy). Repeat navigations
- * render instantly from sessionStorage, and quota/network failures fall back
- * to the last good response instead of a blank page.
+ * Cached Google Sheets fetch (direct from the client with the REACT_APP_ keys).
+ * Repeat navigations render instantly from sessionStorage, and quota/network
+ * failures fall back to the last good response instead of a blank page.
  */
 export function useSheet(sheetId, range) {
   const cacheKey = `${sheetId}/${range}`;

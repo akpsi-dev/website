@@ -41,7 +41,7 @@ Framer Motion only (no GSAP). Entrances use `[0.16, 1, 0.3, 1]`; curtain/menu us
 
 All dynamic content comes from Google Sheets through `src/utils/useSheet.js` (SWR + sessionStorage persistence; stale cache renders on quota/network failure — never a blank page). Loading states are hairline skeletons, never spinners.
 
-In production the client calls the Vercel serverless proxy **`api/sheet.mjs`** (`/api/sheet?id=…&range=…`), which whitelists the exact sheet/range pairs, reads keys from server-side env vars (`ACTIVE_INFO_KEY`, `CAREERS_INFO_KEY` — no `REACT_APP_` prefix), and edge-caches responses for 5 minutes. Under `npm start` (no /api routes) `useSheet` falls back to calling Google directly with the dev-only `REACT_APP_*` keys from `.env`.
+The client fetches Google Sheets directly with the `REACT_APP_*` keys (`useSheet` picks the roster vs careers key by sheet id). These keys are inlined into the client bundle by CRA — a known, accepted trade-off (the chapter opted to keep client-side fetching rather than run a server proxy). If you ever want the keys off the client, reintroduce a Vercel serverless proxy that reads non-`REACT_APP_` server env vars; that was tried and reverted per chapter request — see [[akpsi-redesign-the-record]] memory.
 
 - **Member data** — Sheet `167TmecKc4cduWtdounqiXDkYgQjssu9cSz4QLljuKLg`, range `Form Responses 1!C2:M`; env var `REACT_APP_ACTIVE_INFO_KEY`
 - **Career data** — Sheet `1YY9TyYXJPHNJ8n1M2O9iKQaB00oCIghhkb5UpxTxV0g`, range `Form Responses 1!B2:G`; env var `REACT_APP_CAREERS_INFO_KEY` (CareerTable groups years dynamically — new sheet years appear without code changes)
@@ -76,12 +76,9 @@ Rush/cruise videos are served from CloudFront (CDN), not bundled; components use
 
 ### Environment Variables
 
-`.env` (local only, gitignored) defines:
+`.env` (local) and the Vercel project both define:
 ```
-REACT_APP_ACTIVE_INFO_KEY=<google-sheets-api-key>   # dev fallback for `npm start` only
-REACT_APP_CAREERS_INFO_KEY=<google-sheets-api-key>  # dev fallback for `npm start` only
-ACTIVE_INFO_KEY=<google-sheets-api-key>             # used by api/sheet.mjs (and `vercel dev`)
-CAREERS_INFO_KEY=<google-sheets-api-key>            # used by api/sheet.mjs (and `vercel dev`)
+REACT_APP_ACTIVE_INFO_KEY=<google-sheets-api-key>
+REACT_APP_CAREERS_INFO_KEY=<google-sheets-api-key>
 ```
-
-**Vercel project settings must define only `ACTIVE_INFO_KEY` and `CAREERS_INFO_KEY`** — never the `REACT_APP_` variants, or the keys will be inlined into the public bundle by CRA. The production bundle was verified key-free when building without the `REACT_APP_` vars.
+The client reads these directly. Because they're `REACT_APP_`-prefixed, CRA inlines them into the production bundle (the accepted trade-off above).
