@@ -43,20 +43,31 @@ export default function Home() {
       setIsLoading(false);
     }, 5000);
 
-    const handleCanPlay = () => {
+    const revealPage = () => {
       clearTimeout(timer);
       setIsLoading(false);
     };
 
     const videoElement = videoRef.current;
     if (videoElement) {
-      videoElement.addEventListener("canplay", handleCanPlay);
+      videoElement.addEventListener("canplay", revealPage);
+      // If the video 404s or the CDN is unreachable, "canplay" never fires and
+      // the page sat behind the loader for the full 5s. Reveal immediately
+      // instead — the hero just renders without its video.
+      videoElement.addEventListener("error", revealPage);
+      // A src that fails to resolve at all surfaces here rather than as "error".
+      if (videoElement.networkState === HTMLMediaElement.NETWORK_NO_SOURCE) {
+        revealPage();
+      }
+    } else {
+      revealPage();
     }
 
     return () => {
       clearTimeout(timer);
       if (videoElement) {
-        videoElement.removeEventListener("canplay", handleCanPlay);
+        videoElement.removeEventListener("canplay", revealPage);
+        videoElement.removeEventListener("error", revealPage);
       }
     };
   }, []);

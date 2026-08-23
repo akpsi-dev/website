@@ -21,7 +21,6 @@ import {
   BrotherhoodImage79,
   BrotherhoodImage80,
   BrotherhoodImage82,
-  BrotherhoodImage15,
   BrotherhoodImage83,
   BrotherhoodImage16,
   BrotherhoodImage9,
@@ -145,19 +144,30 @@ export default function Brotherhood() {
       setIsLoading(false);
     }, 5000);
 
-    const handleCanPlay = () => {
+    const revealPage = () => {
       clearTimeout(timer);
       setIsLoading(false);
     };
 
-    if (videoRef.current) {
-      videoRef.current.addEventListener("canplay", handleCanPlay);
+    // Captured once so cleanup detaches from the same node the effect attached
+    // to, even if the ref has since moved.
+    const videoElement = videoRef.current;
+    if (videoElement) {
+      videoElement.addEventListener("canplay", revealPage);
+      // Dead CDN / 404 means "canplay" never fires; don't hold the page hostage.
+      videoElement.addEventListener("error", revealPage);
+      if (videoElement.networkState === HTMLMediaElement.NETWORK_NO_SOURCE) {
+        revealPage();
+      }
+    } else {
+      revealPage();
     }
 
     return () => {
       clearTimeout(timer);
-      if (videoRef.current) {
-        videoRef.current.removeEventListener("canplay", handleCanPlay);
+      if (videoElement) {
+        videoElement.removeEventListener("canplay", revealPage);
+        videoElement.removeEventListener("error", revealPage);
       }
     };
   }, []);

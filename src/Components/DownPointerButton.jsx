@@ -15,7 +15,6 @@ export default function DownPointerButton() {
     if (snapElements.length === 0) return;
 
     const viewportHeight = window.innerHeight;
-    const currentScrollY = window.scrollY;
 
     const currentIndex = snapElements.findIndex(
       (el) =>

@@ -19,7 +19,7 @@ export default function App() {
         <Analytics />
         <Main />
         <Routes>
-          <Route exact path="/" element={<Home />} />
+          <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/meet-us" element={<MeetUs />} />
           <Route path="/brotherhood" element={<Brotherhood />} />

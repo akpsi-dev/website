@@ -7,7 +7,11 @@ import NavLinks from "./NavLinks";
 import "./Navbar.css";
 
 export function useMobile() {
-  const [isMobile, setIsMobile] = useState(false);
+  // Read the real width on first render. Starting at `false` made phones paint
+  // the desktop layout for a frame before snapping to mobile.
+  const [isMobile, setIsMobile] = useState(
+    () => typeof window !== "undefined" && window.innerWidth <= 768,
+  );
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
     handleResize();

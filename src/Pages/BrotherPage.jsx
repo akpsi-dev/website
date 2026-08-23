@@ -21,11 +21,18 @@ export default function BrotherPage() {
       const response = await axios.get(
         `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${range}?key=${API_KEY}`,
       );
-      const brotherIndex = response.data.values.findIndex(
-        (brother) => brother[0].replace(/ /g, "-") === name,
+      const rows = response.data.values || [];
+      // Guard the name cell: a single blank or malformed row used to throw here,
+      // which the catch below turned into a 404 for *every* brother, not just one.
+      // Slug logic must stay in sync with createBrotherSlug in MeetUs.jsx.
+      const brotherIndex = rows.findIndex(
+        (brother) =>
+          String(brother?.[0] ?? "")
+            .trim()
+            .replace(/\s+/g, "-") === name,
       );
       if (brotherIndex !== -1) {
-        setBrotherInfo(response.data.values[brotherIndex]);
+        setBrotherInfo(rows[brotherIndex]);
       } else {
         setIsNotFound(true);
       }
