@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import axios from "axios";
 import CareerDataRow from "./CareerDataRow";
 import "./CareerTable.css";
@@ -7,9 +7,66 @@ const SHEET_ID = "1YY9TyYXJPHNJ8n1M2O9iKQaB00oCIghhkb5UpxTxV0g";
 const API_KEY = process.env.REACT_APP_CAREERS_INFO_KEY;
 const RANGE = "Form Responses 1!B2:G";
 
+const CATEGORIES = [
+  "Accounting",
+  "Finance",
+  "Consulting",
+  "Marketing",
+  "Technology",
+  "Misc",
+];
+
+// Years we always show a tab for, even when the sheet has no rows for them yet.
+// Years beyond this list are added automatically as data arrives.
+const SEEDED_YEARS = ["2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025"];
+
+const makeYearBucket = () =>
+  CATEGORIES.reduce((bucket, category) => {
+    bucket[category] = [];
+    return bucket;
+  }, {});
+
+/**
+ * Turns raw Google Sheets rows into { [year]: { [category]: rows[] } }.
+ *
+ * Exported so it can be tested directly. Every branch here exists because the
+ * previous version indexed straight into a hardcoded year map, so one row with
+ * an unknown year or sector threw and left the whole Careers page blank.
+ *
+ * Row shape: [Name, Year, Category, Sector, Company, Position]
+ */
+export function buildCareerData(values) {
+  const byYear = SEEDED_YEARS.reduce((years, year) => {
+    years[year] = makeYearBucket();
+    return years;
+  }, {});
+
+  (values || []).forEach((row = []) => {
+    const year = String(row[1] ?? "").trim();
+    // A row with no year can't be filed anywhere — skip it rather than
+    // letting it take down the whole table.
+    if (!year) return;
+
+    if (!byYear[year]) byYear[year] = makeYearBucket();
+
+    // Unrecognised sectors land in Misc instead of throwing.
+    const rawCategory = String(row[2] ?? "").trim();
+    const category = CATEGORIES.includes(rawCategory) ? rawCategory : "Misc";
+
+    byYear[year][category].push({
+      Name: row[0],
+      Position: row[5],
+      Company: row[4],
+      Sector: row[3],
+    });
+  });
+
+  return byYear;
+}
+
 const CareerTable = () => {
-  const [data, setData] = useState([]);
-  const [selectedYear, setSelectedYear] = useState("2025");
+  const [data, setData] = useState({});
+  const [selectedYear, setSelectedYear] = useState(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -17,85 +74,7 @@ const CareerTable = () => {
         const response = await axios.get(
           `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`,
         );
-        const values = response.data.values;
-
-        const mainObj = {
-          2020: {
-            Accounting: [],
-            Finance: [],
-            Consulting: [],
-            Marketing: [],
-            Technology: [],
-            Misc: [],
-          },
-          2019: {
-            Accounting: [],
-            Finance: [],
-            Consulting: [],
-            Marketing: [],
-            Technology: [],
-            Misc: [],
-          },
-          2018: {
-            Accounting: [],
-            Finance: [],
-            Consulting: [],
-            Marketing: [],
-            Technology: [],
-            Misc: [],
-          },
-          2021: {
-            Accounting: [],
-            Finance: [],
-            Consulting: [],
-            Marketing: [],
-            Technology: [],
-            Misc: [],
-          },
-          2022: {
-            Accounting: [],
-            Finance: [],
-            Consulting: [],
-            Marketing: [],
-            Technology: [],
-            Misc: [],
-          },
-          2023: {
-            Accounting: [],
-            Finance: [],
-            Consulting: [],
-            Marketing: [],
-            Technology: [],
-            Misc: [],
-          },
-          2024: {
-            Accounting: [],
-            Finance: [],
-            Consulting: [],
-            Marketing: [],
-            Technology: [],
-            Misc: [],
-          },
-          2025: {
-            Accounting: [],
-            Finance: [],
-            Consulting: [],
-            Marketing: [],
-            Technology: [],
-            Misc: [],
-          },
-        };
-
-        values.forEach((row) => {
-          mainObj[row[1]][row[2]].push({
-            Name: row[0],
-            Position: row[5],
-            Company: row[4],
-            Sector: row[3],
-          });
-        });
-
-        setData(mainObj);
+        setData(buildCareerData(response.data.values));
       } catch (error) {
         console.error(error);
       }
@@ -108,8 +87,17 @@ const CareerTable = () => {
     setSelectedYear(year);
   };
 
+  const sortedYears = useMemo(
+    () => Object.keys(data).sort((a, b) => b - a),
+    [data],
+  );
+
+  // Default to the most recent year present so newly added years surface on
+  // their own, instead of the page going stale behind a hardcoded default.
+  const activeYear = selectedYear ?? sortedYears[0];
+
   const renderTableData = (category) => {
-    return data[selectedYear]?.[category]?.map((row, index) => (
+    return data[activeYear]?.[category]?.map((row, index) => (
       <CareerDataRow key={index} data={row} />
     ));
   };
@@ -118,12 +106,11 @@ const CareerTable = () => {
     <div>
       <div className="tabs">
         <ul className="years">
-          {Object.keys(data)
-            .sort((a, b) => b - a)
+          {sortedYears
             .map((year) => (
               <li
                 key={year}
-                className={selectedYear === year ? "is-active" : ""}
+                className={activeYear === year ? "is-active" : ""}
                 onClick={() => handleYearChange(year)}
               >
                 <button
