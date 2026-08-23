@@ -9,5 +9,12 @@ export default function Logo() {
     window.location.href = homeHref; // Redirects to the home page
   };
 
-  return <img src={instagramLogo} className="logo" onClick={handleClick} />;
+  return (
+    <img
+      src={instagramLogo}
+      className="logo"
+      onClick={handleClick}
+      alt="Alpha Kappa Psi — return to home page"
+    />
+  );
 }

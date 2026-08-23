@@ -267,7 +267,7 @@ export default function Brotherhood() {
                   <img
                     className="carousel-img"
                     src={image}
-                    alt="Photo of AKY Brothers"
+                    alt={`Alpha Kappa Psi brothers at a chapter event ${index + 1}`}
                     draggable={false}
                     loading="lazy"
                   />
@@ -298,7 +298,7 @@ export default function Brotherhood() {
                 <img
                   className={`scrapbook-img ${activeImage === index ? "active" : ""}`}
                   src={image}
-                  alt="Photo of AKY Brothers"
+                  alt={`Alpha Kappa Psi chapter scrapbook memory ${index + 1}`}
                   draggable={false}
                 />
                 <div className="scrapbook-glow"></div>

@@ -3,7 +3,6 @@ import "./About.css";
 import { motion } from "framer-motion";
 import FAQ from "../Components/FAQ";
 import {
-  aboutImage5,
   CoreValueB,
   CoreValueI,
   CoreValueK,
@@ -12,7 +11,6 @@ import {
   WinterRetreatFraternity,
 } from "../Assets";
 import { Instagram, Facebook, LinkedIn } from "@mui/icons-material";
-import { useMobile } from "../Components/Navbar";
 import { fadeInVariants, scaleInVariants } from "../utils/motion";
 import {
   PieChart,
@@ -22,7 +20,6 @@ import {
   Line,
   XAxis,
   YAxis,
-  Tooltip,
   Legend,
   ResponsiveContainer,
 } from "recharts";
@@ -56,8 +53,6 @@ const placementData = [
 const COLORS = ["#0066cc", "#00a86b", "#f39c12", "#8e44ad", "#e74c3c", "#3498db"];
 
 export default function About() {
-  const { isMobile } = useMobile();
-
   useEffect(() => {
     const observerOptions = {
       root: null,
@@ -88,8 +83,12 @@ export default function About() {
   return (
     <div className="home-container">
       <div className="background-image">
-        {!isMobile && <img src={WinterRetreatFraternity} />}
-        {isMobile && <img src={WinterRetreatFraternity} />}
+        {/* Both branches rendered the identical image, so the isMobile split
+            was a no-op. Collapsed to a single tag. */}
+        <img
+          src={WinterRetreatFraternity}
+          alt="Alpha Kappa Psi brothers gathered at the chapter winter retreat"
+        />
       </div>
       <motion.div className="hero-section">
         <div className="hero-content">
