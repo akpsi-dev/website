@@ -17,78 +17,11 @@ body {
   line-height: 1.6;
 }
 
-.tabs {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 3rem;
-}
-
-.years {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  border: 1px solid var(--border-color);
-  border-radius: 50px;
-  overflow: hidden;
-  background-color: var(--bg-card);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: box-shadow var(--transition-speed) ease;
-  -webkit-user-select: none; /* Safari */
-  -ms-user-select: none; /* IE 10 and IE 11 */
-  user-select: none; /* Standard syntax */
-}
-
-.years:hover {
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-}
-
-.years li {
-  display: inline-block;
-  color: var(--text-light);
-  font-size: 1rem;
-  padding: 1rem 1.5rem;
-  cursor: pointer;
-  transition: all var(--transition-speed) ease;
-  border-right: 1px solid var(--border-color);
-  position: relative;
-  overflow: hidden;
-}
-
-.years li::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    120deg,
-    transparent,
-    rgba(255, 255, 255, 0.2),
-    transparent
-  );
-  transition: all 0.6s ease;
-}
-
-.years li:hover::before {
-  left: 100%;
-}
-
-.years li.is-active {
-  background-color: var(--primary-color);
-  color: var(--text-light);
-  font-weight: 600;
-}
-
-.tabs .years li:hover {
-  background-color: var(--primary-light);
-  transform: translateY(-2px);
-}
-
-.years li:last-child {
-  border-right: none;
-}
+/* ==========================================================================
+   The Ledger — placement records, grouped by sector under a year index.
+   Palette comes from the :root block above; nothing here depends on the
+   redesign's tokens.css.
+   ========================================================================== */
 
 .careers-container {
   width: 80%;
@@ -103,184 +36,138 @@ body {
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
 }
 
-.careers-table {
-  width: 100%;
-  table-layout: fixed;
-  border-collapse: separate;
-  border-spacing: 0;
-  margin: 0 !important;
-}
-
-.careers-table th,
-.careers-table td {
-  padding: 1.2rem;
+.ledger {
+  display: grid;
+  /* .careersContainer centres its children; the ledger is a left-aligned
+     record, so opt back out rather than fighting it per cell. */
   text-align: left;
-  word-wrap: break-word;
-  border-bottom: 1px solid var(--border-color);
-  transition: background-color var(--transition-speed) ease;
+  /* minmax(0, 1fr) on the sheet is load-bearing: a grid track defaults to
+     min-content, so one long company name would otherwise push the whole
+     page wider than the viewport. */
+  grid-template-columns: minmax(72px, auto) minmax(0, 1fr);
+  gap: 2.5rem;
+  align-items: start;
 }
 
-.careers-table th {
-  background-color: var(--primary-color);
-  color: var(--text-light);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+/* ----- Year index ---------------------------------------------------------- */
+
+.ledger__years {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  position: sticky;
+  top: 6rem;
+  min-width: 0;
+}
+
+.ledger__year {
   position: relative;
-}
-
-.careers-table th::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: var(--accent-color);
-  transform: scaleX(0);
-  transition: transform 0.3s ease;
-}
-
-.careers-table th:hover::after {
-  transform: scaleX(1);
-}
-
-.careers-table tbody tr {
-  transition: all var(--transition-speed) ease;
-}
-
-.careers-table tbody tr:hover {
-  background-color: transparent;
-  transform: none;
-  box-shadow: none;
-  border-radius: 0;
-}
-
-.careers-table tbody tr:last-child td {
-  border-bottom: none;
-}
-
-.subtitle {
-  font-weight: 600;
-  margin-top: 1.2rem;
-  display: block;
-  font-size: 1.25rem;
-  color: var(--accent-color);
-  width: 100%;
+  background: none;
+  border: none;
+  text-align: left;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0.45em 0 0.45em 1.4em;
+  font: inherit;
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
   transition: color var(--transition-speed) ease;
 }
 
-.subtitle:hover {
-  color: var(--primary-light);
+.ledger__year::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 0.9em;
+  height: 1px;
+  background: var(--accent-color);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--transition-speed) ease;
 }
 
-.careers-table td:nth-child(1),
-.careers-table td:nth-child(2),
-.careers-table td:nth-child(3) {
-  max-width: 20rem;
-  white-space: normal;
+.ledger__year:hover {
+  color: var(--text-light);
 }
 
-@media (max-width: 768px) {
-  body {
-    overflow-x: hidden;
-  }
-
-  .tabs {
-    flex-direction: column;
-    align-items: center;
-    padding: 1rem;
-  }
-
-  .years {
-    flex-direction: column;
-    width: 100%;
-    border-radius: 12px;
-  }
-
-  .years li {
-    padding: 1rem;
-    border-right: none;
-    border-bottom: 1px solid var(--border-color);
-    text-align: center;
-  }
-
-  .years li:last-child {
-    border-bottom: none;
-  }
-
-  .careers-container {
-    width: 95%;
-    padding: 1.5rem;
-  }
-
-  .careers-table,
-  .careers-table tbody,
-  .careers-table tr {
-    display: block;
-    width: 100%;
-  }
-
-  .careers-table thead {
-    display: none;
-  }
-
-  .careers-table tr {
-    margin-bottom: 1.5rem;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 0.5rem;
-    background-color: rgba(255, 255, 255, 0.02);
-    transition: all var(--transition-speed) ease;
-  }
-
-  .careers-table tr:hover {
-    /* Mobile hover removed: no lift or shadow */
-    transform: none;
-    box-shadow: none;
-  }
-
-  .careers-table td {
-    display: flex;
-    flex-direction: column;
-    padding: 0.75rem;
-    text-align: left;
-    border-bottom: 1px solid var(--border-color);
-  }
-
-  .careers-table td::before {
-    content: attr(data-label);
-    font-weight: 600;
-    text-align: left;
-    margin-bottom: 0.5rem;
-    color: var(--accent-color);
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  .careers-table td:last-child {
-    border-bottom: none;
-  }
-
-  .subtitle {
-    font-size: 1.1rem;
-    margin: 0.75rem 0;
-    text-align: left;
-  }
-
-  .careers-table td,
-  .careers-table td:nth-child(1),
-  .careers-table td:nth-child(2),
-  .careers-table td:nth-child(3) {
-    max-width: none;
-    white-space: normal;
-    word-wrap: break-word;
-  }
+.ledger__year.is-active {
+  color: var(--text-light);
+  font-weight: 600;
 }
 
-/* Skeleton shown while the careers sheet resolves — hairline bars sized like
-   table rows, so the container doesn't resize when the real data lands. */
+.ledger__year.is-active::before {
+  transform: scaleX(1);
+}
+
+.ledger__year:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+}
+
+/* ----- Sheet --------------------------------------------------------------- */
+
+.ledger__sheet {
+  perspective: 900px;
+  min-width: 0;
+}
+
+.ledger__head,
+.ledger__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: 1.5rem;
+}
+
+.ledger__head {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.ledger__group {
+  margin-bottom: 2rem;
+}
+
+.ledger__sector {
+  color: var(--accent-color);
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  margin: 0 0 0.5rem;
+}
+
+.ledger__row {
+  padding: 0.7em 0;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-light);
+  font-size: 1rem;
+  /* The flap rotates in 3D; hide the reverse face so it can't flicker. */
+  backface-visibility: hidden;
+}
+
+.ledger__name,
+.ledger__position,
+.ledger__company {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.ledger__name {
+  font-weight: 600;
+}
+
+.ledger__position,
+.ledger__company {
+  color: var(--text-muted);
+}
+
+/* ----- Skeleton / empty ---------------------------------------------------- */
+
 .careers-skeleton {
   display: flex;
   flex-direction: column;
@@ -307,12 +194,112 @@ body {
   }
 }
 
+.ledger-empty {
+  color: var(--text-muted);
+  margin: 0;
+  padding: 1rem 0;
+}
+
+/* ----- Reduced motion ------------------------------------------------------ */
+
 @media (prefers-reduced-motion: reduce) {
   .careers-skeleton__bar {
     animation: none;
+  }
+
+  .ledger__year,
+  .ledger__year::before {
+    transition: none;
   }
 }
 
 html[data-reduced-motion="true"] .careers-skeleton__bar {
   animation: none;
+}
+
+html[data-reduced-motion="true"] .ledger__year,
+html[data-reduced-motion="true"] .ledger__year::before {
+  transition: none;
+}
+
+/* ----- Responsive ---------------------------------------------------------- */
+
+@media (max-width: 768px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  .careers-container {
+    width: 100%;
+    padding: 1.5rem 1rem;
+  }
+
+  .ledger {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.25rem;
+  }
+
+  /* Year index becomes a scrolling chip rail. It stays inside the container
+     padding — no negative-margin bleed, which is what used to push the page
+     sideways on a 390px screen. */
+  .ledger__years {
+    position: static;
+    flex-direction: row;
+    gap: 0.5rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 0.25rem;
+  }
+
+  .ledger__years::-webkit-scrollbar {
+    display: none;
+  }
+
+  .ledger__year {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    padding: 0.5em 1.1em;
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+
+  .ledger__year::before {
+    display: none;
+  }
+
+  .ledger__year.is-active {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--text-light);
+  }
+
+  .ledger__head {
+    display: none;
+  }
+
+  /* One column per row, with the header text carried by data-label so the
+     columns stay readable without a horizontal scroll. */
+  .ledger__row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.15rem;
+    padding: 1rem 0;
+  }
+
+  .ledger__name {
+    font-size: 1.05rem;
+  }
+
+  .ledger__position::before,
+  .ledger__company::before {
+    content: attr(data-label);
+    display: block;
+    color: var(--accent-color);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 0.35rem;
+  }
 }

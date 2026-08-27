@@ -1,6 +1,8 @@
 import React, { useState, useMemo } from "react";
-import CareerDataRow from "./CareerDataRow";
+import { motion, AnimatePresence } from "framer-motion";
 import { useSheet, CAREERS_SHEET_ID, CAREERS_RANGE } from "../utils/useSheet";
+import { useMotionPrefs } from "../utils/useMotionPrefs";
+import { EASE_OUT_EXPO } from "../utils/motion";
 import "./CareerTable.css";
 
 const CATEGORIES = [
@@ -73,15 +75,16 @@ export function buildCareerData(values) {
 // without needing a random source that would change on every render.
 const SKELETON_BARS = Array.from({ length: 8 }, (_, i) => 72 - ((i * 11) % 35));
 
+// Rows past this index skip the flap stagger and just fade in. Keeps a year
+// switch snappy on a long year and cheap on a mid-range phone.
+const FLAP_CAP = 14;
+
 const CareerTable = () => {
   const { rows, isLoading } = useSheet(CAREERS_SHEET_ID, CAREERS_RANGE);
+  const { reducedMotion } = useMotionPrefs();
   const [selectedYear, setSelectedYear] = useState(null);
 
   const data = useMemo(() => buildCareerData(rows), [rows]);
-
-  const handleYearChange = (year) => {
-    setSelectedYear(year);
-  };
 
   const sortedYears = useMemo(
     () => Object.keys(data).sort((a, b) => b - a),
@@ -92,11 +95,13 @@ const CareerTable = () => {
   // their own, instead of the page going stale behind a hardcoded default.
   const activeYear = selectedYear ?? sortedYears[0];
 
-  const renderTableData = (category) => {
-    return data[activeYear]?.[category]?.map((row, index) => (
-      <CareerDataRow key={index} data={row} />
-    ));
-  };
+  const groups = useMemo(() => {
+    const yearData = data[activeYear] ?? {};
+    return CATEGORIES.map((category) => [
+      category,
+      yearData[category] ?? [],
+    ]).filter(([, entries]) => entries.length > 0);
+  }, [data, activeYear]);
 
   if (isLoading) {
     return (
@@ -114,75 +119,98 @@ const CareerTable = () => {
     );
   }
 
+  // Counts flaps across sectors, so the stagger reads as one continuous
+  // cascade down the sheet rather than restarting at every heading.
+  let flapIndex = 0;
+
   return (
-    <div>
-      <div className="tabs">
-        <ul className="years">
+    <div className="careers-container">
+      <div className="ledger">
+        <nav className="ledger__years" aria-label="Placement year">
           {sortedYears.map((year) => (
-            <li
+            <button
               key={year}
-              className={activeYear === year ? "is-active" : ""}
-              onClick={() => handleYearChange(year)}
+              type="button"
+              className={`ledger__year${year === activeYear ? " is-active" : ""}`}
+              onClick={() => setSelectedYear(year)}
+              aria-pressed={year === activeYear}
             >
-              <button
-                type="button"
-                className="year-button"
-                style={{
-                  background: "none",
-                  border: "none",
-                  padding: 0,
-                  margin: 0,
-                  font: "inherit",
-                  color: "inherit",
-                  cursor: "pointer",
-                }}
-              >
-                {year}
-              </button>
-            </li>
+              {year}
+            </button>
           ))}
-        </ul>
-      </div>
-      <div className="careers-container">
-        <table className="careers-table table is-fullwidth is-striped">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Position</th>
-              <th>Company</th>
-              <th>Sector</th>
-            </tr>
-          </thead>
-          <tbody>
-            {[
-              "Accounting",
-              "Finance",
-              "Consulting",
-              "Marketing",
-              "Technology",
-              "Misc",
-            ].map((category) => {
-              const categoryRows = renderTableData(category) || [];
-              if (categoryRows.length > 0) {
-                return (
-                  <React.Fragment key={category}>
-                    <tr>
-                      <td
-                        colSpan="10"
-                        className="subtitle has-text-weight-semibold"
-                        style={{ textDecoration: "none", fontWeight: "bold" }}
-                      >
-                        {category}
-                      </td>
-                    </tr>
-                    {categoryRows}
-                  </React.Fragment>
-                );
-              }
-              return null;
-            })}
-          </tbody>
-        </table>
+        </nav>
+
+        <div className="ledger__sheet">
+          <div className="ledger__head" aria-hidden="true">
+            <span>Name</span>
+            <span>Position</span>
+            <span>Company</span>
+          </div>
+
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeYear}
+              initial={{ opacity: reducedMotion ? 1 : 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0, transition: { duration: 0.15 } }}
+            >
+              {groups.length === 0 ? (
+                <p className="ledger-empty">
+                  No placements recorded for {activeYear} yet.
+                </p>
+              ) : (
+                groups.map(([category, entries]) => (
+                  <section className="ledger__group" key={category}>
+                    <h3 className="ledger__sector">{category}</h3>
+                    {entries.map((entry, index) => {
+                      const flap = flapIndex++;
+                      return (
+                        <motion.div
+                          className="ledger__row"
+                          key={`${entry.Name}-${index}`}
+                          initial={
+                            reducedMotion
+                              ? { opacity: 1 }
+                              : flap < FLAP_CAP
+                                ? { rotateX: -85, opacity: 0 }
+                                : { opacity: 0 }
+                          }
+                          animate={{ rotateX: 0, opacity: 1 }}
+                          transition={
+                            reducedMotion
+                              ? { duration: 0 }
+                              : {
+                                  duration: 0.5,
+                                  delay: Math.min(flap, FLAP_CAP) * 0.035,
+                                  ease: EASE_OUT_EXPO,
+                                }
+                          }
+                          style={{ transformOrigin: "center top" }}
+                        >
+                          <span className="ledger__name" data-label="Name">
+                            {entry.Name}
+                          </span>
+                          <span
+                            className="ledger__position"
+                            data-label="Position"
+                          >
+                            {entry.Position}
+                          </span>
+                          <span
+                            className="ledger__company"
+                            data-label="Company"
+                          >
+                            {entry.Company}
+                          </span>
+                        </motion.div>
+                      );
+                    })}
+                  </section>
+                ))
+              )}
+            </motion.div>
+          </AnimatePresence>
+        </div>
       </div>
     </div>
   );

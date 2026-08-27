@@ -11,24 +11,27 @@ import Recruitment from "./Pages/Recruitment";
 import BrotherPage from "./Pages/BrotherPage";
 import NotFoundPage from "./Pages/NotFoundPage";
 import { Analytics } from "@vercel/analytics/react";
+import { MotionPrefsProvider } from "./utils/useMotionPrefs";
 
 export default function App() {
   return (
-    <Router>
-      <div className="App">
-        <Analytics />
-        <Main />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/meet-us" element={<MeetUs />} />
-          <Route path="/brotherhood" element={<Brotherhood />} />
-          <Route path="/careers" element={<Careers />} />
-          <Route path="/rush" element={<Recruitment />} />
-          <Route path="/:name" element={<BrotherPage />} />
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-      </div>
-    </Router>
+    <MotionPrefsProvider>
+      <Router>
+        <div className="App">
+          <Analytics />
+          <Main />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/meet-us" element={<MeetUs />} />
+            <Route path="/brotherhood" element={<Brotherhood />} />
+            <Route path="/careers" element={<Careers />} />
+            <Route path="/rush" element={<Recruitment />} />
+            <Route path="/:name" element={<BrotherPage />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </div>
+      </Router>
+    </MotionPrefsProvider>
   );
 }
