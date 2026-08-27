@@ -1,11 +1,7 @@
-import React, { useState, useEffect, useMemo } from "react";
-import axios from "axios";
+import React, { useState, useMemo } from "react";
 import CareerDataRow from "./CareerDataRow";
+import { useSheet, CAREERS_SHEET_ID, CAREERS_RANGE } from "../utils/useSheet";
 import "./CareerTable.css";
-
-const SHEET_ID = "1YY9TyYXJPHNJ8n1M2O9iKQaB00oCIghhkb5UpxTxV0g";
-const API_KEY = process.env.REACT_APP_CAREERS_INFO_KEY;
-const RANGE = "Form Responses 1!B2:G";
 
 const CATEGORIES = [
   "Accounting",
@@ -18,7 +14,16 @@ const CATEGORIES = [
 
 // Years we always show a tab for, even when the sheet has no rows for them yet.
 // Years beyond this list are added automatically as data arrives.
-const SEEDED_YEARS = ["2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025"];
+const SEEDED_YEARS = [
+  "2018",
+  "2019",
+  "2020",
+  "2021",
+  "2022",
+  "2023",
+  "2024",
+  "2025",
+];
 
 const makeYearBucket = () =>
   CATEGORIES.reduce((bucket, category) => {
@@ -64,24 +69,15 @@ export function buildCareerData(values) {
   return byYear;
 }
 
+// Widths are derived from the index so the bars look like ragged ledger rows
+// without needing a random source that would change on every render.
+const SKELETON_BARS = Array.from({ length: 8 }, (_, i) => 72 - ((i * 11) % 35));
+
 const CareerTable = () => {
-  const [data, setData] = useState({});
+  const { rows, isLoading } = useSheet(CAREERS_SHEET_ID, CAREERS_RANGE);
   const [selectedYear, setSelectedYear] = useState(null);
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await axios.get(
-          `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`,
-        );
-        setData(buildCareerData(response.data.values));
-      } catch (error) {
-        console.error(error);
-      }
-    }
-
-    fetchData();
-  }, []);
+  const data = useMemo(() => buildCareerData(rows), [rows]);
 
   const handleYearChange = (year) => {
     setSelectedYear(year);
@@ -102,26 +98,49 @@ const CareerTable = () => {
     ));
   };
 
+  if (isLoading) {
+    return (
+      <div className="careers-container">
+        <div className="careers-skeleton" aria-hidden="true">
+          {SKELETON_BARS.map((width, index) => (
+            <span
+              className="careers-skeleton__bar"
+              key={index}
+              style={{ width: `${width}%` }}
+            />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div>
       <div className="tabs">
         <ul className="years">
-          {sortedYears
-            .map((year) => (
-              <li
-                key={year}
-                className={activeYear === year ? "is-active" : ""}
-                onClick={() => handleYearChange(year)}
+          {sortedYears.map((year) => (
+            <li
+              key={year}
+              className={activeYear === year ? "is-active" : ""}
+              onClick={() => handleYearChange(year)}
+            >
+              <button
+                type="button"
+                className="year-button"
+                style={{
+                  background: "none",
+                  border: "none",
+                  padding: 0,
+                  margin: 0,
+                  font: "inherit",
+                  color: "inherit",
+                  cursor: "pointer",
+                }}
               >
-                <button
-                  type="button"
-                  className="year-button"
-                  style={{ background: "none", border: "none", padding: 0, margin: 0, font: "inherit", color: "inherit", cursor: "pointer" }}
-                >
-                  {year}
-                </button>
-              </li>
-            ))}
+                {year}
+              </button>
+            </li>
+          ))}
         </ul>
       </div>
       <div className="careers-container">

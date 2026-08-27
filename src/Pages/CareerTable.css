@@ -13,7 +13,7 @@
 body {
   background-color: var(--bg-dark);
   color: var(--text-light);
-  font-family: 'Playfair Display';
+  font-family: "Playfair Display";
   line-height: 1.6;
 }
 
@@ -56,13 +56,18 @@ body {
 }
 
 .years li::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
   transition: all 0.6s ease;
 }
 
@@ -125,7 +130,7 @@ body {
 }
 
 .careers-table th::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 0;
   left: 0;
@@ -272,4 +277,42 @@ body {
     white-space: normal;
     word-wrap: break-word;
   }
+}
+
+/* Skeleton shown while the careers sheet resolves — hairline bars sized like
+   table rows, so the container doesn't resize when the real data lands. */
+.careers-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.careers-skeleton__bar {
+  display: block;
+  height: 1.2rem;
+  background-color: var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  border-radius: 2px;
+  opacity: 0.6;
+  animation: careers-skeleton-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes careers-skeleton-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .careers-skeleton__bar {
+    animation: none;
+  }
+}
+
+html[data-reduced-motion="true"] .careers-skeleton__bar {
+  animation: none;
 }
