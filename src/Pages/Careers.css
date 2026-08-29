@@ -5,10 +5,7 @@
   justify-content: center;
   min-height: 100vh;
   width: 100%;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+  background-color: #121212;
   overflow-y: auto;
   scroll-snap-type: y mandatory;
   scroll-behavior: smooth;
@@ -22,7 +19,13 @@
   width: 100%;
   color: white;
   text-align: center;
-  background: rgba(0, 0, 0, 0.3); /* Optional: Adds a dark overlay for better text visibility */
+  /* The image itself is set inline in Careers.jsx, layered under a dark
+     gradient so the title stays readable. */
+  background-color: #121212;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   box-sizing: border-box;
   scroll-snap-align: start;
 }
@@ -39,7 +42,7 @@
 
 .careersmainTitle {
   font-size: 3rem;
-  font-family: 'Playfair Display';
+  font-family: "Playfair Display";
   color: rgb(255, 255, 255);
   text-align: center;
   margin: 0;
@@ -50,15 +53,14 @@
   z-index: 2;
 }
 
-
 .careers-subtitle1 {
-  font-family: 'Greek Font', sans-serif;
+  font-family: "Greek Font", sans-serif;
   font-size: 24px;
   margin: 0;
 }
 
 .careers-section {
-  font-family: 'Greek Font', sans-serif;
+  font-family: "Greek Font", sans-serif;
   font-size: 24px;
   margin: 0;
   background: #121212;
@@ -70,7 +72,7 @@
   border-radius: 2rem;
   border: 1rem hidden blue;
   border-collapse: collapse;
-  box-shadow:rgba(0, 0, 0, 0.6)
+  box-shadow: rgba(0, 0, 0, 0.6);
 }
 
 .thead {
@@ -79,7 +81,8 @@
   color: white;
 }
 
-.th, .td {
+.th,
+.td {
   border: 1px solid #dbdbdb;
   border-width: 0 0 1px;
   padding: 0.5em 0.75em;
@@ -88,4 +91,13 @@
 
 .td {
   font-size: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  /* iOS Safari renders background-attachment: fixed by sizing the image to the
+     document rather than the viewport, which blows the hero photo up. Let it
+     scroll with the page on small screens. */
+  .careerstitleSection {
+    background-attachment: scroll;
+  }
 }

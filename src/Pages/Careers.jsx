@@ -29,11 +29,16 @@ export default function Careers() {
   }
 
   return (
-    <div
-      className="careersContainer"
-      style={{ backgroundImage: `url(${alumni1})` }}
-    >
-      <motion.div className="careerstitleSection">
+    <div className="careersContainer">
+      {/* The photo belongs to the hero only. It used to sit on the page
+          container, so it stayed fixed behind the whole route — including
+          behind the ledger — and read as a full-page wallpaper. */}
+      <motion.div
+        className="careerstitleSection"
+        style={{
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url(${alumni1})`,
+        }}
+      >
         <div className="hero-title" style={{ top: "-150px" }}>
           Careers
         </div>
