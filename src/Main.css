@@ -1,12 +1,53 @@
+/* The header is taken out of flow so the hero photos on /, /careers and /rush
+   run full-bleed underneath it. That means it never reserves space, so page
+   content passes beneath it and needs a scrim to stay legible. */
 .main-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 5px;
-  background: transparent; 
+  background: transparent;
   z-index: 100;
-  position: absolute!important; 
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   width: 100%;
   box-sizing: border-box;
+  /* Only the logo and the nav itself should be clickable. Without this the
+     header's full-width box swallows clicks on whatever sits in the top
+     ~76px of the page. */
+  pointer-events: none;
+}
+
+/* Scrim: blurs and darkens the band the header occupies, fading out below
+   it. Without this, content scrolling past collides with the nav — worst on
+   /careers, where the bright company logos run straight through the links.
+   The mask fades the blur out too, so there is no hard seam. */
+.main-header::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 170%;
+  pointer-events: none;
+  z-index: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(10, 10, 14, 0.92) 0%,
+    rgba(10, 10, 14, 0.7) 40%,
+    rgba(10, 10, 14, 0) 100%
+  );
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+}
+
+/* Restore clicks on the logo and nav, and keep them above the scrim. */
+.main-header > * {
+  pointer-events: auto;
+  position: relative;
+  z-index: 1;
 }
