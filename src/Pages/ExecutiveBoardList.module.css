@@ -2,7 +2,12 @@
   --primary-color: #0074b2;
   --accent-color: #0084b4da;
   --bg-dark: #121212;
-  --bg-card: rgba(255, 255, 255, 0.1); /* Adding transparency for glassmorphism */
+  --bg-card: rgba(
+    255,
+    255,
+    255,
+    0.1
+  ); /* Adding transparency for glassmorphism */
   --text-light: #ffffff;
   --text-muted: #b0b0b0;
   --card-shadow: rgba(0, 0, 0, 0.15);
@@ -13,7 +18,7 @@
 body {
   background-color: var(--bg-dark);
   color: var(--text-light);
-  font-family: 'Playfair Display';
+  font-family: "Playfair Display";
 }
 
 .container {
@@ -23,7 +28,7 @@ body {
   padding: 2rem;
   background-color: var(--bg-card);
   backdrop-filter: blur(10px); /* Glass effect */
-  box-shadow: 0 8px 24px var(--card-shadow); 
+  box-shadow: 0 8px 24px var(--card-shadow);
   border: 1px solid var(--glass-border); /* Border for glass effect */
   box-sizing: border-box;
 }
@@ -51,6 +56,14 @@ body {
 }
 
 .brotherCard {
+  /* Skip layout, paint and image decode for cards that are off screen. This
+     grid is 73 cards deep and every one of them was being rendered at all
+     times — 76 loaded images holding ~121MB of decoded bitmap on a page you
+     have to scroll 4000px through. contain-intrinsic-size keeps the scrollbar
+     honest by reserving each card's real measured height (211x337) until it is
+     rendered for the first time, so nothing jumps. */
+  content-visibility: auto;
+  contain-intrinsic-size: auto 337px;
   background-color: rgba(37, 37, 37, 0.5); /* Subtle background transparency */
   box-shadow: 0 4px 12px var(--card-shadow);
   transition: all 0.4s ease;
@@ -79,7 +92,9 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.4s ease, filter 0.4s ease;
+  transition:
+    transform 0.4s ease,
+    filter 0.4s ease;
 }
 
 .brotherCard:hover .brotherPhoto {
@@ -138,8 +153,12 @@ body {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* Responsive layout adjustments */
@@ -160,7 +179,7 @@ body {
     grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
   }
-  
+
   .container {
     max-width: 90%;
     padding: 1.5rem;
@@ -178,7 +197,7 @@ body {
 }
 
 h2 {
-  font-family: 'Playfair Display';
+  font-family: "Playfair Display";
   font-size: 2.5rem;
   font-weight: 700;
   color: var(--text-light);
@@ -189,14 +208,18 @@ h2 {
 }
 
 h2::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
   width: 60px;
   height: 4px;
-  background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+  background: linear-gradient(
+    to right,
+    var(--primary-color),
+    var(--accent-color)
+  );
   border-radius: 2px;
 }
 

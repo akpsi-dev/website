@@ -20,27 +20,6 @@ import { RUSH_START } from "../utils/rushDate";
    entries with the Fall dates and flip this. */
 const RUSH_STATE = "coming-soon";
 
-/* Evergreen copy only. Nothing here dates, and nothing here hints at the
-   theme, which is not public until the week of rush. */
-const RUSH_BRIEF = [
-  {
-    label: "Who",
-    body: "Every UCI undergraduate, any major, any year. No business background needed.",
-  },
-  {
-    label: "When",
-    body: "The week of September 28, 2026. Exact dates and times land with the schedule.",
-  },
-  {
-    label: "Where",
-    body: "On campus. Rooms are announced alongside the schedule.",
-  },
-  {
-    label: "What to expect",
-    body: "A handful of open events across the week — meeting brothers, alumni, and each other.",
-  },
-];
-
 export default function Recruitment() {
   const [isMobile, setIsMobile] = useState(false);
 
@@ -200,19 +179,6 @@ export default function Recruitment() {
           </div>
         )}
       </div>
-      {isComingSoon && (
-        <section className="rush-brief" aria-label="What to know about rush">
-          <div className="rush-brief__rule" aria-hidden="true" />
-          <dl className="rush-brief__grid">
-            {RUSH_BRIEF.map(({ label, body }) => (
-              <div className="rush-brief__item" key={label}>
-                <dt className="rush-brief__label">{label}</dt>
-                <dd className="rush-brief__body">{body}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
-      )}
       {/* Both are schedule-dependent: the cards are the schedule, and the down
           arrow exists to page through them. Neither has anything to show while
           the dates are unannounced. */}
