@@ -10,10 +10,38 @@
  */
 import { promises as fs } from "node:fs";
 import path from "node:path";
+import crypto from "node:crypto";
 import sharp from "sharp";
 
 const ROOT = path.resolve(process.cwd(), "src/Assets");
 const DRY_RUN = process.argv.includes("--dry-run");
+const FORCE = process.argv.includes("--force");
+/* Records the current tree as already-optimized without touching a single
+   file. Needed once, to adopt assets that were optimized before the manifest
+   existed — re-encoding them just to learn their hashes would have been a
+   second lossy pass over the whole library. */
+const SEED = process.argv.includes("--seed");
+
+/* webp and jpeg are lossy, so re-encoding an already-encoded file loses a
+   little more every time. Running this script twice used to do exactly that:
+   the second pass re-wrote ~190 files that the first pass had already
+   optimized, quietly compounding the loss.
+
+   So we record the hash of everything we write. A file whose current contents
+   are already in the manifest is skipped, because we produced it. Replace an
+   image and its hash no longer matches, so it gets optimized normally.
+   --force ignores the manifest. */
+const MANIFEST = path.resolve(process.cwd(), "scripts/.optimized-images.json");
+const sha = (buf) => crypto.createHash("sha1").update(buf).digest("hex");
+
+async function loadManifest() {
+  if (FORCE) return new Set();
+  try {
+    return new Set(JSON.parse(await fs.readFile(MANIFEST, "utf8")));
+  } catch {
+    return new Set();
+  }
+}
 
 // Max long-edge pixels per directory.
 const DIR_RULES = [
@@ -92,12 +120,29 @@ async function optimize(filePath, maxDim, quality, alwaysDownscale = false) {
   return { saved: input.length - output.length, from: input.length };
 }
 
+if (SEED) {
+  const hashes = [];
+  for await (const file of walk(ROOT)) {
+    if (!ruleFor(file)) continue;
+    hashes.push(sha(await fs.readFile(file)));
+  }
+  await fs.writeFile(MANIFEST, JSON.stringify(hashes, null, 0));
+  console.log(`seeded manifest with ${hashes.length} already-optimized files`);
+  process.exit(0);
+}
+
+const done = await loadManifest();
 let totalSaved = 0;
 let touched = 0;
+let skipped = 0;
 for await (const file of walk(ROOT)) {
   const rule = ruleFor(file);
   if (!rule) continue;
   try {
+    if (done.has(sha(await fs.readFile(file)))) {
+      skipped += 1;
+      continue;
+    }
     const result = await optimize(
       file,
       rule.maxDim,
