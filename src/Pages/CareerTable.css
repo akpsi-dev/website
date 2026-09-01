@@ -23,8 +23,12 @@ body {
    redesign's tokens.css.
    ========================================================================== */
 
+/* Matches .logos (90% / max-width 1200px) so the ledger's edges line up with
+   the logo row directly above it. At 80% the panel stopped 120px short of the
+   logos on each side, which read as the table being inset in dead space. */
 .careers-container {
-  width: 80%;
+  width: 90%;
+  max-width: 1200px;
   margin: 0 auto 2rem auto;
   background-color: var(--bg-card);
   padding: 2.5rem;
@@ -130,7 +134,7 @@ body {
 }
 
 .ledger__group {
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 /* The sector is a grouping label, not the content. It used to be the loudest
@@ -158,7 +162,8 @@ body {
 }
 
 .ledger__row {
-  padding: 0.7em 0;
+  /* Was 0.7em, which put rows at 50px and made a short year read as sparse. */
+  padding: 0.45em 0;
   border-bottom: 1px solid var(--border-color);
   color: var(--text-light);
   font-size: 1rem;
