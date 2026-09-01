@@ -18,8 +18,8 @@ html {
 }
 
 .viewport {
-  height: 100vh;
-  height: 100dvh;
+  min-height: 100vh;
+  min-height: 100dvh;
   scroll-snap-align: start;
   display: flex;
   flex-direction: column;
@@ -373,5 +373,86 @@ html {
 
   .rush-comingsoon__note {
     font-size: 0.875rem;
+  }
+}
+
+/* ----- coming-soon brief --------------------------------------------------- */
+/* Four evergreen facts under the hero. Restrained on purpose: the theme is not
+   public yet, so this leans on type and space rather than decoration, and
+   nothing here needs redoing when the reveal lands.
+   Designed at 390px; the desktop step-up is at the bottom. */
+
+.rush-brief {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.5rem 5rem;
+  box-sizing: border-box;
+  /* The hero centres its text and these inherit it; a four-item brief is read
+     down the left edge, not scanned from a ragged centre. */
+  text-align: left;
+}
+
+/* The quiet divider between the hero and the facts. */
+.rush-brief__rule {
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(255, 255, 255, 0.16) 20%,
+    rgba(255, 255, 255, 0.16) 80%,
+    transparent
+  );
+  margin-bottom: 3rem;
+}
+
+.rush-brief__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2.25rem;
+  margin: 0;
+}
+
+.rush-brief__item {
+  min-width: 0;
+}
+
+.rush-brief__label {
+  margin: 0 0 0.6rem;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent-color, #00a0dc);
+}
+
+.rush-brief__body {
+  margin: 0;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.82);
+  text-wrap: pretty;
+}
+
+@media (min-width: 769px) {
+  .rush-brief {
+    padding: 0 2rem 7rem;
+  }
+
+  .rush-brief__rule {
+    margin-bottom: 4rem;
+  }
+
+  .rush-brief__grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 3rem 2.5rem;
+  }
+
+  .rush-brief__body {
+    font-size: 1.125rem;
   }
 }

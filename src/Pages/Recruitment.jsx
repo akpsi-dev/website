@@ -20,6 +20,27 @@ import { RUSH_START } from "../utils/rushDate";
    entries with the Fall dates and flip this. */
 const RUSH_STATE = "coming-soon";
 
+/* Evergreen copy only. Nothing here dates, and nothing here hints at the
+   theme, which is not public until the week of rush. */
+const RUSH_BRIEF = [
+  {
+    label: "Who",
+    body: "Every UCI undergraduate, any major, any year. No business background needed.",
+  },
+  {
+    label: "When",
+    body: "The week of September 28, 2026. Exact dates and times land with the schedule.",
+  },
+  {
+    label: "Where",
+    body: "On campus. Rooms are announced alongside the schedule.",
+  },
+  {
+    label: "What to expect",
+    body: "A handful of open events across the week — meeting brothers, alumni, and each other.",
+  },
+];
+
 export default function Recruitment() {
   const [isMobile, setIsMobile] = useState(false);
 
@@ -127,28 +148,35 @@ export default function Recruitment() {
     <div className="recruitmentContainer">
       <div className="hero-recruitment-Section viewport">
         <h1 className="main-recruitment-Title">
-          Fall Rush{" "}
-          <RotatingText
-            /* Order reversed: with loop={false} the rotation settles on the
-               last entry, so ["2026", "2016"] left the headline reading
-               "Fall Rush 2016" — beside a countdown to an actual 2026 date.
-               Flipping it keeps the retro flash and lands on the real year. */
-            texts={["2016", "2026"]}
-            rotationInterval={1000}
-            loop={false}
-            splitBy="characters"
-            staggerFrom="last"
-            staggerDuration={0.06}
-            initial={{ y: "60%", opacity: 0 }}
-            animate={{ y: "0%", opacity: 1 }}
-            exit={{ y: "-60%", opacity: 0 }}
-            transition={{
-              type: "spring",
-              damping: 25,
-              stiffness: 300,
-            }}
-            mainClassName="countdown-year"
-          />
+          {isComingSoon ? (
+            "Fall Rush 2026"
+          ) : (
+            <>
+              Fall Rush{" "}
+              {/* The 2016 flash is a joke about the retro skyline that used to
+                  back this page. It is kept for the live schedule, but it has
+                  no place next to a countdown, where the year is information
+                  rather than a gag. RotatingText itself is untouched and still
+                  in the repo. */}
+              <RotatingText
+                texts={["2016", "2026"]}
+                rotationInterval={1000}
+                loop={false}
+                splitBy="characters"
+                staggerFrom="last"
+                staggerDuration={0.06}
+                initial={{ y: "60%", opacity: 0 }}
+                animate={{ y: "0%", opacity: 1 }}
+                exit={{ y: "-60%", opacity: 0 }}
+                transition={{
+                  type: "spring",
+                  damping: 25,
+                  stiffness: 300,
+                }}
+                mainClassName="countdown-year"
+              />
+            </>
+          )}
         </h1>
         {isComingSoon ? (
           <div className="rush-comingsoon">
@@ -172,6 +200,19 @@ export default function Recruitment() {
           </div>
         )}
       </div>
+      {isComingSoon && (
+        <section className="rush-brief" aria-label="What to know about rush">
+          <div className="rush-brief__rule" aria-hidden="true" />
+          <dl className="rush-brief__grid">
+            {RUSH_BRIEF.map(({ label, body }) => (
+              <div className="rush-brief__item" key={label}>
+                <dt className="rush-brief__label">{label}</dt>
+                <dd className="rush-brief__body">{body}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+      )}
       {/* Both are schedule-dependent: the cards are the schedule, and the down
           arrow exists to page through them. Neither has anything to show while
           the dates are unannounced. */}
