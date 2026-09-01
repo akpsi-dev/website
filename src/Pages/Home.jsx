@@ -7,6 +7,14 @@ import SleekButton from "../Components/SleekButton";
 import { OpenInNew } from "@mui/icons-material";
 import { Instagram, Facebook, LinkedIn } from "@mui/icons-material";
 import { BrotherhoodImage75 } from "../Assets";
+import HomeHero from "../Components/HomeHero";
+
+/* Which hero state the site is in. Switching this single value moves the whole
+   hero between the teaser countdown, the rush-week video, and the plain title —
+   all three are already built and styled in HomeHero.jsx.
+
+   'teaser' -> 'video' when rush week opens, 'video' -> 'default' after. */
+const HERO_VARIANT = "teaser";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
@@ -107,28 +115,13 @@ export default function Home() {
         </div>
       )}
       <div className={`home-container ${isLoading ? "hidden" : ""}`}>
-        <div className="background-video">
-            
-              <video
-                ref={videoRef}
-                src={"https://d395js6c4h8h6h.cloudfront.net/Videos/SpringRushVideo2026.mp4"}
-                autoPlay
-                muted
-                playsInline
-                loop
-                preload="auto"
-              >
-                Your browser does not support the video tag.
-              </video>
-
-        </div>
-        <motion.div className="hero-section">
-          <div className="hero-content">
-            <motion.h1 className="hero-title" onClick={() => infoSectionRef.current?.scrollIntoView({ behavior: 'smooth' })} style={{ cursor: 'pointer' }}>
-              ΑΚΨ - UCI
-            </motion.h1>
-          </div>
-        </motion.div>
+        <HomeHero
+          variant={HERO_VARIANT}
+          videoRef={videoRef}
+          onTitleClick={() =>
+            infoSectionRef.current?.scrollIntoView({ behavior: "smooth" })
+          }
+        />
         <div className="section-background info-background" ref={infoSectionRef}>
           <div className="section-overlay"></div>
           <div className="info-section">

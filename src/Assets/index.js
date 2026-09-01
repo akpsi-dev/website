@@ -263,3 +263,5 @@ export {default as LastGMFall24 } from "./Frames/LastGMFall24Fraternity.webp";
 export {default as WinterRetreatFraternity } from "./Frames/WinterRetreatFraternity.webp";
 
 export { default as SummerAudio } from "./Audios/Calvin Harris - Summer.mp3";
+
+export { default as TeaserHero } from "./Frames/TeaserHero.png";

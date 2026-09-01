@@ -1,0 +1,73 @@
+/* Designed at 390px first; the media query below is the desktop step up. */
+
+.countdown {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.countdown__cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+/* Fixed slots. Two things keep the row from jittering as the numbers change:
+   tabular-nums makes every digit the same advance width, and the min-width
+   reserves the widest value each unit can reach. Days gets 3ch because it is
+   the one cell that can outgrow two digits (this counts down from ~390). */
+.countdown__value {
+  display: inline-block;
+  min-width: 2ch;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+  text-align: center;
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--text-light, #ffffff);
+  font-family: "Playfair Display", Georgia, serif;
+}
+
+.countdown__value--days {
+  min-width: 3ch;
+}
+
+.countdown__unit {
+  font-size: 0.625rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.62);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.countdown--expired {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-light, #ffffff);
+  margin: 0;
+}
+
+@media (min-width: 769px) {
+  .countdown {
+    gap: 1rem;
+  }
+
+  .countdown__value {
+    font-size: 2.75rem;
+  }
+
+  .countdown__unit {
+    font-size: 0.75rem;
+  }
+
+  .countdown--expired {
+    font-size: 2.25rem;
+  }
+}
