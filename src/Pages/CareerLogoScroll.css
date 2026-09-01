@@ -73,15 +73,17 @@
   margin: 0 20px;
   object-fit: contain;
   object-position: center;
-  filter: grayscale(100%);
-  opacity: 0.55;
+  filter: grayscale(35%);
+  opacity: 0.8;
   transition: opacity 0.3s, filter 0.3s;
   flex-shrink: 0;
 }
 
-/* One treatment for all of them. At grayscale(20%) the full-colour marks —
-   NBC, Walmart, Red Bull — still read as colour while Apple and JPMorgan
-   read as grey, so the row looked like two different sets of assets. */
+/* One treatment for all of them, which was the point of normalising this row.
+   Full grayscale went too far — Red Bull, NBC and Meta stopped being
+   recognisable at a glance, and recognising the brands is the whole reason the
+   row exists. 35% desaturation keeps every logo on the same treatment while
+   leaving enough colour to identify them; hover still goes fully saturated. */
 .logos-slide img:hover {
   opacity: 1;
   filter: grayscale(0%);
