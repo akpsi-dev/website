@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styles from "./ExecutiveBoardList.module.css";
 import { headshotHash } from "../Assets/headshot";
+import Pic from "../Components/Pic";
 
 export default function ExecutiveBoardList({ brothers }) {
   const cabinetMembers = brothers.filter(
@@ -15,7 +16,7 @@ export default function ExecutiveBoardList({ brothers }) {
     const cardContent = (
       <>
         <div className={styles.imageWrapper}>
-          <img
+          <Pic
             src={
               headshotHash[brother.fullName]
                 ? headshotHash[brother.fullName]

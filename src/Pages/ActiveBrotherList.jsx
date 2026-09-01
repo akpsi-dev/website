@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styles from "./ActiveBrotherList.module.css";
+import Pic from "../Components/Pic";
 import { headshotHash } from "../Assets/headshot";
 import { companyHash } from "../Assets/company";
 
@@ -31,16 +32,19 @@ export default function ActiveBrotherList({ brothers, isLoading }) {
                   className={styles.brotherLink}
                 >
                   <div className={styles.imageWrapper}>
-                    <img
+                    <Pic
                       src={
                         headshotHash[name] || headshotHash["Default Headshot"]
                       }
                       alt={name}
                       className={styles.brotherPhoto}
-                      loading="lazy"
                     />
                     <div className={styles.overlay}>
-                      <img
+                      {/* The overlay sits at opacity 0 until the card is
+                          hovered, but these were eager: 73 company logos,
+                          several of them 3000-4096px wide, all fetched and
+                          decoded for something nobody had looked at yet. */}
+                      <Pic
                         src={
                           companyHash[name] || companyHash["Default Headshot"]
                         }
