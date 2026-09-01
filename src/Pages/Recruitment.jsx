@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "./Recruitment.css";
-import { PalmTreeCity } from "../Assets";
 import RushEventInfo from "../Components/RushEventInfo";
 import DownPointerButton from "../Components/DownPointerButton";
 import RushButton from "../Components/RushButton";
@@ -22,7 +21,6 @@ import { RUSH_START } from "../utils/rushDate";
 const RUSH_STATE = "coming-soon";
 
 export default function Recruitment() {
-  const [isLoading, setIsLoading] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
 
   const events = [
@@ -99,16 +97,6 @@ export default function Recruitment() {
     };
   }, [audio]);
 
-  useEffect(() => {
-    const img = new Image();
-    img.src = PalmTreeCity;
-    img.onload = () => {
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 500);
-    };
-  }, []);
-
   // Get the appropriate calendar link based on device
   const getCalendarLink = () => {
     // Full calendar ID (from your embed URL)
@@ -132,14 +120,6 @@ export default function Recruitment() {
       return `https://calendar.google.com/calendar/u/0?cid=${encodedId}&ctz=${encodedTz}`;
     }
   };
-
-  if (isLoading) {
-    return (
-      <div className="loader-container">
-        <div className="loader"></div>
-      </div>
-    );
-  }
 
   const isComingSoon = RUSH_STATE === "coming-soon";
 

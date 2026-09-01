@@ -15,10 +15,18 @@
   gap: 0.2rem;
 }
 
-/* Fixed slots. Two things keep the row from jittering as the numbers change:
-   tabular-nums makes every digit the same advance width, and the min-width
-   reserves the widest value each unit can reach. Days gets 3ch because it is
-   the one cell that can outgrow two digits (this counts down from ~390). */
+/* Fixed slots.
+
+   The font matters more than the CSS here. Playfair Display, which the rest of
+   the site uses, has no tabular-figure feature, so font-variant-numeric was a
+   no-op against it and its digits range from 16.85px wide ("1") to 28.38px
+   ("0") at this size — an 11.53px spread, which reads as the numbers changing
+   size on every tick. Arial's digits are all exactly one width, and it already
+   sets the unit labels below.
+
+   min-width still earns its place: it reserves the widest value each unit can
+   reach, so the row holds when days drops from three digits to two. Days gets
+   3ch because it is the only cell that can exceed two (this starts near 390). */
 .countdown__value {
   display: inline-block;
   min-width: 2ch;
@@ -29,7 +37,7 @@
   font-weight: 700;
   line-height: 1.1;
   color: var(--text-light, #ffffff);
-  font-family: "Playfair Display", Georgia, serif;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .countdown__value--days {

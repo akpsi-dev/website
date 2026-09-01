@@ -12,26 +12,9 @@ html {
   min-height: 100dvh;
   position: relative;
   font-family: "Anton", "Arial Narrow", Arial, sans-serif;
-  background-image: url("../Assets/Frames/SPRING2026.jpg");
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-}
-
-.recruitmentContainer::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: radial-gradient(
-    circle at center,
-    rgba(0, 0, 0, 0.45) 0%,
-    rgba(0, 0, 0, 0.65) 100%
-  );
-  pointer-events: none;
-  z-index: 1;
+  /* The Spring 2026 skyline is gone; the page reads as flat dark until there
+     is Fall artwork to put here. */
+  background-color: #121212;
 }
 
 .viewport {
@@ -369,14 +352,6 @@ html {
   align-items: center;
   gap: 0.9rem;
   margin-top: 1.5rem;
-}
-
-/* The hero photo is bright behind the digits, and Countdown ships no shadow of
-   its own — it is used on the dark tartan hero too. */
-.rush-comingsoon .countdown__value,
-.rush-comingsoon .countdown__unit,
-.rush-comingsoon .countdown--expired {
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.85);
 }
 
 .rush-comingsoon__note {
