@@ -15,8 +15,7 @@ import sharp from "sharp";
 const ROOT = path.resolve(process.cwd(), "src/Assets");
 const DRY_RUN = process.argv.includes("--dry-run");
 
-// Max long-edge pixels per directory. Logos are excluded — they're small
-// and need crisp edges/transparency.
+// Max long-edge pixels per directory.
 const DIR_RULES = [
   { dir: "ActiveHeadshots", maxDim: 1000 },
   { dir: "BrotherhoodPhotos", maxDim: 1600 },
@@ -25,6 +24,18 @@ const DIR_RULES = [
   { dir: "Frames", maxDim: 2400, quality: 85 },
   { dir: "TrollPhotos", maxDim: 1400 },
   { dir: "Side Photos", maxDim: 1600 },
+  // Logos were excluded upstream on the assumption they are small and need
+  // crisp edges. This set is not small: several are 3000-4096px wide, and they
+  // were the worst overdraw on /meet-us — a 4096px mark decoded into a 159px
+  // box. 800px still covers the largest use (a 140px slot at DPR 3 needs 420),
+  // and PNG stays lossless with alpha intact, so edges and transparency hold.
+  // alwaysDownscale: several logos are enormous in pixels but tiny on disk —
+  // DeloitteLogo.png is 3840x2160 in 24.8KB because it is mostly transparent.
+  // Downscaling those makes the *file* slightly bigger, so the smaller-output
+  // guard below rejects them. Bytes are not the cost that matters here: a
+  // 3840x2160 PNG allocates ~33MB of bitmap when decoded whatever it weighs,
+  // and that is what shows up as jank. Accept a few KB to lose 30MB of decode.
+  { dir: "Logos", maxDim: 800, quality: 88, alwaysDownscale: true },
 ];
 
 const QUALITY = { webp: 72, jpeg: 74, png: 80 };
@@ -42,7 +53,7 @@ function ruleFor(filePath) {
   return DIR_RULES.find((r) => rel.startsWith(r.dir + path.sep));
 }
 
-async function optimize(filePath, maxDim, quality) {
+async function optimize(filePath, maxDim, quality, alwaysDownscale = false) {
   const ext = path.extname(filePath).toLowerCase();
   if (![".webp", ".png", ".jpg", ".jpeg"].includes(ext)) return null;
 
@@ -72,7 +83,10 @@ async function optimize(filePath, maxDim, quality) {
   }
 
   const output = await pipeline.toBuffer();
-  if (output.length >= input.length) return { saved: 0 };
+  // Normally only write a genuine byte win. When a rule sets alwaysDownscale,
+  // a resize is worth taking for the decode saving even if bytes tick up.
+  const keep = output.length < input.length || (alwaysDownscale && needsResize);
+  if (!keep) return { saved: 0 };
 
   if (!DRY_RUN) await fs.writeFile(filePath, output);
   return { saved: input.length - output.length, from: input.length };
@@ -84,8 +98,13 @@ for await (const file of walk(ROOT)) {
   const rule = ruleFor(file);
   if (!rule) continue;
   try {
-    const result = await optimize(file, rule.maxDim, rule.quality);
-    if (result?.saved > 0) {
+    const result = await optimize(
+      file,
+      rule.maxDim,
+      rule.quality,
+      rule.alwaysDownscale,
+    );
+    if (result && result.saved !== 0) {
       totalSaved += result.saved;
       touched += 1;
       console.log(
