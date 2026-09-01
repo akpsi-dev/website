@@ -133,12 +133,28 @@ body {
   margin-bottom: 2rem;
 }
 
+/* The sector is a grouping label, not the content. It used to be the loudest
+   thing on the page — 1.1rem, weight 600, in the bright accent blue — which
+   put it above the brother names it was only there to group. It now reads as
+   a quiet rule with a caption, in the same muted grey as the column headers,
+   and the names carry the emphasis. */
 .ledger__sector {
-  color: var(--accent-color);
-  font-size: 1.1rem;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  margin: 0 0 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  margin: 0 0 0.75rem;
+}
+
+.ledger__sector::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background-color: var(--border-color);
 }
 
 .ledger__row {
@@ -157,8 +173,11 @@ body {
   overflow-wrap: anywhere;
 }
 
+/* Names lead now that the sector label has stepped back. */
 .ledger__name {
   font-weight: 600;
+  font-size: 1.05rem;
+  color: var(--text-light);
 }
 
 .ledger__position,
@@ -292,14 +311,17 @@ html[data-reduced-motion="true"] .ledger__year::before {
     font-size: 1.05rem;
   }
 
+  /* Muted rather than accent, matching .ledger__head on desktop. In the
+     accent blue these captions repeated the sector label's mistake — the
+     word POSITION outshouting the position itself. */
   .ledger__position::before,
   .ledger__company::before {
     content: attr(data-label);
     display: block;
-    color: var(--accent-color);
-    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-size: 0.7rem;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.08em;
     margin-top: 0.35rem;
   }
 }
