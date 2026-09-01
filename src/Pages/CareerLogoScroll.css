@@ -58,16 +58,30 @@
   animation: slideReverse 65s linear infinite;
 }
 
+/* Every logo gets the same box and is contained inside it, so the artwork's
+   aspect ratio no longer decides how big it reads. Sizing on height alone
+   made a wide wordmark tower over a square mark: JPMorgan rendered 651x60
+   against Warner Bros at 47x60, a 13.8x difference in area.
+
+   The margins are symmetric on purpose. The track renders the list twice and
+   loops on translateX(-50%), so each item must own its full share of the
+   spacing; a flex `gap` would leave the halves half a gap out of step and the
+   loop would visibly jump. */
 .logos-slide img {
-  height: 60px;
-  margin: 0 24px;
+  width: 140px;
+  height: 44px;
+  margin: 0 20px;
   object-fit: contain;
-  filter: grayscale(20%);
-  opacity: 0.85;
+  object-position: center;
+  filter: grayscale(100%);
+  opacity: 0.55;
   transition: opacity 0.3s, filter 0.3s;
   flex-shrink: 0;
 }
 
+/* One treatment for all of them. At grayscale(20%) the full-colour marks —
+   NBC, Walmart, Red Bull — still read as colour while Apple and JPMorgan
+   read as grey, so the row looked like two different sets of assets. */
 .logos-slide img:hover {
   opacity: 1;
   filter: grayscale(0%);
@@ -87,7 +101,8 @@
   }
 
   .logos-slide img {
-    height: 44px;
-    margin: 0 16px;
+    width: 104px;
+    height: 32px;
+    margin: 0 14px;
   }
 }
