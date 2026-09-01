@@ -22,10 +22,13 @@ html, body {
 
 /* Main container styles */
 .home-container {
-  height: 100vh;
+  /* Grows with its content instead of scrolling inside a viewport-sized box,
+     so the document is the scroller and window.scrollY tracks. Used by both
+     Home and About. scroll-behavior went with the overflow — it only applied
+     while this element scrolled, and the two scrollIntoView callers pass
+     behavior: "smooth" explicitly anyway. */
+  min-height: 100vh;
   width: 100%;
-  overflow-y: auto;
-  scroll-behavior: smooth;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

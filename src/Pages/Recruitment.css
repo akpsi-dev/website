@@ -8,10 +8,8 @@ html {
 }
 
 .recruitmentContainer {
-  height: 100vh;
-  height: 100dvh;
-  overflow-y: scroll;
-  scroll-snap-type: y mandatory;
+  min-height: 100vh;
+  min-height: 100dvh;
   position: relative;
   font-family: "Anton", "Arial Narrow", Arial, sans-serif;
   background-image: url("../Assets/Frames/SPRING2026.jpg");

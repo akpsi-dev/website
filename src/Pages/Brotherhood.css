@@ -39,8 +39,7 @@ html, body {
 
 /* Main container styles */
 .section-container {
-  height: 100vh;
-  overflow-y: auto;
+  min-height: 100vh;
 }
 
 /* Video section styles - KEPT UNTOUCHED */
