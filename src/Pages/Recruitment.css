@@ -358,3 +358,45 @@ html {
     font-size: 0.9rem;
   }
 }
+
+/* ----- coming-soon state --------------------------------------------------- */
+/* Shown instead of .rush-buttons while RUSH_STATE is 'coming-soon'. Designed
+   at 390px first; the desktop step-up is at the bottom. */
+
+.rush-comingsoon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+  margin-top: 1.5rem;
+}
+
+/* The hero photo is bright behind the digits, and Countdown ships no shadow of
+   its own — it is used on the dark tartan hero too. */
+.rush-comingsoon .countdown__value,
+.rush-comingsoon .countdown__unit,
+.rush-comingsoon .countdown--expired {
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.85);
+}
+
+.rush-comingsoon__note {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+  text-align: center;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
+}
+
+@media (min-width: 769px) {
+  .rush-comingsoon {
+    gap: 1.2rem;
+    margin-top: 2rem;
+  }
+
+  .rush-comingsoon__note {
+    font-size: 0.875rem;
+  }
+}

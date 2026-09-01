@@ -6,6 +6,20 @@ import DownPointerButton from "../Components/DownPointerButton";
 import RushButton from "../Components/RushButton";
 import RotatingText from "../Components/RotatingText/RotatingText";
 import { SummerAudio } from "../Assets";
+import Countdown from "../Components/Countdown";
+import { RUSH_START } from "../utils/rushDate";
+
+/* Which rush cycle state the page is in.
+
+   'coming-soon' — Fall Rush 2026 is announced but the schedule is not. Shows
+                   the hero and a countdown to RUSH_START, and nothing else.
+   'live'        — the full schedule, as the page has always rendered.
+
+   The `events` array below is deliberately left in place. It still holds the
+   Spring 2026 dates, which are stale, but keeping it means switching to 'live'
+   is a one-value edit against a structure you can already see — replace the
+   entries with the Fall dates and flip this. */
+const RUSH_STATE = "coming-soon";
 
 export default function Recruitment() {
   const [isLoading, setIsLoading] = useState(true);
@@ -127,13 +141,19 @@ export default function Recruitment() {
     );
   }
 
+  const isComingSoon = RUSH_STATE === "coming-soon";
+
   return (
     <div className="recruitmentContainer">
       <div className="hero-recruitment-Section viewport">
         <h1 className="main-recruitment-Title">
-          Spring Rush{" "}
+          Fall Rush{" "}
           <RotatingText
-            texts={["2026", "2016"]}
+            /* Order reversed: with loop={false} the rotation settles on the
+               last entry, so ["2026", "2016"] left the headline reading
+               "Fall Rush 2016" — beside a countdown to an actual 2026 date.
+               Flipping it keeps the retro flash and lands on the real year. */
+            texts={["2016", "2026"]}
             rotationInterval={1000}
             loop={false}
             splitBy="characters"
@@ -150,25 +170,38 @@ export default function Recruitment() {
             mainClassName="countdown-year"
           />
         </h1>
-        <div className="rush-buttons">
-          <RushButton
-            href={getCalendarLink()}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <b>Add Rush Events to Calendar</b>
-          </RushButton>
-          <RushButton href="https://forms.gle/hhx3Kfi2YS9cqUGd7">
-            <b>Rush Application</b>
-          </RushButton>
-        </div>
+        {isComingSoon ? (
+          <div className="rush-comingsoon">
+            <Countdown target={RUSH_START} />
+            <p className="rush-comingsoon__note">
+              Schedule and applications announced soon.
+            </p>
+          </div>
+        ) : (
+          <div className="rush-buttons">
+            <RushButton
+              href={getCalendarLink()}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <b>Add Rush Events to Calendar</b>
+            </RushButton>
+            <RushButton href="https://forms.gle/hhx3Kfi2YS9cqUGd7">
+              <b>Rush Application</b>
+            </RushButton>
+          </div>
+        )}
       </div>
-      {events.map((event, index) => (
-        <div key={index} className="viewport">
-          <RushEventInfo event={event} />
-        </div>
-      ))}
-      <DownPointerButton />
+      {/* Both are schedule-dependent: the cards are the schedule, and the down
+          arrow exists to page through them. Neither has anything to show while
+          the dates are unannounced. */}
+      {!isComingSoon &&
+        events.map((event, index) => (
+          <div key={index} className="viewport">
+            <RushEventInfo event={event} />
+          </div>
+        ))}
+      {!isComingSoon && <DownPointerButton />}
     </div>
   );
 }
