@@ -14,23 +14,26 @@
 }
 
 /* Reset and base styles */
-html, body {
+html,
+body {
   min-height: 100%;
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  font-family: 'Playfair Display';
+  font-family: "Playfair Display";
 }
 
-/* Hide scrollbars but keep functionality */
+/* This used to also carry `scrollbar-width: none` plus a *::-webkit-scrollbar
+   { display: none } rule. CRA bundles every stylesheet together and the
+   selector was `*`, so a page-local aesthetic choice removed the scrollbar
+   from every route on the site — no scroll position, nothing to grab and drag,
+   on pages several thousand pixels tall. box-sizing is the part that was
+   actually load-bearing, so that is all that remains.
+
+   The one place that genuinely wants a hidden scrollbar, the year rail on the
+   careers ledger under 768px, already hides its own locally. */
 * {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
   box-sizing: border-box;
-}
-
-*::-webkit-scrollbar {
-  display: none;
 }
 
 .hidden {
@@ -81,20 +84,24 @@ html, body {
 }
 
 .loader::after {
-  content: 'AKΨ';
+  content: "AKΨ";
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   color: var(--text-light);
   font-size: 0.8rem;
-  font-family: 'Old English Text MT', 'Times New Roman', serif;
+  font-family: "Old English Text MT", "Times New Roman", serif;
   letter-spacing: 1px;
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* Shared section styles */
@@ -104,7 +111,9 @@ html, body {
   padding: 0 2rem;
   opacity: 0;
   transform: translateY(30px);
-  transition: opacity 0.8s var(--ease-out-expo), transform 0.8s var(--ease-out-expo);
+  transition:
+    opacity 0.8s var(--ease-out-expo),
+    transform 0.8s var(--ease-out-expo);
 }
 
 .section-header.in-view {
@@ -123,13 +132,18 @@ html, body {
 }
 
 .section-title::after {
-  content: '';
+  content: "";
   position: absolute;
   left: 50%;
   right: 30%;
   bottom: 0;
   height: 2px;
-  background: linear-gradient(to right, transparent, var(--accent-color), transparent);
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--accent-color),
+    transparent
+  );
 }
 
 /* CAROUSEL SECTION - REIMAGINED */
@@ -143,13 +157,17 @@ html, body {
 }
 
 .carousel-section::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle at 30% 50%, var(--accent-color) 0%, transparent 70%);
+  background: radial-gradient(
+    circle at 30% 50%,
+    var(--accent-color) 0%,
+    transparent 70%
+  );
   opacity: 0.05;
   z-index: 0;
   pointer-events: none;
@@ -177,7 +195,9 @@ html, body {
 .carousel-item {
   opacity: 0;
   transform: translateY(30px);
-  transition: opacity 0.8s var(--ease-out-expo), transform 0.8s var(--ease-out-expo);
+  transition:
+    opacity 0.8s var(--ease-out-expo),
+    transform 0.8s var(--ease-out-expo);
   transition-delay: calc(var(--index) * 0.1s);
 }
 
@@ -193,12 +213,16 @@ html, body {
   overflow: hidden;
   border-radius: 8px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-  transition: transform 0.5s var(--ease-out-expo), box-shadow 0.5s var(--ease-out-expo);
+  transition:
+    transform 0.5s var(--ease-out-expo),
+    box-shadow 0.5s var(--ease-out-expo);
 }
 
 .image-card:hover {
   transform: translateY(-10px) scale(1.02);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 160, 220, 0.2);
+  box-shadow:
+    0 15px 40px rgba(0, 0, 0, 0.4),
+    0 0 20px rgba(0, 160, 220, 0.2);
 }
 
 .carousel-img {
@@ -245,13 +269,17 @@ html, body {
 }
 
 .photoframe-section::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle at 70% 30%, var(--primary-color) 0%, transparent 70%);
+  background: radial-gradient(
+    circle at 70% 30%,
+    var(--primary-color) 0%,
+    transparent 70%
+  );
   opacity: 0.05;
   z-index: 0;
   pointer-events: none;
@@ -280,7 +308,9 @@ html, body {
   position: relative;
   opacity: 0;
   transform: translateY(30px) rotate(var(--rotation, 0deg));
-  transition: opacity 0.8s var(--ease-out-expo), transform 0.8s var(--ease-out-expo);
+  transition:
+    opacity 0.8s var(--ease-out-expo),
+    transform 0.8s var(--ease-out-expo);
   transition-delay: calc(var(--index) * 0.05s);
   perspective: 1000px;
 }
@@ -296,7 +326,9 @@ html, body {
   object-fit: cover;
   border-radius: 4px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  transition: transform 0.5s var(--ease-out-expo), box-shadow 0.5s var(--ease-out-expo);
+  transition:
+    transform 0.5s var(--ease-out-expo),
+    box-shadow 0.5s var(--ease-out-expo);
   transform-origin: center center;
   will-change: transform;
 }
@@ -304,7 +336,9 @@ html, body {
 .scrapbook-img.hover,
 .scrapbook-item:hover .scrapbook-img {
   transform: scale(1.1) rotate(var(--rotation, 0deg));
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3), 0 0 15px var(--accent-glow);
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.3),
+    0 0 15px var(--accent-glow);
   z-index: 10;
 }
 
@@ -318,10 +352,16 @@ html, body {
   left: -10px;
   right: -10px;
   bottom: -10px;
-  background: radial-gradient(circle at center, var(--accent-glow) 0%, transparent 70%);
+  background: radial-gradient(
+    circle at center,
+    var(--accent-glow) 0%,
+    transparent 70%
+  );
   opacity: 0;
   transform: scale(0.8);
-  transition: opacity 0.5s var(--ease-out-expo), transform 0.5s var(--ease-out-expo);
+  transition:
+    opacity 0.5s var(--ease-out-expo),
+    transform 0.5s var(--ease-out-expo);
   pointer-events: none;
   z-index: -1;
 }
@@ -340,7 +380,7 @@ html, body {
 }
 
 .quote-section::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -359,7 +399,9 @@ html, body {
   z-index: 1;
   opacity: 0;
   transform: translateY(30px);
-  transition: opacity 0.8s var(--ease-out-expo), transform 0.8s var(--ease-out-expo);
+  transition:
+    opacity 0.8s var(--ease-out-expo),
+    transform 0.8s var(--ease-out-expo);
 }
 
 .quote-container.in-view {
@@ -406,8 +448,26 @@ html, body {
 .animate-on-scroll {
   opacity: 0;
   transform: translateY(30px);
-  transition: opacity 0.8s var(--ease-out-expo), transform 0.8s var(--ease-out-expo);
+  transition:
+    opacity 0.8s var(--ease-out-expo),
+    transform 0.8s var(--ease-out-expo);
   transition-delay: var(--delay, 0s);
+}
+
+/* These start invisible and are revealed by an IntersectionObserver, so under
+   reduced motion they must be shown outright rather than left at opacity 0. */
+@media (prefers-reduced-motion: reduce) {
+  .animate-on-scroll {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+html[data-reduced-motion="true"] .animate-on-scroll {
+  opacity: 1;
+  transform: none;
+  transition: none;
 }
 
 .animate-on-scroll.in-view {
@@ -420,11 +480,11 @@ html, body {
   .carousel-grid {
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   }
-  
+
   .photoframe-container {
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   }
-  
+
   .brotherhood-quote {
     font-size: 1.6rem;
   }
@@ -434,27 +494,27 @@ html, body {
   .section-title {
     font-size: 2rem;
   }
-  
+
   .brotherhood-title,
   .photoframe-title {
     font-size: 1.1rem;
   }
-  
+
   .carousel-grid {
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     gap: 1rem;
     padding: 1.5rem;
   }
-  
+
   .photoframe-container {
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     gap: 1rem;
   }
-  
+
   .brotherhood-quote {
     font-size: 1.4rem;
   }
-  
+
   .quote-mark {
     font-size: 4rem;
     height: 30px;
@@ -465,34 +525,34 @@ html, body {
   .section-header {
     margin-bottom: 2rem;
   }
-  
+
   .section-title {
     font-size: 1.75rem;
   }
-  
+
   .brotherhood-title,
   .photoframe-title {
     font-size: 1rem;
   }
-  
+
   .carousel-grid {
     grid-template-columns: repeat(2, 1fr);
     padding: 1rem;
   }
-  
+
   .photoframe-container {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   .brotherhood-quote {
     font-size: 1.2rem;
   }
-  
+
   .quote-mark {
     font-size: 3rem;
     height: 20px;
   }
-  
+
   .quote-attribution {
     font-size: 1rem;
   }

@@ -95,7 +95,7 @@ export default function Brotherhood() {
     BrotherhoodImage66,
     BrotherhoodImage94,
     BrotherhoodImage86,
-    BrotherhoodImage85
+    BrotherhoodImage85,
   ];
 
   // Handle image hover effects with enhanced animations
@@ -103,8 +103,13 @@ export default function Brotherhood() {
     const images = document.querySelectorAll(".photoframe-container img");
 
     images.forEach((img, index) => {
-      // Set animation delays for staggered appearance
-      img.style.setProperty("--delay", `${index * 0.05}s`);
+      // Staggered appearance, capped. This was index * 0.05s across the whole
+      // gallery, so the 30th photo sat on a 1.5s delay before even starting its
+      // 0.8s fade — over two seconds of blank frame after it was already on
+      // screen. Items reveal individually as they intersect, so the stagger
+      // only needs to separate neighbours; cycling every 6 keeps the effect and
+      // caps the wait at 0.25s.
+      img.style.setProperty("--delay", `${(index % 6) * 0.05}s`);
 
       // Random initial rotation for dynamic gallery feel
       const randomRotation =
@@ -176,19 +181,27 @@ export default function Brotherhood() {
   useEffect(() => {
     const observerOptions = {
       root: null,
-      rootMargin: "0px",
+      // Reveal 300px before an item enters the viewport. At rootMargin 0 with
+      // a 10% threshold, items only began their 0.8s fade once they were
+      // already well on screen, so scrolling at any speed left blank gaps
+      // where the photos should be.
+      rootMargin: "300px 0px",
       threshold: 0.1,
     };
 
+    let observer;
     const handleIntersect = (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           entry.target.classList.add("in-view");
+          // Revealing is one-way; stop watching so a long page is not holding
+          // 40-odd live observations while it scrolls.
+          observer.unobserve(entry.target);
         }
       });
     };
 
-    const observer = new IntersectionObserver(handleIntersect, observerOptions);
+    observer = new IntersectionObserver(handleIntersect, observerOptions);
 
     const items = document.querySelectorAll(".animate-on-scroll");
     items.forEach((item) => observer.observe(item));
@@ -224,7 +237,9 @@ export default function Brotherhood() {
             {!isMobile && (
               <video
                 ref={videoRef}
-                src={"https://d395js6c4h8h6h.cloudfront.net/Videos/CruiseVideo2026.mp4"}
+                src={
+                  "https://d395js6c4h8h6h.cloudfront.net/Videos/CruiseVideo2026.mp4"
+                }
                 autoPlay
                 muted
                 playsInline
@@ -234,13 +249,16 @@ export default function Brotherhood() {
               </video>
             )}
             {isMobile && (
-              <video 
-              ref={videoRef} 
-              src={"https://d395js6c4h8h6h.cloudfront.net/Videos/CruiseReelWebsite.mp4"} 
-              autoPlay 
-              muted 
-              loop
-              playsInline>
+              <video
+                ref={videoRef}
+                src={
+                  "https://d395js6c4h8h6h.cloudfront.net/Videos/CruiseReelWebsite.mp4"
+                }
+                autoPlay
+                muted
+                loop
+                playsInline
+              >
                 Your browser does not support the video tag.
               </video>
             )}
