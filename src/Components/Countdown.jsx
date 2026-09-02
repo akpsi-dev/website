@@ -86,7 +86,21 @@ export default function Countdown({
       {cells.map(([value, unit, valueClass]) => (
         <span className="countdown__cell" key={unit} aria-hidden="true">
           <span className={`countdown__value ${valueClass}`.trim()}>
-            {String(value).padStart(2, "0")}
+            {/* One span per digit, each in an identical fixed-width slot.
+                Neither font on this site has tabular figures — Playfair's
+                digits run 16.9px to 28.4px and Anton's "1" is a third narrower
+                than the rest — so font-variant-numeric cannot help. Giving each
+                digit its own slot makes the alignment a property of the layout
+                instead of the typeface, which is what lets the numbers be set
+                in Playfair rather than something plainer. */}
+            {String(value)
+              .padStart(2, "0")
+              .split("")
+              .map((digit, i) => (
+                <span className="countdown__digit" key={i}>
+                  {digit}
+                </span>
+              ))}
           </span>
           <span className="countdown__unit">{unit}</span>
         </span>

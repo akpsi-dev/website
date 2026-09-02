@@ -20,6 +20,15 @@ import { RUSH_START } from "../utils/rushDate";
    entries with the Fall dates and flip this. */
 const RUSH_STATE = "coming-soon";
 
+/* The Calvin Harris loop that used to autoplay on this page. Backlogged, not
+   removed — flip to true and it comes back exactly as it was.
+
+   Off for now because it started unprompted with no control to stop it, which
+   also means most browsers refuse to play it at all: autoplay with sound needs
+   a user gesture first, so the .play() below was usually rejected. If it does
+   come back it wants a visible mute toggle rather than a bare autoplay. */
+const RUSH_AUDIO_ENABLED = false;
+
 export default function Recruitment() {
   const [isMobile, setIsMobile] = useState(false);
 
@@ -66,7 +75,13 @@ export default function Recruitment() {
     },
   ];
 
-  const [audio] = useState(new Audio(SummerAudio));
+  /* Lazy initialiser on purpose. `useState(new Audio(...))` builds a fresh
+     Audio on every single render and throws all but the first away; the
+     callback form runs once. It also means nothing is constructed at all
+     while the flag is off. */
+  const [audio] = useState(() =>
+    RUSH_AUDIO_ENABLED ? new Audio(SummerAudio) : null,
+  );
 
   // Detect if user is on mobile
   useEffect(() => {
@@ -83,6 +98,8 @@ export default function Recruitment() {
   }, []);
 
   useEffect(() => {
+    if (!audio) return undefined;
+
     // Set up audio
     audio.loop = true;
 

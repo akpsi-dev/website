@@ -4,7 +4,10 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  gap: 0.5rem;
+  /* Slot width for a single digit. Playfair's widest numeral is "0" at 0.645em,
+     so 0.7em holds any digit with a little air and every slot stays identical. */
+  --digit-slot: 0.7em;
+  gap: 1.15rem;
   margin: 0;
 }
 
@@ -12,50 +15,47 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.2rem;
+  gap: 0.45rem;
 }
 
-/* Fixed slots.
-
-   The font matters more than the CSS here. Playfair Display, which the rest of
-   the site uses, has no tabular-figure feature, so font-variant-numeric was a
-   no-op against it and its digits range from 16.85px wide ("1") to 28.38px
-   ("0") at this size — an 11.53px spread, which reads as the numbers changing
-   size on every tick. Arial's digits are all exactly one width, and it already
-   sets the unit labels below.
-
-   min-width still earns its place: it reserves the widest value each unit can
-   reach, so the row holds when days drops from three digits to two. Days gets
-   3ch because it is the only cell that can exceed two (this starts near 390). */
 .countdown__value {
-  display: inline-block;
-  min-width: 2ch;
-  font-variant-numeric: tabular-nums;
-  font-feature-settings: "tnum";
-  text-align: center;
-  font-size: 1.75rem;
-  font-weight: 700;
-  line-height: 1.1;
+  display: flex;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 2.25rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.01em;
   color: var(--text-light, #ffffff);
-  font-family: Arial, Helvetica, sans-serif;
+  font-variant-numeric: lining-nums;
 }
 
-.countdown__value--days {
-  min-width: 3ch;
+/* The fix that lets these be set in a display serif at all: every digit gets
+   an identical box and is centred inside it, so the row cannot shift as the
+   numbers change. Neither font loaded on this site has tabular figures —
+   Playfair's digits run 16.9px to 28.4px, Anton's "1" is a third narrower than
+   its other digits — and font-variant-numeric is a no-op against both, so
+   alignment has to come from the layout rather than the typeface. */
+.countdown__digit {
+  display: inline-block;
+  width: var(--digit-slot);
+  text-align: center;
+  font-variant-numeric: inherit;
 }
 
 .countdown__unit {
-  font-size: 0.625rem;
-  letter-spacing: 0.18em;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  font-style: italic;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.62);
-  font-family: Arial, Helvetica, sans-serif;
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .countdown--expired {
   font-family: "Playfair Display", Georgia, serif;
   font-size: 1.5rem;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--text-light, #ffffff);
@@ -64,15 +64,16 @@
 
 @media (min-width: 769px) {
   .countdown {
-    gap: 1rem;
+    gap: 2rem;
   }
 
   .countdown__value {
-    font-size: 2.75rem;
+    font-size: 3.5rem;
   }
 
   .countdown__unit {
     font-size: 0.75rem;
+    letter-spacing: 0.24em;
   }
 
   .countdown--expired {
