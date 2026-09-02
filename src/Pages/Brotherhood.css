@@ -198,7 +198,10 @@ body {
   transition:
     opacity 0.8s var(--ease-out-expo),
     transform 0.8s var(--ease-out-expo);
-  transition-delay: calc(var(--index) * 0.1s);
+  /* Capped. --index is the item's position in the whole gallery, so without a
+     ceiling the later cards sat on delays measured in seconds before they even
+     began fading in. */
+  transition-delay: calc(min(var(--index), 4) * 0.1s);
 }
 
 .carousel-item.in-view {
@@ -311,7 +314,11 @@ body {
   transition:
     opacity 0.8s var(--ease-out-expo),
     transform 0.8s var(--ease-out-expo);
-  transition-delay: calc(var(--index) * 0.05s);
+  /* Capped, and this is the one that made the last photos look missing: the
+     scrapbook runs to ~35 items, so the final cards were waiting 1.75s before
+     starting a 0.8s fade. Scroll to the bottom and they simply were not there
+     yet. Ceiling of 6 keeps the stagger between neighbours at 0.3s. */
+  transition-delay: calc(min(var(--index), 6) * 0.05s);
   perspective: 1000px;
 }
 

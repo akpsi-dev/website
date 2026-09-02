@@ -5,19 +5,27 @@
   text-align: center;
 }
 
-/* Header Styling */
+/* Header Styling.
+   These carried no font-family at all, so they inherited Arial from About.css's
+   body rule — the section read as a browser default dropped into a serif site.
+   Everything here is now set deliberately. */
 .faq-header h2 {
-  font-size: 2.5rem;
-  margin-bottom: 10px;
-  color: var(--color-accent);
-  font-weight: 700;
-  letter-spacing: 1px;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 2.75rem;
+  margin-bottom: 0.5rem;
+  color: var(--color-text);
+  font-weight: 600;
+  /* Was 1px of tracking, which pulls a serif display face apart. */
+  letter-spacing: -0.01em;
+  line-height: 1.15;
 }
 
 .faq-header p {
-  font-size: 1.2rem;
+  font-family: "Playfair Display", Georgia, serif;
+  font-style: italic;
+  font-size: 1.0625rem;
   color: var(--color-text-muted);
-  margin-bottom: 40px;
+  margin-bottom: 3rem;
 }
 
 /* FAQ Container */
@@ -35,28 +43,35 @@
 /* FAQ Card Style */
 .faq-item {
   background: var(--color-background-light);
-  border-radius: 12px;
-  margin-bottom: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+  margin-bottom: 0.75rem;
   overflow: hidden;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: none;
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease;
 }
 
 .faq-item.active {
-  transform: translateY(-3px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transform: none;
+  border-color: rgba(255, 255, 255, 0.14);
 }
 
 /* FAQ Question Button */
 .faq-question {
   width: 100%;
-  padding: 20px;
+  padding: 1.35rem 1.5rem;
   background: none;
   border: none;
   outline: none;
   text-align: left;
-  font-size: 1.3rem;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.1875rem;
   font-weight: 600;
+  letter-spacing: -0.005em;
+  line-height: 1.35;
+  gap: 1.5rem;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
@@ -65,10 +80,10 @@
   transition: background-color 0.25s ease;
 }
 
-
 /* FAQ Icon */
 .faq-icon {
-  font-size: 1.8rem;
+  flex: 0 0 auto;
+  font-size: 1.5rem;
   transition: transform 0.25s ease;
   color: var(--color-accent);
 }
@@ -79,7 +94,10 @@
   opacity: 0;
   padding: 0 20px;
   overflow: hidden;
-  transition: max-height 0.1s ease, opacity 0.2s ease, padding 0.2s ease;
+  transition:
+    max-height 0.1s ease,
+    opacity 0.2s ease,
+    padding 0.2s ease;
 }
 
 .faq-item.active .faq-answer {
@@ -90,7 +108,9 @@
 
 .faq-answer p {
   margin: 0;
-  font-size: 1rem;
-  line-height: 1.6;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.0625rem;
+  line-height: 1.7;
   color: var(--color-text-muted);
+  text-wrap: pretty;
 }

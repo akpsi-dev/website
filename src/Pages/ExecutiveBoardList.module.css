@@ -56,14 +56,12 @@ body {
 }
 
 .brotherCard {
-  /* Skip layout, paint and image decode for cards that are off screen. This
-     grid is 73 cards deep and every one of them was being rendered at all
-     times — 76 loaded images holding ~121MB of decoded bitmap on a page you
-     have to scroll 4000px through. contain-intrinsic-size keeps the scrollbar
-     honest by reserving each card's real measured height (211x337) until it is
-     rendered for the first time, so nothing jumps. */
-  content-visibility: auto;
-  contain-intrinsic-size: auto 337px;
+  /* No content-visibility here. It was added to skip rendering off-screen
+     cards, but it did not fix the reported stutter and it carries its own:
+     each card has to be laid out and painted synchronously at the moment it
+     enters the viewport, which is exactly when you are scrolling. Reverted to
+     the plain path; the weight problem is handled by the images themselves
+     being smaller now. */
   background-color: rgba(37, 37, 37, 0.5); /* Subtle background transparency */
   box-shadow: 0 4px 12px var(--card-shadow);
   transition: all 0.4s ease;

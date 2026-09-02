@@ -206,7 +206,19 @@ export default function Brotherhood() {
     const items = document.querySelectorAll(".animate-on-scroll");
     items.forEach((item) => observer.observe(item));
 
+    /* Safety net. These elements are opacity: 0 until JS adds a class, which
+       means any failure in the observer leaves photos permanently invisible —
+       and "the last photos are not there" is exactly how that reads to someone
+       scrolling to the bottom. After a grace period, reveal whatever is left
+       regardless. The animation still runs normally in the common case; this
+       only decides how the page fails. */
+    const failSafe = setTimeout(() => {
+      items.forEach((item) => item.classList.add("in-view"));
+      observer.disconnect();
+    }, 4000);
+
     return () => {
+      clearTimeout(failSafe);
       items.forEach((item) => observer.unobserve(item));
       observer.disconnect();
     };

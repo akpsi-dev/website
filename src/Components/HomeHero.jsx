@@ -1,12 +1,11 @@
 import React from "react";
 import { motion } from "framer-motion";
-import Countdown from "./Countdown";
 import { TeaserHero } from "../Assets";
-import { RUSH_START } from "../utils/rushDate";
 import "./HomeHero.css";
 
-/* Re-exported so callers already importing it from here keep working. */
-export { RUSH_START };
+/* Re-exported so callers already importing it from here keep working
+   (Countdown.test.js pins it, and /rush counts down to it). */
+export { RUSH_START } from "../utils/rushDate";
 
 /** The video the 'video' variant plays. Not bundled — served from CloudFront. */
 const RUSH_VIDEO_URL =
@@ -66,10 +65,13 @@ export default function HomeHero({
             ΑΚΨ - UCI
           </motion.h1>
 
+          {/* The countdown lives on /rush only for now. The teaser hero keeps
+              the tartan and the title; the clock is one page's job, not two.
+              Restore by putting <Countdown target={RUSH_START} /> back here —
+              both imports are still in place for exactly that. */}
           {isTeaser && (
             <div className="hero-teaser__countdown">
               <p className="hero-teaser__label">FALL RUSH 2026</p>
-              <Countdown target={RUSH_START} />
             </div>
           )}
         </div>

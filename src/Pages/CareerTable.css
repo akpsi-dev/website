@@ -72,9 +72,9 @@ body {
   color: var(--text-muted);
   cursor: pointer;
   padding: 0.45em 0 0.45em 1.4em;
-  font: inherit;
-  font-size: 0.95rem;
-  letter-spacing: 0.05em;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
   transition: color var(--transition-speed) ease;
 }
 
@@ -123,11 +123,20 @@ body {
   gap: 1.5rem;
 }
 
+/* The ledger set nothing explicitly, so it fell to whichever global `body`
+   rule won the cascade — About.css's `font-family: Arial` beat CareerTable's
+   own Playfair declaration, and the table rendered in a system sans by
+   accident. Type is now set on the elements themselves.
+
+   Serif for the records, italic small caps for the labels around them, which
+   is the same pairing the countdown uses. */
 .ledger__head {
+  font-family: "Playfair Display", Georgia, serif;
+  font-style: italic;
   color: var(--text-muted);
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.16em;
   border-bottom: 1px solid var(--border-color);
   padding-bottom: 0.75rem;
   margin-bottom: 1rem;
@@ -148,11 +157,13 @@ body {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  font-family: "Playfair Display", Georgia, serif;
+  font-style: italic;
   color: var(--accent-color);
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
   margin: 0 0 0.75rem;
 }
 
@@ -182,13 +193,17 @@ body {
 
 /* Names lead now that the sector label has stepped back. */
 .ledger__name {
+  font-family: "Playfair Display", Georgia, serif;
   font-weight: 600;
-  font-size: 1.05rem;
+  font-size: 1.125rem;
+  letter-spacing: -0.005em;
   color: var(--text-light);
 }
 
 .ledger__position,
 .ledger__company {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.0625rem;
   color: var(--text-muted);
 }
 
