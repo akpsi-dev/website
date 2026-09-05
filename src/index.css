@@ -1,11 +1,26 @@
+/* Page-level scrolling lives here and nowhere else.
+
+   The document must be the one and only scroller. body must NOT be, and it is
+   surprisingly easy to make it one by accident: setting any overflow value on
+   body other than `visible` — including a bare `overflow-x: hidden`, which
+   computes overflow-y to `auto` — stops body's overflow propagating to the
+   viewport and turns body into its own scroll container. With html also
+   scrolling you then get two scrollbars, the wheel goes to the inner one
+   first, and the page takes several gestures to move.
+
+   So: horizontal clipping goes on html, and body is explicitly visible. */
+html {
+  overflow-x: hidden;
+}
+
 body {
+  overflow: visible;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
 }
 
 code {

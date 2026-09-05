@@ -266,10 +266,6 @@ html[data-reduced-motion="true"] .ledger__year::before {
 /* ----- Responsive ---------------------------------------------------------- */
 
 @media (max-width: 768px) {
-  body {
-    overflow-x: hidden;
-  }
-
   .careers-container {
     width: 100%;
     padding: 1.5rem 1rem;

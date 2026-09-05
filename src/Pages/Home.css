@@ -16,7 +16,8 @@ html, body {
   min-height: 100%;
   margin: 0;
   padding: 0;
-  overflow: auto;
+  /* No overflow here — see index.css. `overflow: auto` on body made it a
+     second scroll container alongside the document. */
   font-family: 'Playfair Display';
 }
 
