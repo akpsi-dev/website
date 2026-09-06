@@ -271,7 +271,9 @@ export default function Home() {
                     step out of your comfort zone and live the life you've always
                     imagined.
                   </p>
-                  <SleekButton className="sleekButton" href="/recruitment">
+                  {/* Was href="/recruitment", which is not a route — App.jsx
+                      registers this page at /rush, so the button 404'd. */}
+                  <SleekButton className="sleekButton" href="/rush">
                     Recruitment
                   </SleekButton>
                 </div>

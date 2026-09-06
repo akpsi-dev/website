@@ -50,7 +50,74 @@ const placementData = [
   { year: "2026", oncampus: 88, beyondCampus: 92 },
 ];
 
-const COLORS = ["#0066cc", "#00a86b", "#f39c12", "#8e44ad", "#e74c3c", "#3498db"];
+/* Was a rainbow of saturated primaries — blue, green, orange, purple, red,
+   light blue — which is the default-chart-palette look. This is one hue walked
+   from dark to light instead: cohesive with the site's accent, and adjacent
+   slices still separate cleanly. */
+const COLORS = [
+  "#0B5C8A",
+  "#0F7FB0",
+  "#159FCE",
+  "#3FBBE0",
+  "#77D2EC",
+  "#AEE4F5",
+];
+
+/* Label ink flips to dark over the light end of the ramp. White on #AEE4F5 is
+   unreadable, and assuming one ink colour works on every slice is how charts
+   end up with invisible labels. */
+const COLORS_INK = [
+  "#FFFFFF",
+  "#FFFFFF",
+  "#FFFFFF",
+  "#06303F",
+  "#06303F",
+  "#06303F",
+];
+
+/* A slice below this share is too narrow to hold its own name: at 9% the arc
+   is about 56px across where the label sits, and "Health Sciences" needs
+   roughly 90px. Those labels go outside the wedge, tinted to match it, rather
+   than overflowing into their neighbours — which is what made the chart look
+   unaligned. */
+const INSIDE_LABEL_MIN = 0.12;
+
+/* One shared renderer. Both pies had their own copy of this inline, so any fix
+   had to be made twice. */
+function renderPieLabel({ cx, cy, midAngle, outerRadius, percent, name, index }) {
+  const RADIAN = Math.PI / 180;
+  const cos = Math.cos(-midAngle * RADIAN);
+  const sin = Math.sin(-midAngle * RADIAN);
+  const inside = percent >= INSIDE_LABEL_MIN;
+  const radius = inside ? outerRadius * 0.62 : outerRadius + 22;
+  const x = cx + radius * cos;
+  const y = cy + radius * sin;
+
+  return (
+    <text
+      x={x}
+      y={y}
+      fill={inside ? COLORS_INK[index % COLORS_INK.length] : COLORS[index % COLORS.length]}
+      textAnchor={inside ? "middle" : cos >= 0 ? "start" : "end"}
+      dominantBaseline="central"
+      style={{
+        fontFamily: '"Playfair Display", Georgia, serif',
+        fontSize: 14,
+        fontWeight: 600,
+        pointerEvents: "none",
+      }}
+    >
+      {/* -0.6em then +1.2em sits the two-line block symmetrically about the
+          centroid. It was -0.5em/+1.2em, which left every label riding low. */}
+      <tspan x={x} dy="-0.6em">
+        {name}
+      </tspan>
+      <tspan x={x} dy="1.2em" style={{ fontWeight: 400, opacity: 0.82 }}>
+        {`${(percent * 100).toFixed(0)}%`}
+      </tspan>
+    </text>
+  );
+}
 
 export default function About() {
   useEffect(() => {
@@ -173,48 +240,16 @@ export default function About() {
               variants={fadeInVariants}
             >
               <h3>Major Breakdown</h3>
-              <ResponsiveContainer width="90%" height={500}>
+              <ResponsiveContainer width="100%" height={500}>
                 <PieChart>
                   <Pie
                     data={majorData}
                     cx="50%"
                     cy="50%"
                     labelLine={false}
-                    outerRadius={200}
+                    outerRadius={148}
                     fill="#8884d8"
-                    label={({
-                      cx,
-                      cy,
-                      midAngle,
-                      innerRadius,
-                      outerRadius,
-                      percent,
-                      name,
-                    }) => {
-                      const RADIAN = Math.PI / 180;
-                      const radius =
-                        innerRadius + (outerRadius - innerRadius) * 0.5;
-                      const x = cx + radius * Math.cos(-midAngle * RADIAN);
-                      const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-                      return (
-                        <text
-                          x={x}
-                          y={y}
-                          fill="white"
-                          textAnchor="middle"
-                          dominantBaseline="central"
-                        >
-                          <tspan x={x} dy="-0.5em">
-                            {name}
-                          </tspan>
-                          <tspan
-                            x={x}
-                            dy="1.2em"
-                          >{`${(percent * 100).toFixed(0)}%`}</tspan>
-                        </text>
-                      );
-                    }}
+                    label={renderPieLabel}
                   >
                     {majorData.map((entry, index) => (
                       <Cell
@@ -243,41 +278,9 @@ export default function About() {
                     cx="50%"
                     cy="50%"
                     labelLine={false}
-                    outerRadius={200}
+                    outerRadius={148}
                     fill="#8884d8"
-                    label={({
-                      cx,
-                      cy,
-                      midAngle,
-                      innerRadius,
-                      outerRadius,
-                      percent,
-                      name,
-                    }) => {
-                      const RADIAN = Math.PI / 180;
-                      const radius =
-                        innerRadius + (outerRadius - innerRadius) * 0.5;
-                      const x = cx + radius * Math.cos(-midAngle * RADIAN);
-                      const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-                      return (
-                        <text
-                          x={x}
-                          y={y}
-                          fill="white"
-                          textAnchor="middle"
-                          dominantBaseline="central"
-                        >
-                          <tspan x={x} dy="-0.5em">
-                            {name}
-                          </tspan>
-                          <tspan
-                            x={x}
-                            dy="1.2em"
-                          >{`${(percent * 100).toFixed(0)}%`}</tspan>
-                        </text>
-                      );
-                    }}
+                    label={renderPieLabel}
                   >
                     {clubData.map((entry, index) => (
                       <Cell
