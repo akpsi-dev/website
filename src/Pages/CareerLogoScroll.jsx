@@ -37,6 +37,12 @@ import {
   BainLogo,
   AmazonLogo,
   BlackrockLogo,
+  TeslaLogo,
+  HPELogo,
+  SalesforceLogo,
+  ARMLogo,
+  ConcordiaLogo,
+  BarclaysLogo,
 } from "../Assets";
 
 const ROW_ONE = [
@@ -58,6 +64,9 @@ const ROW_ONE = [
   { src: AmazonLogo, alt: "Amazon" },
   { src: BlackrockLogo, alt: "BlackRock" },
   { src: JPMorganLogo, alt: "JPMorgan" },
+  { src: TeslaLogo, alt: "Tesla" },
+  { src: SalesforceLogo, alt: "Salesforce" },
+  { src: BarclaysLogo, alt: "Barclays" },
 ];
 
 const ROW_TWO = [
@@ -79,6 +88,9 @@ const ROW_TWO = [
   { src: PWCLogo, alt: "PwC" },
   { src: redbulllogo, alt: "Red Bull" },
   { src: warnbroslogo, alt: "Warner Bros" },
+  { src: HPELogo, alt: "HPE" },
+  { src: ARMLogo, alt: "Arm" },
+  { src: ConcordiaLogo, alt: "Concordia" },
 ];
 
 function LogoRow({ logos, direction = "forward" }) {
