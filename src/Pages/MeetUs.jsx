@@ -107,17 +107,24 @@ export default function MeetUs() {
             </Button>
           </ButtonGroup>
         </div>
-        {isLoading ? (
-          <div className="loader-container">
-            <div className="loader"></div>
-          </div>
-        ) : viewLeadership ? (
+        {/* isLoading goes down to the list rather than swapping the whole
+            section for a spinner. The spinner occupied almost no height, so
+            when the roster landed the document grew by thousands of pixels in
+            one frame; the list renders a skeleton at the real grid size
+            instead, and the height is reserved from the start. */}
+        {viewLeadership ? (
           <div>
-            <ExecutiveBoardList brothers={displayedLeadership} />
+            <ExecutiveBoardList
+              brothers={displayedLeadership}
+              isLoading={isLoading}
+            />
           </div>
         ) : (
           <div>
-            <ActiveBrotherList brothers={activeBrothers} />
+            <ActiveBrotherList
+              brothers={activeBrothers}
+              isLoading={isLoading}
+            />
           </div>
         )}
       </div>

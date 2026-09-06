@@ -4,11 +4,35 @@ import styles from "./ExecutiveBoardList.module.css";
 import { headshotHash } from "../Assets/headshot";
 import Pic from "../Components/Pic";
 
-export default function ExecutiveBoardList({ brothers }) {
-  const cabinetMembers = brothers.filter(
+/* Roughly the real board size, so the reserved height lands near the final
+   height. See ActiveBrotherList for why this exists. */
+const SKELETON_CARDS = 8;
+
+function SkeletonSection({ heading }) {
+  return (
+    <div className={styles.section}>
+      <h2>{heading}</h2>
+      <div className={styles.brotherGrid} aria-hidden="true">
+        {Array.from({ length: SKELETON_CARDS }, (_, i) => (
+          <div
+            key={`skeleton-${i}`}
+            className={`${styles.brotherCard} ${styles.brotherCardSkeleton}`}
+          >
+            <div className={styles.imageWrapper} />
+            <p className={styles.brotherName}>&nbsp;</p>
+            <p className={styles.brotherRole}>&nbsp;</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default function ExecutiveBoardList({ brothers, isLoading }) {
+  const cabinetMembers = (brothers || []).filter(
     (brother) => brother.leadershipType === "Cabinet",
   );
-  const executiveBoardMembers = brothers.filter(
+  const executiveBoardMembers = (brothers || []).filter(
     (brother) => brother.leadershipType === "Executive Board",
   );
 
@@ -44,6 +68,15 @@ export default function ExecutiveBoardList({ brothers }) {
       </Link>
     );
   };
+
+  if (isLoading) {
+    return (
+      <div className={styles.container}>
+        <SkeletonSection heading="Cabinet" />
+        <SkeletonSection heading="Executive Board" />
+      </div>
+    );
+  }
 
   return (
     <div className={styles.container}>

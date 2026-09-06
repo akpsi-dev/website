@@ -50,36 +50,39 @@ const placementData = [
   { year: "2026", oncampus: 88, beyondCampus: 92 },
 ];
 
-/* Was a rainbow of saturated primaries — blue, green, orange, purple, red,
-   light blue — which is the default-chart-palette look. This is one hue walked
-   from dark to light instead: cohesive with the site's accent, and adjacent
-   slices still separate cleanly. */
+/* Categorical data needs categorical colour: six distinct hues, so a reader can
+   tell slices apart at a glance and match them to the legend.
+
+   The previous version overcorrected. Chasing "professional" I walked a single
+   hue from dark to light, which is a *sequential* ramp — right for ordered
+   magnitudes, wrong here, because six shades of the same blue are exactly as
+   hard to tell apart as they sound.
+
+   What makes these read as professional is not sameness, it is that they are
+   muted and share a lightness: mid-tone, desaturated, no neon. That keeps the
+   wheel from shouting while still separating every category. */
 const COLORS = [
-  "#0B5C8A",
-  "#0F7FB0",
-  "#159FCE",
-  "#3FBBE0",
-  "#77D2EC",
-  "#AEE4F5",
+  "#4E79A7", // blue
+  "#59A14F", // green
+  "#E8A33D", // amber
+  "#A87BB5", // violet
+  "#D8695E", // terracotta
+  "#76B7B2", // teal
 ];
 
-/* Label ink flips to dark over the light end of the ramp. White on #AEE4F5 is
-   unreadable, and assuming one ink colour works on every slice is how charts
-   end up with invisible labels. */
-const COLORS_INK = [
-  "#FFFFFF",
-  "#FFFFFF",
-  "#FFFFFF",
-  "#06303F",
-  "#06303F",
-  "#06303F",
-];
+/* Pick label ink from the slice's own luminance rather than assuming white
+   works everywhere — it does not survive the amber or the teal. Per WCAG
+   relative luminance; 0.55 is where dark ink starts winning. */
+function inkFor(hex) {
+  const channel = (c) => {
+    const v = parseInt(hex.slice(c, c + 2), 16) / 255;
+    return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+  };
+  const luminance =
+    0.2126 * channel(1) + 0.7152 * channel(3) + 0.0722 * channel(5);
+  return luminance > 0.55 ? "#12212B" : "#FFFFFF";
+}
 
-/* A slice below this share is too narrow to hold its own name: at 9% the arc
-   is about 56px across where the label sits, and "Health Sciences" needs
-   roughly 90px. Those labels go outside the wedge, tinted to match it, rather
-   than overflowing into their neighbours — which is what made the chart look
-   unaligned. */
 const INSIDE_LABEL_MIN = 0.12;
 
 /* One shared renderer. Both pies had their own copy of this inline, so any fix
@@ -97,7 +100,11 @@ function renderPieLabel({ cx, cy, midAngle, outerRadius, percent, name, index })
     <text
       x={x}
       y={y}
-      fill={inside ? COLORS_INK[index % COLORS_INK.length] : COLORS[index % COLORS.length]}
+      fill={
+        inside
+          ? inkFor(COLORS[index % COLORS.length])
+          : COLORS[index % COLORS.length]
+      }
       textAnchor={inside ? "middle" : cos >= 0 ? "start" : "end"}
       dominantBaseline="central"
       style={{

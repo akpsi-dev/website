@@ -11,12 +11,32 @@ function brotherName(row) {
   return String(row?.[0] ?? "").trim();
 }
 
+/* Close to the real roster size, so the reserved height lands near the final
+   height instead of only partway. */
+const SKELETON_CARDS = 60;
+
 export default function ActiveBrotherList({ brothers, isLoading }) {
   return (
     <div className={styles.container}>
       {isLoading ? (
-        <div className={styles.loaderContainer}>
-          <div className={styles.loader}></div>
+        /* A skeleton grid rather than a lone spinner. The roster arrives from
+           Google Sheets, so this page used to render a small spinner and then
+           swap in ~73 cards in a single frame — the document jumped from
+           roughly 900px to 5800px underneath whatever you were doing. Scrolling
+           during that second is the "buggy scrolling" on this page.
+
+           These placeholders use the same grid and the same card box, so the
+           height is reserved up front and the swap barely moves anything. */
+        <div className={styles.brotherGrid} aria-hidden="true">
+          {Array.from({ length: SKELETON_CARDS }, (_, i) => (
+            <div
+              key={`skeleton-${i}`}
+              className={`${styles.brotherCard} ${styles.brotherCardSkeleton}`}
+            >
+              <div className={styles.imageWrapper} />
+              <p className={styles.brotherName}>&nbsp;</p>
+            </div>
+          ))}
         </div>
       ) : (
         <div className={styles.brotherGrid}>
