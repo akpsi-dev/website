@@ -92,7 +92,7 @@
 @media (max-width: 768px) {
   .logos {
     width: 100%;
-    max-width: 100vw;
+    max-width: 100%;
     padding: 40px 0;
     gap: 1rem;
   }

@@ -49,7 +49,10 @@ body {
 /* Video section styles - KEPT UNTOUCHED */
 .video-section {
   height: 100vh;
-  width: 100vw;
+  /* 100vw counts the scrollbar; 100% does not. With the scrollbar restored
+     this section was exactly 15px wider than the viewport, pushing the page
+     into horizontal overflow (clipped, so invisible, but real). */
+  width: 100%;
   overflow: hidden;
 }
 
