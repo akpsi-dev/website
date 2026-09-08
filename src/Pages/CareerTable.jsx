@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useSheet, CAREERS_SHEET_ID, CAREERS_RANGE } from "../utils/useSheet";
 import { useMotionPrefs } from "../utils/useMotionPrefs";
 import { EASE_OUT_EXPO } from "../utils/motion";
+import { companyMonogram } from "../utils/companyLogo";
 import "./CareerTable.css";
 
 const CATEGORIES = [
@@ -75,8 +76,9 @@ export function buildCareerData(values) {
 // without needing a random source that would change on every render.
 const SKELETON_BARS = Array.from({ length: 8 }, (_, i) => 72 - ((i * 11) % 35));
 
-// Rows past this index skip the flap stagger and just fade in. Keeps a year
-// switch snappy on a long year and cheap on a mid-range phone.
+// Rows past this index stop accumulating delay and all arrive together. Keeps
+// a year switch snappy on a long year and cheap on a mid-range phone: without
+// it, row 60 of a busy year would wait two seconds for its turn.
 const FLAP_CAP = 14;
 
 const CareerTable = () => {
@@ -119,8 +121,8 @@ const CareerTable = () => {
     );
   }
 
-  // Counts flaps across sectors, so the stagger reads as one continuous
-  // cascade down the sheet rather than restarting at every heading.
+  // Counts rows across sectors, so the stagger reads as one continuous cascade
+  // down the sheet rather than restarting at every heading.
   let flapIndex = 0;
 
   return (
@@ -141,12 +143,6 @@ const CareerTable = () => {
         </nav>
 
         <div className="ledger__sheet">
-          <div className="ledger__head" aria-hidden="true">
-            <span>Name</span>
-            <span>Position</span>
-            <span>Company</span>
-          </div>
-
           <AnimatePresence mode="wait">
             <motion.div
               key={activeYear}
@@ -171,35 +167,47 @@ const CareerTable = () => {
                           initial={
                             reducedMotion
                               ? { opacity: 1 }
-                              : flap < FLAP_CAP
-                                ? { rotateX: -85, opacity: 0 }
-                                : { opacity: 0 }
+                              : { opacity: 0, y: 8 }
                           }
-                          animate={{ rotateX: 0, opacity: 1 }}
+                          animate={{ opacity: 1, y: 0 }}
                           transition={
                             reducedMotion
                               ? { duration: 0 }
                               : {
-                                  duration: 0.5,
+                                  duration: 0.45,
                                   delay: Math.min(flap, FLAP_CAP) * 0.035,
                                   ease: EASE_OUT_EXPO,
                                 }
                           }
-                          style={{ transformOrigin: "center top" }}
                         >
-                          <span className="ledger__name" data-label="Name">
-                            {entry.Name}
+                          {/* Always the monogram, never the logo. The mark set
+                              is wordmarks — JPMorgan's is 800x74 — and
+                              object-fit: contain in a 34px square fits them by
+                              width, so they collapse to a few pixels tall:
+                              measured on the 2025 tab, 11 of 22 rendered under
+                              10px and JPMorgan came out at 2.4px. They read as
+                              smudges. The initial is legible at this size and
+                              gives the column one consistent shape.
+
+                              lookupCompanyLogo still exists in
+                              utils/companyLogo for somewhere the mark can be
+                              given room to be a mark.
+
+                              Decorative: the company is spelled out at the end
+                              of the row, so the initial would only repeat it to
+                              a screen reader. */}
+                          <span className="ledger__mark" aria-hidden="true">
+                            <span className="ledger__monogram">
+                              {companyMonogram(entry.Company)}
+                            </span>
                           </span>
-                          <span
-                            className="ledger__position"
-                            data-label="Position"
-                          >
-                            {entry.Position}
+                          <span className="ledger__ident">
+                            <span className="ledger__name">{entry.Name}</span>
+                            <span className="ledger__role">
+                              {entry.Position}
+                            </span>
                           </span>
-                          <span
-                            className="ledger__company"
-                            data-label="Company"
-                          >
+                          <span className="ledger__company">
                             {entry.Company}
                           </span>
                         </motion.div>

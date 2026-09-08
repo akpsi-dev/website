@@ -112,35 +112,12 @@ body {
 /* ----- Sheet --------------------------------------------------------------- */
 
 .ledger__sheet {
-  perspective: 900px;
   min-width: 0;
 }
 
-.ledger__head,
-.ledger__row {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr) minmax(0, 1fr);
-  gap: 1.5rem;
-}
-
-/* The ledger set nothing explicitly, so it fell to whichever global `body`
-   rule won the cascade — About.css's `font-family: Arial` beat CareerTable's
-   own Playfair declaration, and the table rendered in a system sans by
-   accident. Type is now set on the elements themselves.
-
-   Serif for the records, italic small caps for the labels around them, which
-   is the same pairing the countdown uses. */
-.ledger__head {
-  font-family: "Playfair Display", Georgia, serif;
-  font-style: italic;
-  color: var(--text-muted);
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  border-bottom: 1px solid var(--border-color);
-  padding-bottom: 0.75rem;
-  margin-bottom: 1rem;
-}
+/* The column header is gone with the grid. Three labels sitting over rows that
+   now read [mark] [name / role] [company] would have been pointing at columns
+   that no longer exist. */
 
 .ledger__group {
   margin-bottom: 1.5rem;
@@ -174,18 +151,64 @@ body {
   background-color: var(--border-color);
 }
 
+/* ----- Row --------------------------------------------------------------- */
+
+/* A single-column listing rather than a table: one full-width row per
+   placement, [mark] [name over role] [company]. Rows are separated by 2px of
+   gap and nothing else — no rules — so the column reads as a list of records
+   instead of a grid of cells. */
 .ledger__row {
-  /* Was 0.7em, which put rows at 50px and made a short year read as sparse. */
-  padding: 0.45em 0;
-  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 12px 16px;
+  border-radius: 6px;
   color: var(--text-light);
-  font-size: 1rem;
-  /* The flap rotates in 3D; hide the reverse face so it can't flicker. */
-  backface-visibility: hidden;
+  transition: background-color 0.18s ease;
+}
+
+.ledger__row + .ledger__row {
+  margin-top: 2px;
+}
+
+.ledger__row:hover {
+  background-color: rgba(255, 255, 255, 0.035);
+}
+
+/* The mark box never changes size, whether it holds artwork or a letter. That
+   is what keeps the left edge of the names a straight line down the year —
+   the thing that falls apart if the mark is allowed to change shape row to
+   row. Every row carries the company's initial — see the note in
+   CareerTable.jsx for why the logos lost this argument. */
+.ledger__mark {
+  flex: 0 0 34px;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.ledger__monogram {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--text-muted);
+}
+
+.ledger__ident {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .ledger__name,
-.ledger__position,
+.ledger__role,
 .ledger__company {
   min-width: 0;
   overflow-wrap: anywhere;
@@ -195,16 +218,34 @@ body {
 .ledger__name {
   font-family: "Playfair Display", Georgia, serif;
   font-weight: 600;
-  font-size: 1.125rem;
+  font-size: 19px;
+  line-height: 1.25;
   letter-spacing: -0.005em;
   color: var(--text-light);
 }
 
-.ledger__position,
-.ledger__company {
+.ledger__role {
   font-family: "Playfair Display", Georgia, serif;
-  font-size: 1.0625rem;
+  font-size: 13px;
+  line-height: 1.35;
   color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* Tracked small caps, so the company reads as a filed record at the end of the
+   row rather than competing with the name. */
+.ledger__company {
+  flex: 0 0 auto;
+  /* A long company name would otherwise take the row from the name it belongs
+     to; past this it wraps within its own column. */
+  max-width: 36%;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 11.5px;
+  line-height: 1.4;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--text-muted);
+  text-align: right;
 }
 
 /* ----- Skeleton / empty ---------------------------------------------------- */
@@ -313,33 +354,35 @@ html[data-reduced-motion="true"] .ledger__year::before {
     color: var(--text-light);
   }
 
-  .ledger__head {
-    display: none;
-  }
-
-  /* One column per row, with the header text carried by data-label so the
-     columns stay readable without a horizontal scroll. */
   .ledger__row {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 0.15rem;
-    padding: 1rem 0;
+    padding: 12px 10px;
+  }
+}
+
+/* Narrow phones. Measured at 390px: name, role and a right-aligned company all
+   on one line leaves the company about 90px, which is under two words of a
+   tracked 11.5px caption — every long employer then wrapped to three or four
+   lines and dragged the row's height with it. Below this width the company
+   drops onto its own line instead, indented to sit under the name rather than
+   under the mark, so the row keeps one clean left edge. */
+@media (max-width: 560px) {
+  .ledger__row {
+    flex-wrap: wrap;
+    align-items: flex-start;
   }
 
-  .ledger__name {
-    font-size: 1.05rem;
+  .ledger__ident {
+    /* Take the rest of the first line, so the company is pushed to the next
+       one rather than being squeezed alongside. */
+    flex: 1 1 60%;
   }
 
-  /* Muted rather than accent, matching .ledger__head on desktop. In the
-     accent blue these captions repeated the sector label's mistake — the
-     word POSITION outshouting the position itself. */
-  .ledger__position::before,
-  .ledger__company::before {
-    content: attr(data-label);
-    display: block;
-    color: var(--text-muted);
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-top: 0.35rem;
+  .ledger__company {
+    /* 34px mark + the row's 0.875rem gap, so it lines up with the name. */
+    flex: 1 1 100%;
+    max-width: none;
+    margin-top: 6px;
+    padding-left: calc(34px + 0.875rem);
+    text-align: left;
   }
 }
