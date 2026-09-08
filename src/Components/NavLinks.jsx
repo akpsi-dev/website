@@ -35,6 +35,11 @@ export default function NavLinks({ isMobile, closeMobileMenu }) {
               className={({ isActive }) =>
                 `NavLink${isActive ? " active" : ""}${rush ? " rush" : ""}`
               }
+              /* The Rush link's glow is a ::before that re-renders the label
+                 as transparent glyphs to cast a shadow from. attr() is the
+                 only way a pseudo-element can read it, so the copy stays here
+                 rather than being duplicated into the stylesheet. */
+              data-text={rush ? label : undefined}
             >
               {label}
             </NavLink>
