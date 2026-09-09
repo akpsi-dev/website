@@ -43,6 +43,15 @@ import {
   ARMLogo,
   ConcordiaLogo,
   BarclaysLogo,
+  CapitalGroupLogo,
+  DisneyLogo,
+  RaytheonLogo,
+  VisaLogo,
+  SAPLogo,
+  HyundaiLogo,
+  CreditKarmaLogo,
+  KimleyHornLogo,
+  CenterviewPartnersLogo,
 } from "../Assets";
 
 const ROW_ONE = [
@@ -67,6 +76,11 @@ const ROW_ONE = [
   { src: TeslaLogo, alt: "Tesla" },
   { src: SalesforceLogo, alt: "Salesforce" },
   { src: BarclaysLogo, alt: "Barclays" },
+  { src: DisneyLogo, alt: "Disney" },
+  { src: VisaLogo, alt: "Visa" },
+  { src: SAPLogo, alt: "SAP" },
+  { src: CapitalGroupLogo, alt: "Capital Group" },
+  { src: RaytheonLogo, alt: "Raytheon" },
 ];
 
 const ROW_TWO = [
@@ -91,12 +105,23 @@ const ROW_TWO = [
   { src: HPELogo, alt: "HPE" },
   { src: ARMLogo, alt: "Arm" },
   { src: ConcordiaLogo, alt: "Concordia" },
+  { src: HyundaiLogo, alt: "Hyundai" },
+  { src: CreditKarmaLogo, alt: "Credit Karma" },
+  { src: KimleyHornLogo, alt: "Kimley-Horn" },
+  /* Centerview is the only mark here with no alpha channel — it is a JPEG that
+     is solid blue rgb(0, 86, 173) to all four corners, so it renders as a
+     filled rectangle while every other logo floats on the strip. Kept because
+     it was asked for; replace the file with a transparent PNG and it falls in
+     line with the rest. */
+  { src: CenterviewPartnersLogo, alt: "Centerview Partners" },
 ];
 
 function LogoRow({ logos, direction = "forward" }) {
   return (
     <div className="logos-track-wrapper">
-      <div className={`logos-slide ${direction === "reverse" ? "logos-slide-reverse" : ""}`}>
+      <div
+        className={`logos-slide ${direction === "reverse" ? "logos-slide-reverse" : ""}`}
+      >
         {[...logos, ...logos].map((logo, i) => (
           <img key={i} src={logo.src} alt={logo.alt} loading="lazy" />
         ))}
