@@ -332,8 +332,14 @@ p {
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
   transition: all 0.5s var(--cubic-bezier);
   position: relative;
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
+  /* No backdrop-filter. About and Home both declare .summary-item, and CSS
+     class names are global once bundled, so this rule and Home's fight over
+     every .summary-item on the site. Dropping the blur only in Home.css left
+     Home's cards blurred anyway, because whichever file loads last wins.
+
+     Same reasoning as there: the backdrop is a flat dark section, and blurring
+     a flat colour returns it unchanged, so the rgba background alone carries
+     the look. */
   border: 1px solid rgba(255, 255, 255, 0.1);
   height: 100%;
 }
