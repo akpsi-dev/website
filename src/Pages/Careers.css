@@ -60,12 +60,33 @@
   margin: 0;
 }
 
+/* width and min-width are load-bearing, not tidying.
+
+   .careersContainer is a column flex box with align-items: center, so its
+   children are sized on the cross axis by their content — shrink-to-fit, not
+   the container's width. This section contains the logo marquee, whose track
+   is `width: max-content` and runs to 5544px because it renders the list twice
+   to loop seamlessly. So the section grew to 5544px, and .logos, which is
+   `max-width: 100%` below 768px, resolved that 100% against 5544 and grew with
+   it. Its own `overflow: hidden` then had nothing to clip: the box was already
+   as wide as the thing it was supposed to be hiding.
+
+   The result was /careers scrolling sideways by 5169px at 390px wide. It never
+   showed at desktop because .logos is capped at max-width: 1200px there, which
+   holds the max-content contribution down; only the mobile rule, which
+   replaces that cap with a percentage, exposed it.
+
+   Pinning the section to the container's width gives the percentage something
+   finite to resolve against, and the marquee's overflow: hidden starts
+   working. min-width: 0 stops a future wide child doing the same thing again —
+   flex items refuse to shrink below their content without it. */
 .careers-section {
   font-family: "Greek Font", sans-serif;
   font-size: 24px;
-  margin: 0;
   background: #121212;
   margin: -1rem auto;
+  width: 100%;
+  min-width: 0;
 }
 
 .table {
