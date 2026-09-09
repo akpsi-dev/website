@@ -175,31 +175,6 @@ body {
   background-color: rgba(255, 255, 255, 0.035);
 }
 
-/* The mark box never changes size, whether it holds artwork or a letter. That
-   is what keeps the left edge of the names a straight line down the year —
-   the thing that falls apart if the mark is allowed to change shape row to
-   row. Every row carries the company's initial — see the note in
-   CareerTable.jsx for why the logos lost this argument. */
-.ledger__mark {
-  flex: 0 0 34px;
-  width: 34px;
-  height: 34px;
-  display: grid;
-  place-items: center;
-  border-radius: 5px;
-  background-color: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--border-color);
-  overflow: hidden;
-}
-
-.ledger__monogram {
-  font-family: "Playfair Display", Georgia, serif;
-  font-size: 15px;
-  font-weight: 600;
-  line-height: 1;
-  color: var(--text-muted);
-}
-
 .ledger__ident {
   flex: 1 1 auto;
   min-width: 0;
@@ -378,11 +353,11 @@ html[data-reduced-motion="true"] .ledger__year::before {
   }
 
   .ledger__company {
-    /* 34px mark + the row's 0.875rem gap, so it lines up with the name. */
+    /* Nothing to indent past now that the mark is gone, so it sits on the
+       row's own left edge, in line with the name above it. */
     flex: 1 1 100%;
     max-width: none;
     margin-top: 6px;
-    padding-left: calc(34px + 0.875rem);
     text-align: left;
   }
 }

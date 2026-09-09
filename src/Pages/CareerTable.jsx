@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useSheet, CAREERS_SHEET_ID, CAREERS_RANGE } from "../utils/useSheet";
 import { useMotionPrefs } from "../utils/useMotionPrefs";
 import { EASE_OUT_EXPO } from "../utils/motion";
-import { companyMonogram } from "../utils/companyLogo";
 import "./CareerTable.css";
 
 const CATEGORIES = [
@@ -180,27 +179,6 @@ const CareerTable = () => {
                                 }
                           }
                         >
-                          {/* Always the monogram, never the logo. The mark set
-                              is wordmarks — JPMorgan's is 800x74 — and
-                              object-fit: contain in a 34px square fits them by
-                              width, so they collapse to a few pixels tall:
-                              measured on the 2025 tab, 11 of 22 rendered under
-                              10px and JPMorgan came out at 2.4px. They read as
-                              smudges. The initial is legible at this size and
-                              gives the column one consistent shape.
-
-                              lookupCompanyLogo still exists in
-                              utils/companyLogo for somewhere the mark can be
-                              given room to be a mark.
-
-                              Decorative: the company is spelled out at the end
-                              of the row, so the initial would only repeat it to
-                              a screen reader. */}
-                          <span className="ledger__mark" aria-hidden="true">
-                            <span className="ledger__monogram">
-                              {companyMonogram(entry.Company)}
-                            </span>
-                          </span>
                           <span className="ledger__ident">
                             <span className="ledger__name">{entry.Name}</span>
                             <span className="ledger__role">
