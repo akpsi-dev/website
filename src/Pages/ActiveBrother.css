@@ -211,7 +211,9 @@ body {
   background-color: rgba(37, 37, 37, 0.7);
   padding: 2rem;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  backdrop-filter: blur(10px);
+  /* No backdrop-filter — the backdrop is the flat page behind it, so the blur
+     returned the same colour it was handed. The 0.7-opacity background was
+     already doing all the work. */
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -281,7 +283,7 @@ body {
   background-color: rgba(42, 42, 42, 0.7);
   padding: 2.5rem;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
+  /* No backdrop-filter. See .brother-section above. */
   border: 1px solid rgba(255, 255, 255, 0.1);
   position: relative;
   overflow: hidden;

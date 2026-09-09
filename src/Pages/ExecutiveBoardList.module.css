@@ -27,7 +27,11 @@ body {
   margin: 2rem auto;
   padding: 2rem;
   background-color: var(--bg-card);
-  backdrop-filter: blur(10px); /* Glass effect */
+  /* No backdrop-filter. Same change, same reasoning, same page as
+     ActiveBrotherList: the leadership tab is the other half of /meet-us and
+     carried an identical per-card blur — 15 blurred elements covering 3.7x the
+     viewport. The backdrop is a flat dark section, and blurring a flat colour
+     returns it unchanged, so the rgba background alone carries the look. */
   box-shadow: 0 8px 24px var(--card-shadow);
   border: 1px solid var(--glass-border); /* Border for glass effect */
   box-sizing: border-box;
@@ -69,7 +73,7 @@ body {
   flex-direction: column;
   overflow: hidden;
   align-items: center;
-  backdrop-filter: blur(10px); /* Glass effect */
+  /* No backdrop-filter. See the note on .container above. */
   border: 1px solid var(--glass-border); /* Soft frosted border */
   position: relative;
 }
