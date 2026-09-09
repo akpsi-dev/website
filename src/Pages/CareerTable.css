@@ -8,6 +8,31 @@
   --text-muted: #b0b0b0;
   --border-color: #2a2a2a;
   --transition-speed: 0.3s;
+
+  /* The small tracked labels in the ledger — sector headings and company
+     names — are set in this rather than in Playfair.
+
+     Playfair Display is a high-contrast display serif: the thin strokes are
+     meant to be thin, which is what makes it good at 19px for a name and bad
+     at 12px for a tracked capital. Set in it, SECTOR headings were hairlines
+     with gaps between them, and italic pushed the thins thinner still.
+
+     Not a contrast problem, which is worth recording because it is the
+     tempting fix: the accent blue already measures 5.61:1 against this panel
+     and the muted grey 7.69:1, both comfortably past WCAG AA. Brightening them
+     would not have made a hairline any thicker. The letterforms were the
+     problem, so the letterforms are what changed.
+
+     A system stack rather than a third webfont: it costs no request, it is
+     designed to hold up at small sizes, and it keeps Anton where it belongs —
+     Anton is Rush's voice, used only on Recruitment, and borrowing it here
+     would have dragged that page's identity onto Careers.
+
+     The pairing also does some work: serif for the record itself, sans for the
+     apparatus around it. Before, labels and content were both Playfair and
+     nothing but size separated them. */
+  --ledger-label-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
 }
 
 body {
@@ -134,13 +159,14 @@ body {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  font-family: "Playfair Display", Georgia, serif;
-  font-style: italic;
+  font-family: var(--ledger-label-font);
   color: var(--accent-color);
-  font-size: 0.8125rem;
-  font-weight: 500;
+  font-size: 0.875rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.16em;
+  /* 0.16em was set for an italic serif and is too loose for a sans: past about
+     0.12em the eye stops reading a tracked capital as one word. */
+  letter-spacing: 0.1em;
   margin: 0 0 0.75rem;
 }
 
@@ -214,12 +240,16 @@ body {
   /* A long company name would otherwise take the row from the name it belongs
      to; past this it wraps within its own column. */
   max-width: 36%;
-  font-family: "Playfair Display", Georgia, serif;
-  font-size: 11.5px;
+  font-family: var(--ledger-label-font);
+  /* Up from 11.5px. At that size, tracked Playfair capitals were the least
+     legible thing in the row despite naming the employer, which is most of
+     what a reader is scanning for. */
+  font-size: 13px;
+  font-weight: 600;
   line-height: 1.4;
   text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  color: #c9c9c9;
   text-align: right;
 }
 
