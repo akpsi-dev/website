@@ -10,6 +10,9 @@
  * Category must be one of the six CATEGORIES in CareerTable, or the row lands
  * in Misc. Sector is free text and shows as the heading above the row.
  *
+ * Not every row is a graduating senior — actives list their internships here
+ * too, the same way earlier years mix the two.
+ *
  * Still to come: Alex Sriprathum, Carl Qiao, Daniel Kim, David Kim, Ryan Park,
  * Sarah Kim and Yan Amy Zhou have graduated but have not sent a 2026
  * placement yet.
@@ -87,6 +90,14 @@ export const CAREERS_2026 = [
     "Media Production",
     "ELEVVVVVATED",
     "Associate Producer, DVP",
+  ],
+  [
+    "Pranav Rao",
+    "2026",
+    "Technology",
+    "Hardware Engineering",
+    "Tesla",
+    "Hardware Engineering Intern: Failure Analysis & Testing",
   ],
 ];
 
