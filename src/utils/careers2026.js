@@ -116,7 +116,7 @@ export const CAREERS_2026 = [
     "Software Development Engineer",
   ],
   [
-    "Megan Dihn",
+    "Megan Dinh",
     "2026",
     "Misc",
     "Human Resources",
