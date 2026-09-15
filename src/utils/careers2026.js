@@ -60,6 +60,14 @@ export const CAREERS_2026 = [
     "Machine Learning Engineer Intern",
   ],
   [
+    "Braeden Yeoh",
+    "2026",
+    "Accounting",
+    "Audit and Assurance",
+    "Deloitte",
+    "Audit and Assurance Intern",
+  ],
+  [
     "Donny Chau",
     "2026",
     "Misc",
@@ -76,6 +84,14 @@ export const CAREERS_2026 = [
     "Human Resources Intern",
   ],
   [
+    "Ethan Le",
+    "2026",
+    "Technology",
+    "Hardware Validation",
+    "Intel",
+    "NPU Validation Intern",
+  ],
+  [
     "Izella Han",
     "2026",
     "Marketing",
@@ -90,6 +106,14 @@ export const CAREERS_2026 = [
     "Solutions Engineering",
     "Capital Group",
     "Solutions Engineer",
+  ],
+  [
+    "Logan Kim",
+    "2026",
+    "Finance",
+    "Investment Banking",
+    "Centerview Partners",
+    "Summer Analyst",
   ],
   [
     "Luis Esparza",
@@ -146,6 +170,14 @@ export const CAREERS_2026 = [
     "Product Operations",
     "Tesla",
     "Product Operations Intern",
+  ],
+  [
+    "Tyler Ho",
+    "2026",
+    "Finance",
+    "Investment Banking",
+    "Barclays",
+    "Investment Banking Summer Analyst",
   ],
 ];
 
