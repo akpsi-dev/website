@@ -50,6 +50,14 @@ export const CAREERS_2026 = [
     "Optro",
     "Software Engineering Intern",
   ],
+  [
+    "Andrew Sou",
+    "2026",
+    "Technology",
+    "Software",
+    "Roche",
+    "Software Engineering Intern",
+  ],
   ["Anna Shan", "2026", "Finance", "Asset Management", "BlackRock", "Analyst"],
   [
     "Anuj Patel",
@@ -140,6 +148,14 @@ export const CAREERS_2026 = [
     "Software Development Engineer",
   ],
   [
+    "Max Vano",
+    "2026",
+    "Marketing",
+    "Product Marketing",
+    "Salesforce",
+    "Product Marketing Intern",
+  ],
+  [
     "Megan Dinh",
     "2026",
     "Misc",
@@ -154,6 +170,14 @@ export const CAREERS_2026 = [
     "Brand Marketing",
     "DoorDash",
     "Marketing Ambassador",
+  ],
+  [
+    "Nico Simonian",
+    "2026",
+    "Finance",
+    "Corporate Finance",
+    "ARM",
+    "FP&A Intern",
   ],
   [
     "Pranav Rao",
