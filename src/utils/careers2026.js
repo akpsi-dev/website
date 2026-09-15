@@ -10,9 +10,9 @@
  * Category must be one of the six CATEGORIES in CareerTable, or the row lands
  * in Misc. Sector is free text and shows as the heading above the row.
  *
- * Still to come: Alexis Lin, Alex Sriprathum, Carl Qiao, Daniel Kim, David Kim,
- * Ryan Park, Sarah Kim and Yan Amy Zhou have graduated but have not sent a
- * 2026 placement yet.
+ * Still to come: Alex Sriprathum, Carl Qiao, Daniel Kim, David Kim, Ryan Park,
+ * Sarah Kim and Yan Amy Zhou have graduated but have not sent a 2026
+ * placement yet.
  */
 export const CAREERS_2026 = [
   [
@@ -30,6 +30,14 @@ export const CAREERS_2026 = [
     "Investment Banking",
     "JP Morgan",
     "Tech Investment Banking Analyst",
+  ],
+  [
+    "Alexis Lin",
+    "2026",
+    "Misc",
+    "Human Resources",
+    "Amazon",
+    "Sourcing Recruiter",
   ],
   [
     "Allen Lai",
