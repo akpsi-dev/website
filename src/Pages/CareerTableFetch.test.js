@@ -36,6 +36,9 @@ test("shows skeleton bars while the sheet is in flight, then the rows", async ()
     data: { values: [["Alice", "2025", "Finance", "Sector", "Co", "Analyst"]] },
   });
 
+  // 2026 carries repo-held placements, so that is where the page opens.
+  await userEvent.click(await screen.findByRole("button", { name: "2025" }));
+
   expect(await screen.findByText("Alice")).toBeInTheDocument();
   expect(container.querySelectorAll(".careers-skeleton__bar")).toHaveLength(0);
   // Grouped under its sector heading, not rendered as a fourth column.
@@ -69,12 +72,15 @@ test("switching years swaps the sheet", async () => {
   });
   renderTable();
 
+  await userEvent.click(await screen.findByRole("button", { name: "2025" }));
+
   expect(await screen.findByText("Alice")).toBeInTheDocument();
   expect(screen.queryByText("Bob")).not.toBeInTheDocument();
 
   await userEvent.click(screen.getByRole("button", { name: "2024" }));
 
   expect(await screen.findByText("Bob")).toBeInTheDocument();
+  expect(screen.queryByText("Alice")).not.toBeInTheDocument();
 });
 
 test("a seeded year with no rows says so instead of rendering an empty sheet", async () => {
@@ -90,21 +96,31 @@ test("a seeded year with no rows says so instead of rendering an empty sheet", a
   ).toBeInTheDocument();
 });
 
-test("opens on the newest year with placements, not an empty seeded year", async () => {
-  // 2026 is seeded so its tab exists, but it has no rows yet. The page should
-  // still open on 2025 rather than on an empty sheet.
+test("opens on 2026 and shows the repo-held placements the sheet lacks", async () => {
   axios.get.mockResolvedValue({
     data: { values: [["Alice", "2025", "Finance", "Sector", "Co", "Analyst"]] },
   });
   renderTable();
 
-  expect(await screen.findByText("Alice")).toBeInTheDocument();
-  expect(screen.getByRole("button", { name: "2025" })).toHaveAttribute(
+  expect(await screen.findByText("Anna Shan")).toBeInTheDocument();
+  expect(screen.getByRole("button", { name: "2026" })).toHaveAttribute(
     "aria-pressed",
     "true",
   );
-  expect(screen.getByRole("button", { name: "2026" })).toHaveAttribute(
-    "aria-pressed",
-    "false",
-  );
+  // 2025 is untouched by the merge and still reachable.
+  await userEvent.click(screen.getByRole("button", { name: "2025" }));
+  expect(await screen.findByText("Alice")).toBeInTheDocument();
+});
+
+test("a year with no rows anywhere still says so", async () => {
+  axios.get.mockResolvedValue({
+    data: { values: [["Alice", "2025", "Finance", "Sector", "Co", "Analyst"]] },
+  });
+  renderTable();
+
+  await userEvent.click(await screen.findByRole("button", { name: "2019" }));
+
+  expect(
+    await screen.findByText(/No placements recorded for 2019 yet/),
+  ).toBeInTheDocument();
 });

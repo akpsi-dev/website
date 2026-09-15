@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSheet, CAREERS_SHEET_ID, CAREERS_RANGE } from "../utils/useSheet";
+import { mergeCareerRows } from "../utils/careers2026";
 import { useMotionPrefs } from "../utils/useMotionPrefs";
 import { EASE_OUT_EXPO } from "../utils/motion";
 import "./CareerTable.css";
@@ -86,7 +87,7 @@ const CareerTable = () => {
   const { reducedMotion } = useMotionPrefs();
   const [selectedYear, setSelectedYear] = useState(null);
 
-  const data = useMemo(() => buildCareerData(rows), [rows]);
+  const data = useMemo(() => buildCareerData(mergeCareerRows(rows)), [rows]);
 
   const sortedYears = useMemo(
     () => Object.keys(data).sort((a, b) => b - a),

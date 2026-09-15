@@ -20,6 +20,7 @@ export const HIDDEN_BROTHERS = [
 
   // Graduated. The class of 2026, plus Daniel Kim, whose 2025 class was
   // never cleared last year. Their roles live on the Careers page under 2026.
+  // Ashlyn Wong is class of 2026 but stays on Meet Us by request.
   "Aarush Inamdar",
   "Alex Kao",
   "Alex Sriprathum",
@@ -27,7 +28,6 @@ export const HIDDEN_BROTHERS = [
   "Allen Lai",
   "Anna Shan",
   "Anuj Patel",
-  "Ashlyn Wong",
   "Carl Qiao",
   "Daniel Kim",
   "David Kim",
