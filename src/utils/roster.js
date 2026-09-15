@@ -1,4 +1,5 @@
 import axios from "axios";
+import { BETA_CLASS_VISIBLE, betaClassRows } from "./betaClass";
 
 export const ROSTER_SHEET_ID = "167TmecKc4cduWtdounqiXDkYgQjssu9cSz4QLljuKLg";
 const API_KEY = process.env.REACT_APP_ACTIVE_INFO_KEY;
@@ -70,8 +71,27 @@ export async function fetchVisibleRoster() {
     `https://sheets.googleapis.com/v4/spreadsheets/${ROSTER_SHEET_ID}/values:batchGet?key=${API_KEY}&${ranges}`,
   );
   const valueRanges = response.data.valueRanges || [];
-  return valueRanges
-    .flatMap((valueRange) => valueRange.values || [])
+  const sheetRows = valueRanges.flatMap(
+    (valueRange) => valueRange.values || [],
+  );
+
+  // Beta is a shell with no headshots or write-ups yet, so it stays off the
+  // site behind its own flag. Once a member has a real row in the sheet, that
+  // row wins and the shell entry drops out on its own.
+  const onSheet = new Set(
+    sheetRows.map((row) =>
+      String(row?.[0] ?? "")
+        .trim()
+        .toLowerCase(),
+    ),
+  );
+  const shellRows = BETA_CLASS_VISIBLE
+    ? betaClassRows().filter(
+        (row) => !onSheet.has(String(row[0]).trim().toLowerCase()),
+      )
+    : [];
+
+  return [...sheetRows, ...shellRows]
     .filter((row) => row?.[0] && !isHiddenBrother(row[0]))
     .sort((a, b) =>
       String(a[0]).trim().localeCompare(String(b[0]).trim(), "en", {

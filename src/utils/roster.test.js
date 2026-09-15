@@ -116,6 +116,13 @@ describe("fetchVisibleRoster", () => {
     expect(rows.map((row) => row[0])).toEqual(["Erin Tran", "Tyler Ho"]);
   });
 
+  it("keeps the Beta shell off the roster while it is not visible", async () => {
+    batchGet([["Erin Tran"]], []);
+    const rows = await fetchVisibleRoster();
+    expect(rows.map((row) => row[0])).toEqual(["Erin Tran"]);
+    expect(rows.map((row) => row[0])).not.toContain("Audrey Lam");
+  });
+
   it("lists every hidden brother exactly once", () => {
     expect(new Set(HIDDEN_BROTHERS).size).toBe(HIDDEN_BROTHERS.length);
   });
