@@ -61,19 +61,19 @@ describe("fetchVisibleRoster", () => {
   });
 
   it("sorts the DoR rows into the roster rather than appending them", async () => {
-    batchGet([["Aarush Inamdar"], ["Erin Tran"]], [["Brandon Koh"]]);
+    batchGet([["Ava Lily Tran"], ["Erin Tran"]], [["Brandon Koh"]]);
     const rows = await fetchVisibleRoster();
     expect(rows.map((row) => row[0])).toEqual([
-      "Aarush Inamdar",
+      "Ava Lily Tran",
       "Brandon Koh",
       "Erin Tran",
     ]);
   });
 
   it("sorts case-insensitively", async () => {
-    batchGet([["alex Kao"], ["Aarush Inamdar"]], []);
+    batchGet([["tyler Ho"], ["Ava Lily Tran"]], []);
     const rows = await fetchVisibleRoster();
-    expect(rows.map((row) => row[0])).toEqual(["Aarush Inamdar", "alex Kao"]);
+    expect(rows.map((row) => row[0])).toEqual(["Ava Lily Tran", "tyler Ho"]);
   });
 
   it("skips blank and malformed rows", async () => {
@@ -99,5 +99,24 @@ describe("fetchVisibleRoster", () => {
 
   it("keeps the hidden list as the single place names are suppressed", () => {
     expect(HIDDEN_BROTHERS).toContain("Henry Lee");
+  });
+
+  it("hides graduated seniors and departed brothers alike", async () => {
+    batchGet(
+      [
+        ["Aarush Inamdar"],
+        ["Elle Hsu"],
+        ["Daniel Kim"],
+        ["Erin Tran"],
+        ["Tyler Ho"],
+      ],
+      [],
+    );
+    const rows = await fetchVisibleRoster();
+    expect(rows.map((row) => row[0])).toEqual(["Erin Tran", "Tyler Ho"]);
+  });
+
+  it("lists every hidden brother exactly once", () => {
+    expect(new Set(HIDDEN_BROTHERS).size).toBe(HIDDEN_BROTHERS.length);
   });
 });

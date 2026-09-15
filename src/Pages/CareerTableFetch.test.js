@@ -89,3 +89,22 @@ test("a seeded year with no rows says so instead of rendering an empty sheet", a
     await screen.findByText(/No placements recorded for 2018 yet/),
   ).toBeInTheDocument();
 });
+
+test("opens on the newest year with placements, not an empty seeded year", async () => {
+  // 2026 is seeded so its tab exists, but it has no rows yet. The page should
+  // still open on 2025 rather than on an empty sheet.
+  axios.get.mockResolvedValue({
+    data: { values: [["Alice", "2025", "Finance", "Sector", "Co", "Analyst"]] },
+  });
+  renderTable();
+
+  expect(await screen.findByText("Alice")).toBeInTheDocument();
+  expect(screen.getByRole("button", { name: "2025" })).toHaveAttribute(
+    "aria-pressed",
+    "true",
+  );
+  expect(screen.getByRole("button", { name: "2026" })).toHaveAttribute(
+    "aria-pressed",
+    "false",
+  );
+});

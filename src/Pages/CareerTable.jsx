@@ -25,6 +25,7 @@ const SEEDED_YEARS = [
   "2023",
   "2024",
   "2025",
+  "2026",
 ];
 
 const makeYearBucket = () =>
@@ -92,9 +93,19 @@ const CareerTable = () => {
     [data],
   );
 
-  // Default to the most recent year present so newly added years surface on
-  // their own, instead of the page going stale behind a hardcoded default.
-  const activeYear = selectedYear ?? sortedYears[0];
+  // Default to the most recent year that actually has placements, so newly
+  // added years surface on their own without the page opening on a seeded
+  // year that is still empty. Falls back to the newest year when none have
+  // rows yet, which keeps the very first render sane.
+  const defaultYear = useMemo(
+    () =>
+      sortedYears.find((year) =>
+        CATEGORIES.some((category) => (data[year]?.[category] ?? []).length),
+      ) ?? sortedYears[0],
+    [sortedYears, data],
+  );
+
+  const activeYear = selectedYear ?? defaultYear;
 
   const groups = useMemo(() => {
     const yearData = data[activeYear] ?? {};

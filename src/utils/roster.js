@@ -11,10 +11,38 @@ export const ROSTER_RANGE = "Form Responses 1!C2:M";
    ROSTER_RANGE, so the rows drop straight in. */
 export const DOR_RANGE = "DOR!C1:M";
 
-/* Hidden from Meet Us and from /:name — NOT deleted. The sheet row stays put,
-   and the headshot and company logo stay in src/Assets. Emptying this list
-   puts them back on the site with their data intact. */
-export const HIDDEN_BROTHERS = ["Henry Lee"];
+/* Hidden from Meet Us and from /:name — NOT deleted. Every sheet row stays
+   put, and every headshot and company logo stays in src/Assets. Deleting a
+   name from this list puts that brother straight back, data intact. */
+export const HIDDEN_BROTHERS = [
+  // The sitting Director of Rituals, kept off the site by chapter convention.
+  "Henry Lee",
+
+  // Graduated. The class of 2026, plus Daniel Kim, whose 2025 class was
+  // never cleared last year. Their roles live on the Careers page under 2026.
+  "Aarush Inamdar",
+  "Alex Kao",
+  "Alex Sriprathum",
+  "Alexis Lin",
+  "Allen Lai",
+  "Anna Shan",
+  "Anuj Patel",
+  "Ashlyn Wong",
+  "Carl Qiao",
+  "Daniel Kim",
+  "David Kim",
+  "Donny Chau",
+  "Izella Han",
+  "Lauren Cho",
+  "Mason Whang",
+  "Ryan Park",
+  "Sarah Kim",
+  "Yan Amy Zhou",
+
+  // No longer in the chapter. Elle Hsu would not have been caught by the
+  // graduating class — she is 2027.
+  "Elle Hsu",
+];
 
 export function isHiddenBrother(name) {
   return HIDDEN_BROTHERS.includes(String(name ?? "").trim());
