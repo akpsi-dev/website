@@ -19,7 +19,7 @@ export const BETA_CLASS = [
   { fullName: "Daniela Herrera", graduationYear: "2027" },
   { fullName: "Emily Chien", graduationYear: "2029" },
   { fullName: "Levia Whang", graduationYear: "2029" },
-  { fullName: "Megan Dihn", graduationYear: "2028" },
+  { fullName: "Megan Dinh", graduationYear: "2028" },
   { fullName: "Pranav Rao", graduationYear: "2029" },
   { fullName: "Simram Saini", graduationYear: "2029" },
   { fullName: "Sophie Choi", graduationYear: "2029" },
