@@ -71,9 +71,37 @@ export async function fetchVisibleRoster() {
     `https://sheets.googleapis.com/v4/spreadsheets/${ROSTER_SHEET_ID}/values:batchGet?key=${API_KEY}&${ranges}`,
   );
   const valueRanges = response.data.valueRanges || [];
-  const sheetRows = valueRanges.flatMap(
+  const [rosterValues = [], dorValues = []] = valueRanges.map(
     (valueRange) => valueRange.values || [],
   );
+
+  const nameKey = (row) =>
+    String(row?.[0] ?? "")
+      .trim()
+      .toLowerCase();
+
+  /* One row per brother, keyed on name. The roster tab is a form response
+     sheet, so a submission appends rather than overwrites: a brother who
+     fills the form twice — or who was typed in by hand and then submitted —
+     has more than one row, and without this every one of them rendered as
+     its own card on Meet Us. The last row wins, that being their most recent
+     answers. */
+  const byName = new Map();
+  rosterValues.forEach((row) => {
+    const key = nameKey(row);
+    if (key) byName.set(key, row);
+  });
+
+  /* The DoR tab is a parking spot that runs a year behind the roster, so it
+     only supplies a brother the roster tab does not already hold. Otherwise
+     Brandon Koh's stale parked row would outrank the form response he sends
+     now that he is back on the roster. */
+  dorValues.forEach((row) => {
+    const key = nameKey(row);
+    if (key && !byName.has(key)) byName.set(key, row);
+  });
+
+  const sheetRows = [...byName.values()];
 
   // Beta is a shell with no headshots or write-ups yet, so it stays off the
   // site behind its own flag. Once a member has a real row in the sheet, that

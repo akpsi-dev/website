@@ -16,6 +16,11 @@ function batchGet(rosterRows, dorRows) {
   });
 }
 
+async function fetchVisibleRosterFrom(rosterRows, dorRows) {
+  batchGet(rosterRows, dorRows);
+  return fetchVisibleRoster();
+}
+
 describe("rosterSlug", () => {
   it("joins the name with hyphens, matching the /:name route", () => {
     expect(rosterSlug("Brandon Koh")).toBe("Brandon-Koh");
@@ -52,6 +57,51 @@ describe("fetchVisibleRoster", () => {
     );
     const rows = await fetchVisibleRoster();
     expect(rows.map((row) => row[0])).toEqual(["Erin Tran"]);
+  });
+
+  it("shows a brother once when the form sheet holds two rows for them", async () => {
+    // The roster tab is a form response sheet, so submitting appends. A
+    // brother backfilled by hand who later fills out the form had a row each,
+    // and Meet Us rendered a card for both.
+    const rows = await fetchVisibleRosterFrom(
+      [
+        ["Erin Tran", "Irvine, CA"],
+        ["Erin Tran", "Fullerton, CA"],
+      ],
+      [],
+    );
+    expect(rows).toHaveLength(1);
+  });
+
+  it("keeps the most recent of a brother's rows, not the backfilled one", async () => {
+    const rows = await fetchVisibleRosterFrom(
+      [
+        ["Erin Tran", "stale backfill"],
+        ["Erin Tran", "what she submitted"],
+      ],
+      [],
+    );
+    expect(rows[0][1]).toBe("what she submitted");
+  });
+
+  it("matches duplicate names regardless of case or stray spacing", async () => {
+    const rows = await fetchVisibleRosterFrom(
+      [["Erin Tran"], ["  erin tran  "]],
+      [],
+    );
+    expect(rows).toHaveLength(1);
+  });
+
+  it("lets a form response outrank the year-behind DoR row", async () => {
+    // Brandon Koh is parked on the DoR tab and belongs back on the roster. The
+    // moment he fills out the form he is on both tabs, and the parked row is
+    // the stale one.
+    const rows = await fetchVisibleRosterFrom(
+      [["Brandon Koh", "submitted this year"]],
+      [["Brandon Koh", "parked last year"]],
+    );
+    expect(rows).toHaveLength(1);
+    expect(rows[0][1]).toBe("submitted this year");
   });
 
   it("restores the parked DoR tab onto the roster", async () => {
