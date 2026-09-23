@@ -29,6 +29,10 @@ const SEEDED_YEARS = [
   "2026",
 ];
 
+// The year Careers opens on. See defaultYear below: it is a preference, and
+// gives way when the year has no placements yet.
+const PINNED_YEAR = "2026";
+
 const makeYearBucket = () =>
   CATEGORIES.reduce((bucket, category) => {
     bucket[category] = [];
@@ -94,17 +98,20 @@ const CareerTable = () => {
     [data],
   );
 
-  // Default to the most recent year that actually has placements, so newly
-  // added years surface on their own without the page opening on a seeded
-  // year that is still empty. Falls back to the newest year when none have
-  // rows yet, which keeps the very first render sane.
-  const defaultYear = useMemo(
-    () =>
-      sortedYears.find((year) =>
-        CATEGORIES.some((category) => (data[year]?.[category] ?? []).length),
-      ) ?? sortedYears[0],
-    [sortedYears, data],
-  );
+  // The year the page opens on. PINNED_YEAR is the chapter's current class of
+  // placements and the fullest tab on the sheet, so it stays the landing tab
+  // even once a thinner year above it starts filling: a visitor should not
+  // arrive on a tab holding two names while the tab below holds twenty.
+  //
+  // Still a preference, not a hard setting — if the pinned year has no rows
+  // at all, the old behaviour takes over and the newest year with placements
+  // wins, so the page is never left opening on an empty tab.
+  const defaultYear = useMemo(() => {
+    const hasRows = (year) =>
+      CATEGORIES.some((category) => (data[year]?.[category] ?? []).length);
+    if (hasRows(PINNED_YEAR)) return PINNED_YEAR;
+    return sortedYears.find(hasRows) ?? sortedYears[0];
+  }, [sortedYears, data]);
 
   const activeYear = selectedYear ?? defaultYear;
 

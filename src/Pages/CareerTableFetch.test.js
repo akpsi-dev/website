@@ -112,6 +112,24 @@ test("opens on 2026 and shows the repo-held placements the sheet lacks", async (
   expect(await screen.findByText("Alice")).toBeInTheDocument();
 });
 
+test("opens on the pinned year even when a later year has placements", async () => {
+  // Without the pin, sortedYears would hand 2027 the opening tab the moment
+  // one row lands there, burying a 2026 tab holding twenty.
+  axios.get.mockResolvedValue({
+    data: { values: [["Alice", "2027", "Finance", "Sector", "Co", "Analyst"]] },
+  });
+  renderTable();
+
+  expect(await screen.findByText("Anna Shan")).toBeInTheDocument();
+  expect(screen.getByRole("button", { name: "2026" })).toHaveAttribute(
+    "aria-pressed",
+    "true",
+  );
+  // The newer year is still there to click.
+  await userEvent.click(screen.getByRole("button", { name: "2027" }));
+  expect(await screen.findByText("Alice")).toBeInTheDocument();
+});
+
 test("a year with no rows anywhere still says so", async () => {
   axios.get.mockResolvedValue({
     data: { values: [["Alice", "2025", "Finance", "Sector", "Co", "Analyst"]] },
