@@ -138,7 +138,7 @@ export const BETA_CLASS = [
     hometown: "Los Angeles, CA",
     major: "Cognitive Sciences & Psychological Sciences",
     graduationYear: "2028",
-    linkedin: "https://linkedin.com/in/megandinh27/",
+    linkedin: "https://www.linkedin.com/in/megandinh27",
     interests: ["Sewing", "Hiking", "Cooking", "Fashion", "Trying new foods"],
     experience: [
       "Total Rewards Intern - Tesla",
