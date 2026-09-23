@@ -28,7 +28,7 @@ export const LEADERSHIP_ROSTER = [
     position: "Vice President of Chapter Operations",
   },
   {
-    fullName: "Nico Simonian",
+    fullName: "Rishi Murumkar",
     leadershipType: "Cabinet",
     position: "Vice President of Treasury",
   },
@@ -59,10 +59,12 @@ export const LEADERSHIP_ROSTER = [
     leadershipType: "Executive Board",
     position: "Social and External Affairs Chairman",
   },
-  /* Technology Chairman has changed hands, but the incoming chair has no
-     roster entry or headshot yet — Brandon Peng stands in until it lands. */
+  /* The stand-in is over: Pranav Rao's headshot is in, so he takes the seat
+     under his own name. His roster row is still to come, and until it does
+     ExecutiveBoardList renders the card without a profile link rather than
+     pointing at a 404 — see hasProfile in MeetUs. */
   {
-    fullName: "Brandon Peng",
+    fullName: "Pranav Rao",
     leadershipType: "Executive Board",
     position: "Technology Chairman",
   },
