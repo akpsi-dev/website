@@ -1,7 +1,13 @@
-import { BETA_CLASS, BETA_CLASS_VISIBLE, betaClassRows } from "./betaClass";
+import {
+  BETA_CLASS,
+  BETA_CLASS_VISIBLE,
+  betaClassRows,
+  isBetaMemberReady,
+} from "./betaClass";
+import { headshotHash } from "../Assets/headshot";
 
 describe("BETA_CLASS", () => {
-  it("stays off the site until the headshots and write-ups arrive", () => {
+  it("stays off the site until the class is filled in", () => {
     expect(BETA_CLASS_VISIBLE).toBe(false);
   });
 
@@ -16,6 +22,27 @@ describe("BETA_CLASS", () => {
       expect(member.graduationYear).toMatch(/^20\d{2}$/);
     });
   });
+
+  it("keeps the members alphabetical, as the roster sheet is", () => {
+    const names = BETA_CLASS.map((member) => member.fullName);
+    expect(names).toEqual([...names].sort((a, b) => a.localeCompare(b)));
+  });
+});
+
+describe("isBetaMemberReady", () => {
+  it("needs both a write-up and a registered headshot", () => {
+    const withPhoto = Object.keys(headshotHash)[0];
+    expect(isBetaMemberReady({ fullName: withPhoto, whyAkpsi: "words" })).toBe(
+      true,
+    );
+    // A write-up but no photo is the case that would render a grey card.
+    expect(
+      isBetaMemberReady({ fullName: "Nobody At All", whyAkpsi: "words" }),
+    ).toBe(false);
+    // A photo but no words is an empty profile behind a real face.
+    expect(isBetaMemberReady({ fullName: withPhoto })).toBe(false);
+    expect(isBetaMemberReady(undefined)).toBe(false);
+  });
 });
 
 describe("betaClassRows", () => {
@@ -27,21 +54,46 @@ describe("betaClassRows", () => {
     betaClassRows().forEach((row) => expect(row[3]).toBe("Beta"));
   });
 
-  it("puts the name and graduation year in the roster's own columns", () => {
-    const row = betaClassRows().find((r) => r[0] === "Daniela Herrera");
-    expect(row[0]).toBe("Daniela Herrera");
-    expect(row[4]).toBe("2027");
+  it("emits only the members who are ready", () => {
+    const emitted = betaClassRows().map((row) => row[0]);
+    expect(emitted).toEqual(
+      BETA_CLASS.filter(isBetaMemberReady).map((member) => member.fullName),
+    );
   });
 
-  it("leaves the member-written fields blank for now", () => {
-    // Hometown, major, LinkedIn, interests, experience, ask-me-about,
-    // why-AKPsi and the Spotify embed all come from the member.
+  it("leaves out a member who has written their profile but has no photo", () => {
+    const written = BETA_CLASS.find(
+      (member) => member.whyAkpsi && !isBetaMemberReady(member),
+    );
+    // Skipped once every member with a write-up has their headshot in.
+    if (!written) return;
+    expect(betaClassRows().map((row) => row[0])).not.toContain(
+      written.fullName,
+    );
+  });
+
+  it("never emits a row whose member-written cells are blank", () => {
     betaClassRows().forEach((row) => {
-      [1, 2, 5, 6, 7, 8, 9, 10].forEach((i) => expect(row[i]).toBe(""));
+      // Hometown, major, LinkedIn, interests, experience, ask-me-about,
+      // why-AKPsi and the Spotify link all come from the member.
+      [1, 2, 5, 6, 7, 8, 9, 10].forEach((i) =>
+        expect(String(row[i]).trim()).not.toBe(""),
+      );
     });
   });
 
-  it("returns one row per member", () => {
-    expect(betaClassRows()).toHaveLength(BETA_CLASS.length);
+  it("joins the list cells with newlines, the way splitItems reads them", () => {
+    const row = betaClassRows().find((r) => r[0] === "Pranav Rao");
+    expect(row[7].split("\n")).toContain("Hardware R&D Engineer - HERO Lab");
+    expect(row[6].split("\n").length).toBeGreaterThan(1);
+  });
+
+  it("puts each cell in the roster's own column", () => {
+    const row = betaClassRows().find((r) => r[0] === "Pranav Rao");
+    expect(row[1]).toBe("Santa Clara, CA");
+    expect(row[2]).toBe("Electrical Engineering");
+    expect(row[4]).toBe("2029");
+    expect(row[5]).toContain("linkedin.com/in/pranavrao09");
+    expect(row[10]).toContain("open.spotify.com/track/");
   });
 });
