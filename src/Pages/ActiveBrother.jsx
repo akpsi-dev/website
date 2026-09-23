@@ -28,7 +28,7 @@ export default function ActiveBrother({ brotherInfo }) {
   }, []);
 
   const [
-    name,
+    rawName,
     hometown,
     major,
     pledgeClass,
@@ -40,6 +40,12 @@ export default function ActiveBrother({ brotherInfo }) {
     loveStatement,
     favoriteSong,
   ] = brotherInfo;
+
+  /* Trimmed the way the Meet Us grid trims it. headshotHash is exact-match on
+     the sheet's string, so a name typed with a trailing space found no key and
+     showed the grey placeholder here while the grid card beside it, which
+     trims, showed the real photo. */
+  const name = String(rawName ?? "").trim();
 
   const interests = splitItems(interestsRaw);
   const experience = splitItems(experienceRaw);
