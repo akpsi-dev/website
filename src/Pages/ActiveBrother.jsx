@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import "./ActiveBrother.css";
 import { headshotHash } from "../Assets/headshot";
 import { splitItems } from "../utils/splitItems";
+import { spotifyEmbedUrl } from "../utils/spotifyEmbed";
 
 export default function ActiveBrother({ brotherInfo }) {
   const containerRef = useRef(null);
@@ -46,6 +47,10 @@ export default function ActiveBrother({ brotherInfo }) {
      showed the grey placeholder here while the grid card beside it, which
      trims, showed the real photo. */
   const name = String(rawName ?? "").trim();
+
+  /* The form asks for a link, not an embed, so build the player from it. null
+     when the cell holds no Spotify id, and the section is left out entirely. */
+  const songEmbedUrl = spotifyEmbedUrl(favoriteSong);
 
   const interests = splitItems(interestsRaw);
   const experience = splitItems(experienceRaw);
@@ -94,12 +99,18 @@ export default function ActiveBrother({ brotherInfo }) {
             LinkedIn
           </a>
         </div>
-        {favoriteSong && (
+        {songEmbedUrl && (
           <div className="brother-soundtrack">
-            <div
+            <iframe
               className="brother-soundtrack"
-              dangerouslySetInnerHTML={{ __html: favoriteSong }}
-            ></div>
+              src={songEmbedUrl}
+              title={`${name}'s favorite song`}
+              width="100%"
+              height="152"
+              frameBorder="0"
+              loading="lazy"
+              allow="clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            ></iframe>
           </div>
         )}
       </div>
