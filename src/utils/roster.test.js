@@ -92,6 +92,16 @@ describe("fetchVisibleRoster", () => {
     expect(rows).toHaveLength(1);
   });
 
+  it("folds a doubled inner space, which the slug collapses anyway", async () => {
+    // rosterSlug turns both of these into /Erin-Tran, so two rows meant two
+    // cards leading to one profile.
+    const rows = await fetchVisibleRosterFrom(
+      [["Erin Tran"], ["Erin  Tran"]],
+      [],
+    );
+    expect(rows).toHaveLength(1);
+  });
+
   it("lets a form response outrank the year-behind DoR row", async () => {
     // Brandon Koh is parked on the DoR tab and belongs back on the roster. The
     // moment he fills out the form he is on both tabs, and the parked row is

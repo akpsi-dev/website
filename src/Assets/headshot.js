@@ -79,6 +79,10 @@ export const headshotHash = {
   "Oriana Kou": OrianaKou,
   "Curtis Yang": CurtisYang,
   "Daniel Vercueil": DanielVercueil,
+  /* His photo is filed as "Daniel Verceil", so whichever spelling the roster
+     sheet carries, one of the two would have found no key and fallen back to
+     the grey placeholder. Both spellings resolve to the same photo. */
+  "Daniel Verceil": DanielVercueil,
   "Jessica Choi": JessicaChoi,
   "Alex Li": AlexLi,
   "Justin Lin": JustinLin,
@@ -89,6 +93,9 @@ export const headshotHash = {
   "Sarah Kim": SarahKim,
   "Yan Amy Zhou": YanAmyZhou,
   "Alexandra Ancheta": AlexaAncheta,
+  /* Same as Daniel above: the photo is filed under "Alexa Ancheta", and the
+     roster sheet is the only thing that decides which of these is looked up. */
+  "Alexa Ancheta": AlexaAncheta,
   "Tiffany Cheng": TiffanyCheng,
   "Izella Han": IzellaHan,
   "Anna Shan": AnnaShan,
@@ -137,14 +144,14 @@ export const headshotHash = {
   "Rishi Murumkar": RishiMurumkar,
   "Samantha Lee": SamanthaLee,
   "Nicole Kwan": NicoleKwan,
-  'Ethan Le': EthanLe,
-  'Ethan Lee': EthanLee,
-  'Christine Lee': ChristineLee,
-  'Ashton Creveling': AshtonCreveling,
-  'Luis Esparza': LuisEsparza,
-  'Ava Lily Tran': AvaLilyTran,
-  'Megan Yung': MeganYung,
-  'Max Truong': MaxTruong,
-  'James Fitzpatrick': JamesFitzpatrick,
+  "Ethan Le": EthanLe,
+  "Ethan Lee": EthanLee,
+  "Christine Lee": ChristineLee,
+  "Ashton Creveling": AshtonCreveling,
+  "Luis Esparza": LuisEsparza,
+  "Ava Lily Tran": AvaLilyTran,
+  "Megan Yung": MeganYung,
+  "Max Truong": MaxTruong,
+  "James Fitzpatrick": JamesFitzpatrick,
   "Default Headshot": DefaultHeadshot,
 };

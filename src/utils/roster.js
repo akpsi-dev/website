@@ -75,9 +75,15 @@ export async function fetchVisibleRoster() {
     (valueRange) => valueRange.values || [],
   );
 
+  /* Case, surrounding blanks and a doubled space between names are all
+     typing, not a different brother. Inner spacing matters because rosterSlug
+     collapses it too: "Erin  Tran" and "Erin Tran" already route to the same
+     /Erin-Tran profile, so left as two rows they were two cards pointing at
+     one page. */
   const nameKey = (row) =>
     String(row?.[0] ?? "")
       .trim()
+      .replace(/\s+/g, " ")
       .toLowerCase();
 
   /* One row per brother, keyed on name. The roster tab is a form response
