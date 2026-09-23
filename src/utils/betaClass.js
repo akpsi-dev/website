@@ -8,19 +8,19 @@ import { headshotHash } from "../Assets/headshot";
  * Annabelle Butarbutar, Audrey Lam, Emily Chien and Simram Saini are still
  * a name and a graduation year alone.
  *
- * The class is still OFF the site, and betaClassRows only emits a member
- * once they have BOTH a write-up and a headshot registered in headshot.js.
- * So flipping BETA_CLASS_VISIBLE cannot put a grey placeholder on Meet Us:
- * it shows whoever is ready and holds the rest back. Today that is Pranav
- * Rao alone — the other five who have written their profiles are waiting on
- * photos.
+ * The class is ON, but betaClassRows only emits a member once they have
+ * BOTH a write-up and a headshot registered in headshot.js, so this can
+ * never put a grey placeholder on Meet Us: it shows whoever is ready and
+ * holds the rest back. Today that is Pranav Rao alone — the other five who
+ * have written their profiles are waiting on photos, and join the grid on
+ * their own the moment a photo is registered under their name.
  *
  * To finish a member: add their headshot to src/Assets/ActiveHeadshots,
  * register it in headshot.js under their exact name, and fill in the fields
  * below. Moving the row into the roster sheet retires the entry here
  * entirely — a real sheet row always wins.
  */
-export const BETA_CLASS_VISIBLE = false;
+export const BETA_CLASS_VISIBLE = true;
 
 export const BETA_CLASS = [
   {

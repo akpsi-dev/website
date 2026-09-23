@@ -7,8 +7,14 @@ import {
 import { headshotHash } from "../Assets/headshot";
 
 describe("BETA_CLASS", () => {
-  it("stays off the site until the class is filled in", () => {
-    expect(BETA_CLASS_VISIBLE).toBe(false);
+  it("is on, with the readiness gate rather than the flag holding members back", () => {
+    expect(BETA_CLASS_VISIBLE).toBe(true);
+    // Every member the flag lets through has to be ready, which is what
+    // makes turning it on safe while most of the class is still blank.
+    expect(betaClassRows().length).toBeLessThan(BETA_CLASS.length);
+    betaClassRows().forEach((row) => {
+      expect(headshotHash[row[0]]).toBeDefined();
+    });
   });
 
   it("lists each member once", () => {

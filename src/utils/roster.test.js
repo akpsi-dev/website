@@ -8,6 +8,18 @@ import {
 
 jest.mock("axios");
 
+/* The Beta shell is stubbed rather than imported, so these tests describe how
+   the merge behaves and not who happens to be in the class this week. Turning
+   the real class on would otherwise have broken every count below. */
+let mockBetaVisible = false;
+let mockBetaRows = [];
+jest.mock("./betaClass", () => ({
+  get BETA_CLASS_VISIBLE() {
+    return mockBetaVisible;
+  },
+  betaClassRows: () => mockBetaRows,
+}));
+
 function batchGet(rosterRows, dorRows) {
   axios.get.mockResolvedValue({
     data: {
@@ -45,6 +57,10 @@ describe("isHiddenBrother", () => {
 });
 
 describe("fetchVisibleRoster", () => {
+  beforeEach(() => {
+    mockBetaVisible = false;
+    mockBetaRows = [];
+  });
   afterEach(() => jest.clearAllMocks());
 
   it("drops hidden brothers without touching the sheet", async () => {
@@ -177,10 +193,37 @@ describe("fetchVisibleRoster", () => {
   });
 
   it("keeps the Beta shell off the roster while it is not visible", async () => {
-    batchGet([["Erin Tran"]], []);
-    const rows = await fetchVisibleRoster();
+    mockBetaVisible = false;
+    mockBetaRows = [["Shell Member"]];
+    const rows = await fetchVisibleRosterFrom([["Erin Tran"]], []);
     expect(rows.map((row) => row[0])).toEqual(["Erin Tran"]);
-    expect(rows.map((row) => row[0])).not.toContain("Audrey Lam");
+  });
+
+  it("sorts the shell rows in with the sheet rows once it is visible", async () => {
+    mockBetaVisible = true;
+    mockBetaRows = [["Ava Lily Tran"]];
+    const rows = await fetchVisibleRosterFrom([["Erin Tran"]], []);
+    expect(rows.map((row) => row[0])).toEqual(["Ava Lily Tran", "Erin Tran"]);
+  });
+
+  it("drops a shell row once that member has a row on the sheet", async () => {
+    // The shell is a stand-in. The moment the real submission lands it is the
+    // sheet's row that should be rendered, not the copy held in the repo.
+    mockBetaVisible = true;
+    mockBetaRows = [["Erin Tran", "held in the repo"]];
+    const rows = await fetchVisibleRosterFrom(
+      [["erin tran", "from the sheet"]],
+      [],
+    );
+    expect(rows).toHaveLength(1);
+    expect(rows[0][1]).toBe("from the sheet");
+  });
+
+  it("hides a shell member who is on the hidden list", async () => {
+    mockBetaVisible = true;
+    mockBetaRows = [["Henry Lee"]];
+    const rows = await fetchVisibleRosterFrom([["Erin Tran"]], []);
+    expect(rows.map((row) => row[0])).toEqual(["Erin Tran"]);
   });
 
   it("lists every hidden brother exactly once", () => {
