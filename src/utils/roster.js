@@ -6,6 +6,16 @@ const API_KEY = process.env.REACT_APP_ACTIVE_INFO_KEY;
 
 export const ROSTER_RANGE = "Form Responses 1!C2:M";
 
+/* The chapter moved to a second form, which writes to its own spreadsheet.
+   Rather than copy rows between the two by hand — which is how a graduation
+   year got typed over — the roster spreadsheet carries a "New Responses" tab
+   holding an IMPORTRANGE of that form's responses, so the columns line up
+   with ROSTER_RANGE and this stays one batchGet.
+
+   Read AFTER the roster tab on purpose: same brother on both tabs means they
+   resubmitted, and the newer answers are the ones to show. */
+export const NEW_RESPONSES_RANGE = "New Responses!C2:M";
+
 /* The chapter parks the sitting Director of Rituals on a tab of their own so
    they stay off the site. That tab is a year behind: it still holds Brandon
    Koh, last year's DoR, who belongs back on the roster now. Its columns match
@@ -56,24 +66,35 @@ export function rosterSlug(name = "") {
     .replace(/\s+/g, "-");
 }
 
+/* An IMPORTRANGE that has lost its source — the spreadsheet renamed, moved,
+   or its permission revoked — fills the tab with error text rather than going
+   empty. Left alone, "#REF!" arrives here as a brother's name and renders a
+   card. Sheets errors are the only cell values that start with "#". */
+function isSheetError(row) {
+  const name = String(row?.[0] ?? "").trim();
+  return name.startsWith("#") || name === "Loading...";
+}
+
 /**
- * Every brother the site should show: the roster tab plus the parked DoR tab,
- * minus anyone in HIDDEN_BROTHERS. One batchGet, so it costs a single request.
+ * Every brother the site should show: the roster tab, the new form's imported
+ * responses and the parked DoR tab, minus anyone in HIDDEN_BROTHERS. All three
+ * are tabs of one spreadsheet, so it stays a single batchGet.
  *
  * Sorted by name, because the roster tab is maintained in alphabetical order
- * and the DoR rows would otherwise land in a clump at the end of the grid.
+ * and the other two would otherwise land in a clump at the end of the grid.
  */
 export async function fetchVisibleRoster() {
-  const ranges = [ROSTER_RANGE, DOR_RANGE]
+  const ranges = [ROSTER_RANGE, NEW_RESPONSES_RANGE, DOR_RANGE]
     .map((range) => `ranges=${encodeURIComponent(range)}`)
     .join("&");
   const response = await axios.get(
     `https://sheets.googleapis.com/v4/spreadsheets/${ROSTER_SHEET_ID}/values:batchGet?key=${API_KEY}&${ranges}`,
   );
   const valueRanges = response.data.valueRanges || [];
-  const [rosterValues = [], dorValues = []] = valueRanges.map(
-    (valueRange) => valueRange.values || [],
-  );
+  const [rosterValues = [], newResponseValues = [], dorValues = []] =
+    valueRanges.map((valueRange) =>
+      (valueRange.values || []).filter((row) => !isSheetError(row)),
+    );
 
   /* Case, surrounding blanks and a doubled space between names are all
      typing, not a different brother. Inner spacing matters because rosterSlug
@@ -94,6 +115,14 @@ export async function fetchVisibleRoster() {
      answers. */
   const byName = new Map();
   rosterValues.forEach((row) => {
+    const key = nameKey(row);
+    if (key) byName.set(key, row);
+  });
+
+  /* The new form's responses land after the roster tab's, so a brother who
+     has filled out the newer form shows those answers. Whoever has not is
+     untouched and keeps the row the roster tab holds for them. */
+  newResponseValues.forEach((row) => {
     const key = nameKey(row);
     if (key) byName.set(key, row);
   });

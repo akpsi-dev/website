@@ -20,16 +20,22 @@ jest.mock("./betaClass", () => ({
   betaClassRows: () => mockBetaRows,
 }));
 
-function batchGet(rosterRows, dorRows) {
+/* Ranges come back in the order they were requested: the roster tab, the new
+   form's imported responses, then the parked DoR tab. */
+function batchGet(rosterRows, dorRows, newResponseRows = []) {
   axios.get.mockResolvedValue({
     data: {
-      valueRanges: [{ values: rosterRows }, { values: dorRows }],
+      valueRanges: [
+        { values: rosterRows },
+        { values: newResponseRows },
+        { values: dorRows },
+      ],
     },
   });
 }
 
-async function fetchVisibleRosterFrom(rosterRows, dorRows) {
-  batchGet(rosterRows, dorRows);
+async function fetchVisibleRosterFrom(rosterRows, dorRows, newResponseRows) {
+  batchGet(rosterRows, dorRows, newResponseRows);
   return fetchVisibleRoster();
 }
 
@@ -190,6 +196,47 @@ describe("fetchVisibleRoster", () => {
     );
     const rows = await fetchVisibleRoster();
     expect(rows.map((row) => row[0])).toEqual(["Erin Tran", "Tyler Ho"]);
+  });
+
+  it("shows the new form's answers over the roster tab's for the same brother", async () => {
+    // The point of the imported tab: a brother who resubmits is updated
+    // without anyone copying rows between the two spreadsheets by hand.
+    const rows = await fetchVisibleRosterFrom(
+      [["Max Truong", "the old row"]],
+      [],
+      [["Max Truong", "what he just submitted"]],
+    );
+    expect(rows).toHaveLength(1);
+    expect(rows[0][1]).toBe("what he just submitted");
+  });
+
+  it("leaves a brother who has not filled the new form alone", async () => {
+    const rows = await fetchVisibleRosterFrom(
+      [["Erin Tran", "her roster row"]],
+      [],
+      [["Max Truong", "his new row"]],
+    );
+    expect(rows.map((row) => row[0])).toEqual(["Erin Tran", "Max Truong"]);
+    expect(rows[0][1]).toBe("her roster row");
+  });
+
+  it("skips the error text a broken IMPORTRANGE fills the tab with", async () => {
+    // Source renamed, moved or access revoked: every cell becomes #REF!, and
+    // without this the grid renders a card named "#REF!".
+    const rows = await fetchVisibleRosterFrom(
+      [["Erin Tran"]],
+      [],
+      [["#REF!"], ["#N/A"], ["Loading..."], ["Max Truong"]],
+    );
+    expect(rows.map((row) => row[0])).toEqual(["Erin Tran", "Max Truong"]);
+  });
+
+  it("requests the new responses tab alongside the other two", async () => {
+    batchGet([], []);
+    await fetchVisibleRoster();
+    const url = axios.get.mock.calls[0][0];
+    expect(url).toContain(encodeURIComponent("New Responses!C2:M"));
+    expect(axios.get).toHaveBeenCalledTimes(1);
   });
 
   it("keeps the Beta shell off the roster while it is not visible", async () => {
