@@ -48,9 +48,12 @@ body {
 /* For large screens: position the soundtrack absolutely in the top-right */
 .brother-soundtrack {
   position: absolute;
-  top: 0;
+  /* Centred against the photo rather than pinned to its top edge: level with
+     the middle of the details, which is where the eye lands after the name. */
+  top: 50%;
+  transform: translateY(-50%);
   right: 0;
-  width: 24rem;
+  width: 26rem;
   max-width: 100%;
   padding: 0.5rem;
   border-radius: 12px;
@@ -68,7 +71,7 @@ body {
   /* Spotify's compact card. The full 352px one stood taller than the four
      lines of detail beside it, which is what made it read as sitting on
      top of them. */
-  height: 152px;
+  height: 232px;
   border: 0;
   border-radius: 12px;
 }
@@ -80,7 +83,18 @@ body {
 .brother-info {
   flex: 1;
   min-width: 0;
-  padding-right: 25rem;
+}
+
+/* Only the detail lines have to clear the player: they sit at its height,
+   and a long major would otherwise run under the artwork. The name above
+   keeps the full width — reserving it there wrapped "Tommy Nguyen" onto two
+   lines for no reason. */
+.brother-detail {
+  padding-right: 27rem;
+  /* .App sets text-align: center globally, and .brother-info lays its
+     children out as a column that shrinks to fit — so a single-line detail
+     looked left aligned while Ethan Lee's two-line major centred itself. */
+  text-align: left;
 }
 
 /* Responsive adjustments for screens 1368px and below */
@@ -97,7 +111,9 @@ body {
   .brother-info {
     order: 1;
     width: 100%;
-    /* The player is in the flow from here down — nothing to keep clear of. */
+  }
+  /* The player is in the flow from here down — nothing to keep clear of. */
+  .brother-detail {
     padding-right: 0;
   }
 }
@@ -372,6 +388,11 @@ body {
   .brother-header {
     flex-direction: column;
     align-items: center;
+    text-align: center;
+  }
+
+  /* The whole header is centred on a phone, details included. */
+  .brother-detail {
     text-align: center;
   }
 

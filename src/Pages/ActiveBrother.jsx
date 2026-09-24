@@ -108,7 +108,7 @@ export default function ActiveBrother({ brotherInfo }) {
               src={songEmbedUrl}
               title={`${name}'s favorite song`}
               width="100%"
-              height="152"
+              height="232"
               frameBorder="0"
               loading="lazy"
               allow="clipboard-write; encrypted-media; fullscreen; picture-in-picture"
