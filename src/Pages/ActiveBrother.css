@@ -50,7 +50,7 @@ body {
   position: absolute;
   top: 0;
   right: 0;
-  width: 26rem;
+  width: 24rem;
   max-width: 100%;
   padding: 0.5rem;
   border-radius: 12px;
@@ -65,9 +65,22 @@ body {
 .brother-soundtrack__player {
   display: block;
   width: 100%;
-  height: 352px;
+  /* Spotify's compact card. The full 352px one stood taller than the four
+     lines of detail beside it, which is what made it read as sitting on
+     top of them. */
+  height: 152px;
   border: 0;
   border-radius: 12px;
+}
+
+/* The soundtrack is absolutely positioned into this same top-right corner,
+   so the info column has to stop short of it. Without this a long major —
+   Ethan Lee's runs to four words — slid underneath the player and read as
+   overlapping text. */
+.brother-info {
+  flex: 1;
+  min-width: 0;
+  padding-right: 25rem;
 }
 
 /* Responsive adjustments for screens 1368px and below */
@@ -84,6 +97,8 @@ body {
   .brother-info {
     order: 1;
     width: 100%;
+    /* The player is in the flow from here down — nothing to keep clear of. */
+    padding-right: 0;
   }
 }
 

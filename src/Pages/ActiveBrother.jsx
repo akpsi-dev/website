@@ -101,15 +101,14 @@ export default function ActiveBrother({ brotherInfo }) {
         </div>
         {songEmbedUrl && (
           <div className="brother-soundtrack">
-            {/* 352 is Spotify's full card — cover art, title, controls. The
-                compact 152 left the player looking lost beside a headshot
-                three times its height. */}
+            {/* Height lives in the stylesheet next to the width it has to
+                stay inside; this attribute is only the pre-CSS fallback. */}
             <iframe
               className="brother-soundtrack__player"
               src={songEmbedUrl}
               title={`${name}'s favorite song`}
               width="100%"
-              height="352"
+              height="152"
               frameBorder="0"
               loading="lazy"
               allow="clipboard-write; encrypted-media; fullscreen; picture-in-picture"
