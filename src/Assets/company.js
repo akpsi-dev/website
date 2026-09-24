@@ -44,6 +44,7 @@ import {
     ARMLogo,
     OneStreamLogo,
     OLIPOPLogo,
+    DeloitteLogo,
     TinderLogo
   } from "../Assets";
   import DefaultHeadshot from "./ActiveHeadshots/Default Headshot.webp";
@@ -91,7 +92,7 @@ export const companyHash = {
     "Nicole Kwan": AmazonLogo,
     "Ashlyn Wong": DisneyLogo,
     "Gabrielle Reyes": UCIAthleticsLogo,
-    "Grace Ryu": RadixLogo,
+    "Grace Ryu": OLIPOPLogo,
     "Samantha Lee": HyundaiLogo,
     "Henry Lee": OneStreamLogo,
     "Rishi Murumkar": AmazonLogo,
@@ -105,6 +106,9 @@ export const companyHash = {
     "Christine Lee": UnicornPerformLogo,
     "James Fitzpatrick": ConcordiaLogo,
     "Ava Lily Tran": VinaCapitalLogo,
+    "Braeden Yeoh": DeloitteLogo,
+    "Megan Dinh": TeslaLogo,
+    "Pranav Rao": TeslaLogo,
     "Default Headshot": DefaultHeadshot,
   };
     
