@@ -5,7 +5,7 @@ import { headshotHash } from "../Assets/headshot";
  *
  * Their form responses, held here rather than in the roster sheet, in the
  * same shape a sheet row has. Six of the ten have filled the form out;
- * Annabelle Butarbutar, Audrey Lam, Emily Chien and Simram Saini are still
+ * Annabelle Butarbutar, Audrey Lam, Emily Chien and Simran Saini are still
  * a name and a graduation year alone.
  *
  * The class is ON, but betaClassRows only emits a member once they have
@@ -198,7 +198,7 @@ export const BETA_CLASS = [
       "https://open.spotify.com/track/0B8QzDH7YWih85V5SEMnyJ?si=3d9d7c2e7aef4d41",
   },
   {
-    fullName: "Simram Saini",
+    fullName: "Simran Saini",
     graduationYear: "2029",
   },
   {

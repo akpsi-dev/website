@@ -315,6 +315,14 @@ describe("fetchVisibleRoster", () => {
     expect(rows[0][3]).toBe("Alpha Alpha");
   });
 
+  it("writes Beta out as Alpha Beta", async () => {
+    const rows = await fetchVisibleRosterFrom(
+      [["Megan Dinh", "Los Angeles, CA", "", "Beta", "2028"]],
+      [],
+    );
+    expect(rows[0][3]).toBe("Alpha Beta");
+  });
+
   it("leaves every other pledge class as it was written", async () => {
     const rows = await fetchVisibleRosterFrom(
       [

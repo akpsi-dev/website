@@ -108,7 +108,10 @@ export function mergeNewResponse(newRow = [], previousRow = []) {
    Alpha — so a profile filled in from the new form disagreed with the older
    row sitting next to it on the grid. Expanded here, on the way out: a
    display spelling, with the sheet left holding whatever was typed. */
-const PLEDGE_CLASS_SPELLINGS = { alpha: "Alpha Alpha" };
+const PLEDGE_CLASS_SPELLINGS = {
+  alpha: "Alpha Alpha",
+  beta: "Alpha Beta",
+};
 
 function spellPledgeClass(row) {
   const written = String(row?.[3] ?? "").trim();
