@@ -71,6 +71,7 @@ import MeganYung from "./ActiveHeadshots/Megan Yung.webp";
 import MaxTruong from "./ActiveHeadshots/Max Truong.webp";
 import JamesFitzpatrick from "./ActiveHeadshots/James Fitzpatrick.webp";
 import PranavRao from "./ActiveHeadshots/Pranav Rao.webp";
+import MeganDinh from "./ActiveHeadshots/Megan Dinh.webp";
 
 import DefaultHeadshot from "./ActiveHeadshots/Default Headshot.webp";
 
@@ -155,5 +156,6 @@ export const headshotHash = {
   "Max Truong": MaxTruong,
   "James Fitzpatrick": JamesFitzpatrick,
   "Pranav Rao": PranavRao,
+  "Megan Dinh": MeganDinh,
   "Default Headshot": DefaultHeadshot,
 };
