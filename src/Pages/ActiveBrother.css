@@ -10,14 +10,14 @@
 body {
   background-color: var(--bg-dark);
   color: var(--text-light);
-  font-family: 'Playfair Display';
+  font-family: "Playfair Display";
   margin: 0;
   padding: 0;
   line-height: 1.6;
 }
 
 .brother-container {
-  max-width: 90%; 
+  max-width: 90%;
   margin: 5rem auto;
   padding: 3rem;
   background-color: var(--bg-card);
@@ -50,11 +50,24 @@ body {
   position: absolute;
   top: 0;
   right: 0;
-  width: 22rem;
+  width: 26rem;
   max-width: 100%;
   padding: 0.5rem;
   border-radius: 12px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+/* The player itself. It used to carry .brother-soundtrack as well as its
+   wrapper, so it inherited the absolute positioning meant for the wrapper and
+   only landed in the right place by accident. */
+.brother-soundtrack__player {
+  display: block;
+  width: 100%;
+  height: 352px;
+  border: 0;
+  border-radius: 12px;
 }
 
 /* Responsive adjustments for screens 1368px and below */
@@ -64,9 +77,9 @@ body {
   }
   .brother-soundtrack {
     position: static; /* Remove absolute positioning so it flows naturally */
-    order: 2;        /* Ensure it appears after the photo/info */
-    width: 100%;     /* Span full available width */
-    margin-top: 1rem;/* Add spacing from above elements */
+    order: 2; /* Ensure it appears after the photo/info */
+    width: 100%; /* Span full available width */
+    margin-top: 1rem; /* Add spacing from above elements */
   }
   .brother-info {
     order: 1;
@@ -81,9 +94,9 @@ body {
   }
   .brother-soundtrack {
     position: static; /* Remove absolute positioning */
-    order: 2;        /* Ensure it appears after the photo/info */
-    width: 100%;     /* Span full width */
-    margin-top: 1rem;/* Add spacing from above elements */
+    order: 2; /* Ensure it appears after the photo/info */
+    width: 100%; /* Span full width */
+    margin-top: 1rem; /* Add spacing from above elements */
   }
   /* Ensure the photo/info container takes full width if needed */
   .brother-info {
@@ -99,9 +112,9 @@ body {
   }
   .brother-soundtrack {
     position: static; /* Remove absolute positioning */
-    order: 2;        /* Ensures it appears after the photo/info */
-    width: 100%;     /* Let it span the full width */
-    margin-top: 1rem;/* Add spacing from the elements above */
+    order: 2; /* Ensures it appears after the photo/info */
+    width: 100%; /* Let it span the full width */
+    margin-top: 1rem; /* Add spacing from the elements above */
   }
   /* Optionally, force the photo/info container to take full width */
   .brother-info {
@@ -116,7 +129,9 @@ body {
   object-fit: cover;
   margin-right: 4rem;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
   position: relative;
 }
 
@@ -210,7 +225,9 @@ body {
 .brother-section {
   background-color: rgba(37, 37, 37, 0.7);
   padding: 2rem;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
   /* No backdrop-filter — the backdrop is the flat page behind it, so the blur
      returned the same colour it was handed. The 0.7-opacity background was
      already doing all the work. */
@@ -260,7 +277,9 @@ body {
   color: var(--text-muted);
   position: relative;
   padding-left: 1.5rem;
-  transition: color 0.3s ease, transform 0.3s ease;
+  transition:
+    color 0.3s ease,
+    transform 0.3s ease;
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
@@ -320,7 +339,9 @@ body {
 .animate-on-scroll {
   opacity: 0;
   transform: translateY(30px);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  transition:
+    opacity 0.6s ease-out,
+    transform 0.6s ease-out;
 }
 
 .animate-on-scroll.fade-in {
