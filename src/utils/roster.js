@@ -1,4 +1,5 @@
 import axios from "axios";
+import { headshotHash } from "../Assets/headshot";
 import {
   BETA_CLASS_VISIBLE,
   betaClassRows,
@@ -103,6 +104,41 @@ export function mergeNewResponse(newRow = [], previousRow = []) {
   });
 }
 
+/* Members write their pledge class the way they say it — "Alpha" for Alpha
+   Alpha — so a profile filled in from the new form disagreed with the older
+   row sitting next to it on the grid. Expanded here, on the way out: a
+   display spelling, with the sheet left holding whatever was typed. */
+const PLEDGE_CLASS_SPELLINGS = { alpha: "Alpha Alpha" };
+
+function spellPledgeClass(row) {
+  const written = String(row?.[3] ?? "").trim();
+  const full = PLEDGE_CLASS_SPELLINGS[written.toLowerCase()];
+  if (!full || full === written) return row;
+  const spelled = [...row];
+  spelled[3] = full;
+  return spelled;
+}
+
+/* The Beta class is hidden until each member has a headshot, and
+   betaMembersAwaitingPhotos names them — but only as this repo spells them.
+   A Beta member whose sheet row is spelled even slightly differently would
+   miss that list and land on Meet Us behind a grey placeholder, which is the
+   exact failure the list exists to prevent. So the pledge class cell is
+   checked too: Beta, and no photo registered under the name as written, is
+   held back whoever it turns out to be. */
+const BETA_PLEDGE_CLASSES = new Set(["beta", "alpha beta"]);
+
+function isPhotolessBeta(row) {
+  const pledgeClass = String(row?.[3] ?? "")
+    .trim()
+    .toLowerCase();
+  if (!BETA_PLEDGE_CLASSES.has(pledgeClass)) return false;
+  const name = String(row?.[0] ?? "")
+    .trim()
+    .replace(/\s+/g, " ");
+  return !Object.prototype.hasOwnProperty.call(headshotHash, name);
+}
+
 /* An IMPORTRANGE that has lost its source — the spreadsheet renamed, moved,
    or its permission revoked — fills the tab with error text rather than going
    empty. Left alone, "#REF!" arrives here as a brother's name and renders a
@@ -179,7 +215,7 @@ export async function fetchVisibleRoster() {
      Suppressed here instead, which covers every tab at once. */
   const awaitingPhotos = betaMembersAwaitingPhotos();
   const sheetRows = [...byName.entries()]
-    .filter(([key]) => !awaitingPhotos.has(key))
+    .filter(([key, row]) => !awaitingPhotos.has(key) && !isPhotolessBeta(row))
     .map(([, row]) => row);
 
   // Beta is a shell with no headshots or write-ups yet, so it stays off the
@@ -200,6 +236,7 @@ export async function fetchVisibleRoster() {
 
   return [...sheetRows, ...shellRows]
     .filter((row) => row?.[0] && !isHiddenBrother(row[0]))
+    .map(spellPledgeClass)
     .sort((a, b) =>
       String(a[0]).trim().localeCompare(String(b[0]).trim(), "en", {
         sensitivity: "base",

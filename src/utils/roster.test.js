@@ -307,6 +307,48 @@ describe("fetchVisibleRoster", () => {
     expect(rows.map((row) => row[0])).toEqual(["Pranav Rao"]);
   });
 
+  it("writes Alpha out as Alpha Alpha, the way the older rows read", async () => {
+    const rows = await fetchVisibleRosterFrom(
+      [["Erin Tran", "", "", "Alpha", "2028"]],
+      [],
+    );
+    expect(rows[0][3]).toBe("Alpha Alpha");
+  });
+
+  it("leaves every other pledge class as it was written", async () => {
+    const rows = await fetchVisibleRosterFrom(
+      [
+        ["Erin Tran", "", "", "Chi"],
+        ["Tyler Ho", "", "", "Upsilon"],
+      ],
+      [],
+    );
+    expect(rows.map((row) => row[3])).toEqual(["Chi", "Upsilon"]);
+  });
+
+  it("hides a Beta row with no headshot even when the name is not on the list", async () => {
+    // The awaiting-photos list spells names the way this repo does. A sheet
+    // row spelled differently would slip past it, so the class cell is the
+    // backstop.
+    mockAwaitingPhotos = new Set(["simram saini"]);
+    const rows = await fetchVisibleRosterFrom(
+      [
+        ["Erin Tran", "", "", "Chi"],
+        ["Simran Saini", "", "", "Beta", "2029"],
+      ],
+      [],
+    );
+    expect(rows.map((row) => row[0])).toEqual(["Erin Tran"]);
+  });
+
+  it("shows a Beta member whose headshot is registered", async () => {
+    const rows = await fetchVisibleRosterFrom(
+      [["Megan Dinh", "Los Angeles, CA", "", "Beta", "2028"]],
+      [],
+    );
+    expect(rows.map((row) => row[0])).toEqual(["Megan Dinh"]);
+  });
+
   it("skips the error text a broken IMPORTRANGE fills the tab with", async () => {
     // Source renamed, moved or access revoked: every cell becomes #REF!, and
     // without this the grid renders a card named "#REF!".
