@@ -1,5 +1,9 @@
 import axios from "axios";
-import { BETA_CLASS_VISIBLE, betaClassRows } from "./betaClass";
+import {
+  BETA_CLASS_VISIBLE,
+  betaClassRows,
+  betaMembersAwaitingPhotos,
+} from "./betaClass";
 
 export const ROSTER_SHEET_ID = "167TmecKc4cduWtdounqiXDkYgQjssu9cSz4QLljuKLg";
 const API_KEY = process.env.REACT_APP_ACTIVE_INFO_KEY;
@@ -169,7 +173,14 @@ export async function fetchVisibleRoster() {
     if (key && !byName.has(key)) byName.set(key, row);
   });
 
-  const sheetRows = [...byName.values()];
+  /* A Beta member who has filled out the update form has a sheet row, and a
+     sheet row does not pass through betaClassRows — so the class's readiness
+     gate never saw it and they landed on Meet Us behind a grey placeholder.
+     Suppressed here instead, which covers every tab at once. */
+  const awaitingPhotos = betaMembersAwaitingPhotos();
+  const sheetRows = [...byName.entries()]
+    .filter(([key]) => !awaitingPhotos.has(key))
+    .map(([, row]) => row);
 
   // Beta is a shell with no headshots or write-ups yet, so it stays off the
   // site behind its own flag. Once a member has a real row in the sheet, that

@@ -2,6 +2,7 @@ import {
   BETA_CLASS,
   BETA_CLASS_VISIBLE,
   betaClassRows,
+  betaMembersAwaitingPhotos,
   isBetaMemberReady,
 } from "./betaClass";
 import { headshotHash } from "../Assets/headshot";
@@ -48,6 +49,23 @@ describe("isBetaMemberReady", () => {
     // A photo but no words is an empty profile behind a real face.
     expect(isBetaMemberReady({ fullName: withPhoto })).toBe(false);
     expect(isBetaMemberReady(undefined)).toBe(false);
+  });
+});
+
+describe("betaMembersAwaitingPhotos", () => {
+  it("names every member the roster should suppress, however they arrive", () => {
+    const waiting = betaMembersAwaitingPhotos();
+    BETA_CLASS.forEach((member) => {
+      const key = member.fullName.toLowerCase();
+      expect(waiting.has(key)).toBe(!isBetaMemberReady(member));
+    });
+  });
+
+  it("keys names the way roster.js does, lowercased and single spaced", () => {
+    [...betaMembersAwaitingPhotos()].forEach((key) => {
+      expect(key).toBe(key.trim().toLowerCase());
+      expect(key).not.toMatch(/ {2}/);
+    });
   });
 });
 

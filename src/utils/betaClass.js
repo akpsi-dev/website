@@ -244,6 +244,23 @@ export function isBetaMemberReady(member) {
   );
 }
 
+/**
+ * Beta members who are not ready yet, normalised the way roster.js keys names.
+ *
+ * The readiness gate below only governs the rows this file hands over. A Beta
+ * member who fills out the update form arrives through the sheet instead and
+ * would walk straight past it — Levia Whang was live with a grey placeholder
+ * within hours of submitting. So the roster suppresses these names whatever
+ * tab they come in on, until a headshot is registered under the name.
+ */
+export function betaMembersAwaitingPhotos() {
+  return new Set(
+    BETA_CLASS.filter((member) => !isBetaMemberReady(member)).map((member) =>
+      member.fullName.trim().replace(/\s+/g, " ").toLowerCase(),
+    ),
+  );
+}
+
 /* The list cells are newline separated: the shape splitItems expects, and
    the shape the form's own textareas produce. */
 const cell = (value) =>
