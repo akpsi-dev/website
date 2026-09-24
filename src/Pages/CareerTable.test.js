@@ -16,6 +16,16 @@ describe("buildCareerData", () => {
     expect(data["2025"].Finance.map((r) => r.Name)).toEqual(["Alice"]);
   });
 
+  it("shows a 2027 tab before any 2027 placement has come in", () => {
+    // 2027 is seeded so the tab is there for the finance brothers signing
+    // full-time offers now. It renders the "no placements yet" line until a
+    // row arrives, and CareerTable's defaultYear skips empty years, so an
+    // empty 2027 does not become the year the page opens on.
+    const data = buildCareerData([]);
+    expect(data["2027"]).toBeDefined();
+    expect(data["2027"].Finance).toEqual([]);
+  });
+
   it("creates a bucket for a year that predates the code (the 2026 bug)", () => {
     // This is the row that used to throw and blank the entire Careers page.
     const data = buildCareerData([row("Bob", "2026", "Technology")]);
@@ -40,9 +50,7 @@ describe("buildCareerData", () => {
 
   it("keeps the seeded year tabs present even with no data", () => {
     const data = buildCareerData([]);
-    expect(Object.keys(data)).toEqual(
-      expect.arrayContaining(["2018", "2025"]),
-    );
+    expect(Object.keys(data)).toEqual(expect.arrayContaining(["2018", "2025"]));
   });
 
   it("does not lose earlier rows when a later row is malformed", () => {

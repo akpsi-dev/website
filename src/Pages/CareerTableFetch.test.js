@@ -96,37 +96,34 @@ test("a seeded year with no rows says so instead of rendering an empty sheet", a
   ).toBeInTheDocument();
 });
 
-test("opens on 2026 and shows the repo-held placements the sheet lacks", async () => {
+test("opens on the pinned 2026 tab, not the newer 2027 one", async () => {
   axios.get.mockResolvedValue({
     data: { values: [["Alice", "2025", "Finance", "Sector", "Co", "Analyst"]] },
   });
   renderTable();
 
+  // Braeden, Logan and Tyler are incoming on 2027 roles, so 2027 now holds
+  // rows — but PINNED_YEAR keeps the fuller 2026 tab as the one visitors
+  // land on. 2027 is a click away.
   expect(await screen.findByText("Anna Shan")).toBeInTheDocument();
   expect(screen.getByRole("button", { name: "2026" })).toHaveAttribute(
     "aria-pressed",
     "true",
   );
-  // 2025 is untouched by the merge and still reachable.
-  await userEvent.click(screen.getByRole("button", { name: "2025" }));
-  expect(await screen.findByText("Alice")).toBeInTheDocument();
+  await userEvent.click(screen.getByRole("button", { name: "2027" }));
+  expect(await screen.findByText("Tyler Ho")).toBeInTheDocument();
 });
 
-test("opens on the pinned year even when a later year has placements", async () => {
-  // Without the pin, sortedYears would hand 2027 the opening tab the moment
-  // one row lands there, burying a 2026 tab holding twenty.
+test("2026 still carries the repo-held placements the sheet lacks", async () => {
   axios.get.mockResolvedValue({
-    data: { values: [["Alice", "2027", "Finance", "Sector", "Co", "Analyst"]] },
+    data: { values: [["Alice", "2025", "Finance", "Sector", "Co", "Analyst"]] },
   });
   renderTable();
 
+  await userEvent.click(await screen.findByRole("button", { name: "2026" }));
   expect(await screen.findByText("Anna Shan")).toBeInTheDocument();
-  expect(screen.getByRole("button", { name: "2026" })).toHaveAttribute(
-    "aria-pressed",
-    "true",
-  );
-  // The newer year is still there to click.
-  await userEvent.click(screen.getByRole("button", { name: "2027" }));
+  // 2025 is untouched by the merge and still reachable.
+  await userEvent.click(screen.getByRole("button", { name: "2025" }));
   expect(await screen.findByText("Alice")).toBeInTheDocument();
 });
 

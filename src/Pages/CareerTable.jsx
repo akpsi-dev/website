@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSheet, CAREERS_SHEET_ID, CAREERS_RANGE } from "../utils/useSheet";
-import { mergeCareerRows } from "../utils/careers2026";
+import { mergeCareerRows } from "../utils/careersLocal";
 import { useMotionPrefs } from "../utils/useMotionPrefs";
 import { EASE_OUT_EXPO } from "../utils/motion";
 import "./CareerTable.css";
@@ -27,6 +27,7 @@ const SEEDED_YEARS = [
   "2024",
   "2025",
   "2026",
+  "2027",
 ];
 
 // The year Careers opens on. See defaultYear below: it is a preference, and
