@@ -4,6 +4,7 @@ import {
   isHiddenBrother,
   rosterSlug,
   HIDDEN_BROTHERS,
+  NEW_RESPONSE_HOLDS,
 } from "./roster";
 
 jest.mock("axios");
@@ -218,6 +219,28 @@ describe("fetchVisibleRoster", () => {
     );
     expect(rows.map((row) => row[0])).toEqual(["Erin Tran", "Max Truong"]);
     expect(rows[0][1]).toBe("her roster row");
+  });
+
+  it("holds back a new-form row for a brother on the hold list", async () => {
+    // Melinda Do answered the form with "keep" in the cells she wanted left
+    // alone, and a row replaces a row rather than merging into one.
+    expect(NEW_RESPONSE_HOLDS.has("melinda do")).toBe(true);
+    const rows = await fetchVisibleRosterFrom(
+      [["Melinda Do", "what the roster tab holds"]],
+      [],
+      [["Melinda Do", "keep"]],
+    );
+    expect(rows).toHaveLength(1);
+    expect(rows[0][1]).toBe("what the roster tab holds");
+  });
+
+  it("matches the hold list however the name is typed", async () => {
+    const rows = await fetchVisibleRosterFrom(
+      [["Melinda Do", "hers"]],
+      [],
+      [["  melinda  do ", "keep"]],
+    );
+    expect(rows[0][1]).toBe("hers");
   });
 
   it("skips the error text a broken IMPORTRANGE fills the tab with", async () => {

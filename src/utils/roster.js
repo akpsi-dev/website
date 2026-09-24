@@ -22,6 +22,18 @@ export const NEW_RESPONSES_RANGE = "New Responses!C2:M";
    ROSTER_RANGE, so the rows drop straight in. */
 export const DOR_RANGE = "DOR!C1:M";
 
+/* Brothers whose new-form row is held back, keeping whatever the roster tab
+   already holds for them.
+
+   Melinda Do answered the form with instructions rather than answers —
+   "just add" above one new role, and "keep" in the two cells she wanted left
+   alone. A row replaces a row, so once the new tab was read her profile
+   rendered the word "keep" under Ask Me About and under Why I Love AKPsi.
+
+   Delete her row from the responses spreadsheet and this entry goes with it:
+   with no row on the new tab, the roster tab's is the only one there is. */
+export const NEW_RESPONSE_HOLDS = new Set(["melinda do"]);
+
 /* Hidden from Meet Us and from /:name — NOT deleted. Every sheet row stays
    put, and every headshot and company logo stays in src/Assets. Deleting a
    name from this list puts that brother straight back, data intact. */
@@ -124,7 +136,7 @@ export async function fetchVisibleRoster() {
      untouched and keeps the row the roster tab holds for them. */
   newResponseValues.forEach((row) => {
     const key = nameKey(row);
-    if (key) byName.set(key, row);
+    if (key && !NEW_RESPONSE_HOLDS.has(key)) byName.set(key, row);
   });
 
   /* The DoR tab is a parking spot that runs a year behind the roster, so it
