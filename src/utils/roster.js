@@ -22,18 +22,6 @@ export const NEW_RESPONSES_RANGE = "New Responses!C2:M";
    ROSTER_RANGE, so the rows drop straight in. */
 export const DOR_RANGE = "DOR!C1:M";
 
-/* Brothers whose new-form row is held back, keeping whatever the roster tab
-   already holds for them.
-
-   Melinda Do answered the form with instructions rather than answers —
-   "just add" above one new role, and "keep" in the two cells she wanted left
-   alone. A row replaces a row, so once the new tab was read her profile
-   rendered the word "keep" under Ask Me About and under Why I Love AKPsi.
-
-   Delete her row from the responses spreadsheet and this entry goes with it:
-   with no row on the new tab, the roster tab's is the only one there is. */
-export const NEW_RESPONSE_HOLDS = new Set(["melinda do"]);
-
 /* Hidden from Meet Us and from /:name — NOT deleted. Every sheet row stays
    put, and every headshot and company logo stays in src/Assets. Deleting a
    name from this list puts that brother straight back, data intact. */
@@ -76,6 +64,39 @@ export function rosterSlug(name = "") {
   return String(name ?? "")
     .trim()
     .replace(/\s+/g, "-");
+}
+
+/* Members answer the update form with instructions as often as with answers:
+   "keep" in a cell they want left as it is, "just add" above the one role
+   they came to add. A row replaces a row, so taken literally those words are
+   what the profile renders — Melinda Do's page read "keep" under Ask Me
+   About and under Why I Love AKPsi.
+
+   So a new row is merged into the one it supersedes, cell by cell:
+   "keep", or an unanswered cell, inherits what the roster tab already holds,
+   and "just add" puts the lines under it in front of the existing ones
+   instead of replacing them. Everything else is taken as written. */
+const INHERIT = "keep";
+const PREPEND = "just add";
+const LINES = /\r\n|\r|\n/;
+
+export function mergeNewResponse(newRow = [], previousRow = []) {
+  const width = Math.max(newRow.length, previousRow.length);
+  return Array.from({ length: width }, (_, i) => {
+    const previous = previousRow[i] ?? "";
+    const text = String(newRow[i] ?? "").trim();
+    if (!text || text.toLowerCase() === INHERIT) return previous;
+
+    const lines = text.split(LINES);
+    if (lines[0].trim().toLowerCase() === PREPEND) {
+      const added = lines.slice(1).filter((line) => line.trim());
+      const held = String(previous)
+        .split(LINES)
+        .filter((line) => line.trim());
+      return [...added, ...held].join("\n");
+    }
+    return newRow[i];
+  });
 }
 
 /* An IMPORTRANGE that has lost its source — the spreadsheet renamed, moved,
@@ -136,7 +157,7 @@ export async function fetchVisibleRoster() {
      untouched and keeps the row the roster tab holds for them. */
   newResponseValues.forEach((row) => {
     const key = nameKey(row);
-    if (key && !NEW_RESPONSE_HOLDS.has(key)) byName.set(key, row);
+    if (key) byName.set(key, mergeNewResponse(row, byName.get(key)));
   });
 
   /* The DoR tab is a parking spot that runs a year behind the roster, so it

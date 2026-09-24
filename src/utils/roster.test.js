@@ -4,7 +4,7 @@ import {
   isHiddenBrother,
   rosterSlug,
   HIDDEN_BROTHERS,
-  NEW_RESPONSE_HOLDS,
+  mergeNewResponse,
 } from "./roster";
 
 jest.mock("axios");
@@ -60,6 +60,56 @@ describe("isHiddenBrother", () => {
 
   it("leaves everyone else visible", () => {
     expect(isHiddenBrother("Brandon Koh")).toBe(false);
+  });
+});
+
+describe("mergeNewResponse", () => {
+  const previous = [
+    "Melinda Do",
+    "San Gabriel, CA",
+    "old major",
+    "Chi",
+    "2028",
+  ];
+
+  it("takes the new answer wherever there is one", () => {
+    const merged = mergeNewResponse(
+      ["Melinda Do", "San Gabriel, CA", "new major"],
+      previous,
+    );
+    expect(merged[2]).toBe("new major");
+  });
+
+  it('inherits the cell a member wrote "keep" in', () => {
+    // She meant leave it alone; taken literally the profile renders the
+    // word "keep" under that heading.
+    const merged = mergeNewResponse(["Melinda Do", "keep", "KEEP "], previous);
+    expect(merged[1]).toBe("San Gabriel, CA");
+    expect(merged[2]).toBe("old major");
+  });
+
+  it("inherits a cell the member left empty rather than clearing it", () => {
+    const merged = mergeNewResponse(["Melinda Do", ""], previous);
+    expect(merged[1]).toBe("San Gabriel, CA");
+  });
+
+  it('puts a "just add" entry in front of the existing list', () => {
+    const merged = mergeNewResponse(
+      ["Melinda Do", "just add\nMarketing Ambassador - Taco Bell"],
+      ["Melinda Do", "Consultant - SAP\nIntern - Somewhere"],
+    );
+    expect(merged[1].split("\n")).toEqual([
+      "Marketing Ambassador - Taco Bell",
+      "Consultant - SAP",
+      "Intern - Somewhere",
+    ]);
+  });
+
+  it("handles a first submission, with nothing to merge into", () => {
+    expect(mergeNewResponse(["New Brother", "Irvine"], undefined)).toEqual([
+      "New Brother",
+      "Irvine",
+    ]);
   });
 });
 
@@ -221,26 +271,15 @@ describe("fetchVisibleRoster", () => {
     expect(rows[0][1]).toBe("her roster row");
   });
 
-  it("holds back a new-form row for a brother on the hold list", async () => {
-    // Melinda Do answered the form with "keep" in the cells she wanted left
-    // alone, and a row replaces a row rather than merging into one.
-    expect(NEW_RESPONSE_HOLDS.has("melinda do")).toBe(true);
+  it('keeps the old cell when the new form row says "keep"', async () => {
     const rows = await fetchVisibleRosterFrom(
-      [["Melinda Do", "what the roster tab holds"]],
+      [["Melinda Do", "hers", "her why"]],
       [],
-      [["Melinda Do", "keep"]],
+      [["Melinda Do", "new hometown", "keep"]],
     );
     expect(rows).toHaveLength(1);
-    expect(rows[0][1]).toBe("what the roster tab holds");
-  });
-
-  it("matches the hold list however the name is typed", async () => {
-    const rows = await fetchVisibleRosterFrom(
-      [["Melinda Do", "hers"]],
-      [],
-      [["  melinda  do ", "keep"]],
-    );
-    expect(rows[0][1]).toBe("hers");
+    expect(rows[0][1]).toBe("new hometown");
+    expect(rows[0][2]).toBe("her why");
   });
 
   it("skips the error text a broken IMPORTRANGE fills the tab with", async () => {
