@@ -267,9 +267,9 @@ export const LOCAL_CAREERS = [
     "Millicent Mei",
     "2026",
     "Marketing",
-    "Brand Marketing",
-    "DoorDash",
-    "Marketing Ambassador",
+    "Growth Marketing",
+    "INYO",
+    "Growth & Strategic Marketing",
   ],
   [
     "Nico Simonian",
