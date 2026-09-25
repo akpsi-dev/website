@@ -155,9 +155,9 @@ export const LOCAL_CAREERS = [
     "Ethan Le",
     "2026",
     "Technology",
-    "Hardware Validation",
+    "Silicon Validation",
     "Intel",
-    "NPU Validation Intern",
+    "Silicon Validation Intern",
   ],
   [
     "Ethan Lee",
