@@ -47,6 +47,7 @@ import {
     DeloitteLogo,
     doordashlogo,
     InyoLogo,
+    UPSLogo,
     PalantirLogo,
     RobloxLogo,
     CelsiusLogo,
@@ -117,6 +118,7 @@ export const companyHash = {
     "Braeden Yeoh": DeloitteLogo,
     "Daniela Herrera": RobloxLogo,
     "Megan Dinh": TeslaLogo,
+    "Emily Chien": UPSLogo,
     "Pranav Rao": TeslaLogo,
     "Default Headshot": DefaultHeadshot,
   };
