@@ -244,6 +244,7 @@ export { default as CHRobinsonLogo } from "./Logos/CHRobinsonLogo.svg";
 export { default as CreditKarmaLogo } from "./Logos/CreditKarmaLogo.png";
 export { default as TeslaLogo } from "./Logos/TeslaLogo.png";
 export { default as PalantirLogo } from "./Logos/PalantirLogo.png";
+export { default as InyoLogo } from "./Logos/InyoLogo.png";
 export { default as RobloxLogo } from "./Logos/RobloxLogo.png";
 export { default as CelsiusLogo } from "./Logos/CelsiusLogo.png";
 export { default as TacoBellLogo } from "./Logos/TacoBellLogo.png";
