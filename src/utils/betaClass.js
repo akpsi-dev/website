@@ -236,26 +236,36 @@ export const BETA_CLASS = [
  * row carrying a name and nothing else renders a grey placeholder card above
  * an empty profile — the thing this file exists to avoid.
  */
+export function hasHeadshot(fullName) {
+  return Object.prototype.hasOwnProperty.call(
+    headshotHash,
+    String(fullName ?? "").trim(),
+  );
+}
+
 export function isBetaMemberReady(member) {
   return Boolean(
-    member?.fullName &&
-      member.whyAkpsi &&
-      Object.prototype.hasOwnProperty.call(headshotHash, member.fullName),
+    member?.fullName && member.whyAkpsi && hasHeadshot(member.fullName),
   );
 }
 
 /**
- * Beta members who are not ready yet, normalised the way roster.js keys names.
+ * Beta members with no headshot yet, normalised the way roster.js keys names.
  *
- * The readiness gate below only governs the rows this file hands over. A Beta
- * member who fills out the update form arrives through the sheet instead and
- * would walk straight past it — Levia Whang was live with a grey placeholder
- * within hours of submitting. So the roster suppresses these names whatever
- * tab they come in on, until a headshot is registered under the name.
+ * The roster suppresses these names whatever tab they come in on, because a
+ * Beta member who fills out the update form arrives through the sheet and
+ * would walk straight past betaClassRows — Levia Whang was live with a grey
+ * placeholder within hours of submitting.
+ *
+ * A photo is the whole test here, deliberately. This asked for a write-up as
+ * well at first, which held Emily Chien off the site after her headshot
+ * landed: she had filled the form out, so her words were on the sheet rather
+ * than in this file, and requiring them here suppressed the very row that
+ * carried them.
  */
 export function betaMembersAwaitingPhotos() {
   return new Set(
-    BETA_CLASS.filter((member) => !isBetaMemberReady(member)).map((member) =>
+    BETA_CLASS.filter((member) => !hasHeadshot(member.fullName)).map((member) =>
       member.fullName.trim().replace(/\s+/g, " ").toLowerCase(),
     ),
   );

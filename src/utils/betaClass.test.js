@@ -3,6 +3,7 @@ import {
   BETA_CLASS_VISIBLE,
   betaClassRows,
   betaMembersAwaitingPhotos,
+  hasHeadshot,
   isBetaMemberReady,
 } from "./betaClass";
 import { headshotHash } from "../Assets/headshot";
@@ -53,11 +54,24 @@ describe("isBetaMemberReady", () => {
 });
 
 describe("betaMembersAwaitingPhotos", () => {
-  it("names every member the roster should suppress, however they arrive", () => {
+  it("names every member with no headshot, and only those", () => {
     const waiting = betaMembersAwaitingPhotos();
     BETA_CLASS.forEach((member) => {
       const key = member.fullName.toLowerCase();
-      expect(waiting.has(key)).toBe(!isBetaMemberReady(member));
+      expect(waiting.has(key)).toBe(!hasHeadshot(member.fullName));
+    });
+  });
+
+  it("does not suppress a member whose write-up lives on the sheet", () => {
+    // Emily Chien filled the form out, so her words are in the roster rather
+    // than in betaClass. Asking for them here as well suppressed the very row
+    // that carried them, and she stayed off the site after her photo landed.
+    const written = BETA_CLASS.filter(
+      (member) => hasHeadshot(member.fullName) && !member.whyAkpsi,
+    );
+    const waiting = betaMembersAwaitingPhotos();
+    written.forEach((member) => {
+      expect(waiting.has(member.fullName.toLowerCase())).toBe(false);
     });
   });
 
