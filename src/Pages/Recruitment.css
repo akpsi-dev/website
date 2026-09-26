@@ -12,16 +12,29 @@ html {
   min-height: 100dvh;
   position: relative;
   font-family: "Anton", "Arial Narrow", Arial, sans-serif;
-  /* The Fall photo backs the whole route the way the Spring skyline did:
-     fixed, so the schedule cards scroll over a still field rather than
-     running out onto flat black below the hero. The colour underneath is
-     what shows while the webp decodes. */
+  /* Colour under the photo, and what shows while the webp decodes. */
   background-color: #121212;
+}
+
+/* The photo is its own fixed layer rather than a background on this element.
+   background-attachment: fixed would do the same thing on a desktop, but the
+   container is five scroll-snapped viewports tall — 4720px on a phone — and
+   with attachment: scroll, which is what the mobile breakpoint had to fall
+   back to, `cover` sized the image against that full height. A 1920x1080
+   photo was being blown up six times to cover it, which is where the grain
+   and mush came from. A fixed layer is measured against the viewport, so the
+   photo renders at roughly its own size on any screen, and iOS never has to
+   deal with a fixed background-attachment. */
+.recruitmentContainer::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
   background-image: url("../Assets/Frames/Fall2026.webp");
   background-size: cover;
   background-position: center;
-  background-attachment: fixed;
   background-repeat: no-repeat;
+  pointer-events: none;
 }
 
 /* Vignette over the photo, fixed alongside it. The cards and the hero type
@@ -98,8 +111,11 @@ html {
 
 /* Media queries for responsiveness */
 @media (max-width: 768px) {
-  .recruitmentContainer {
-    background-attachment: scroll;
+  /* Cover on a tall viewport shows a narrow horizontal band of a 16:9 photo,
+     and centred that band is empty hillside. Dropped to where the riders
+     actually are. */
+  .recruitmentContainer::after {
+    background-position: 50% 62%;
   }
 
   .viewport {
@@ -374,21 +390,26 @@ html {
   align-items: center;
   gap: 0.75rem;
   margin-top: 1.5rem;
-  font-family: Arial, Helvetica, sans-serif;
+  /* Playfair rather than Arial: it is the serif the rest of the site sets its
+     headings in, and it sits far better under a photograph of a polo field
+     than a system sans does. Already loaded, so it costs no extra request. */
+  font-family: "Playfair Display", Georgia, "Times New Roman", serif;
   text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
 }
 
 .rush-announce__deadline {
   margin: 0;
-  font-size: 1rem;
-  letter-spacing: 0.08em;
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
 .rush-announce__contact {
   margin: 0;
-  font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.95rem;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.88);
   text-align: center;
 }
 
@@ -407,7 +428,7 @@ html {
 
 .rush-partners__label {
   font-size: 0.7rem;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.7);
 }
@@ -426,8 +447,11 @@ html {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 1.1rem;
-  letter-spacing: 0.02em;
+  /* A brand name, so it keeps the sans its own wordmark uses rather than
+     inheriting the serif around it. */
+  font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+  font-size: 1.05rem;
+  letter-spacing: 0.01em;
 }
 
 .rush-partners__mark {
