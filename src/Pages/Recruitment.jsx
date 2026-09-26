@@ -4,21 +4,26 @@ import RushEventInfo from "../Components/RushEventInfo";
 import DownPointerButton from "../Components/DownPointerButton";
 import RushButton from "../Components/RushButton";
 import RotatingText from "../Components/RotatingText/RotatingText";
-import { SummerAudio } from "../Assets";
+import { CelsiusLogo, CopilotLogo, SummerAudio } from "../Assets";
 import Countdown from "../Components/Countdown";
 import { RUSH_START } from "../utils/rushDate";
 
 /* Which rush cycle state the page is in.
 
-   'coming-soon' — Fall Rush 2026 is announced but the schedule is not. Shows
-                   the hero and a countdown to RUSH_START, and nothing else.
+   'coming-soon' — Fall Rush is announced but the schedule is not. Shows the
+                   hero and a countdown to RUSH_START, and nothing else.
    'live'        — the full schedule, as the page has always rendered.
 
-   The `events` array below is deliberately left in place. It still holds the
-   Spring 2026 dates, which are stale, but keeping it means switching to 'live'
-   is a one-value edit against a structure you can already see — replace the
-   entries with the Fall dates and flip this. */
-const RUSH_STATE = "coming-soon";
+   Live as of the Fall 2026 announcement: the `events` array below carries
+   those dates. Putting the page back to a countdown between cycles is the
+   same one-value edit in reverse. */
+const RUSH_STATE = "live";
+
+/* The application closes before the last two events, which are invite only —
+   so the deadline belongs on the hero next to the button, not buried at the
+   end of the schedule. */
+const APPLICATION_DEADLINE = "Friday, October 3";
+const RUSH_EMAIL = "akpsi.uci.rush@gmail.com";
 
 /* The Calvin Harris loop that used to autoplay on this page. Backlogged, not
    removed — flip to true and it comes back exactly as it was.
@@ -32,42 +37,44 @@ const RUSH_AUDIO_ENABLED = false;
 export default function Recruitment() {
   const [isMobile, setIsMobile] = useState(false);
 
+  /* Fall 2026, off the announcement graphic. Invite-only events carry no
+     room on the graphic because the location goes out by email. */
   const events = [
     {
       name: "Meet The Bros",
-      date: "Tuesday, March 31",
+      date: "Tuesday, September 29",
       location: "SB1 1200",
       attire: "Casual",
       time: "6:00 PM - 9:00 PM",
       "open-ness": "Open Invite",
     },
     {
+      name: "Game Night",
+      date: "Thursday, October 1",
+      location: "Room TBD",
+      attire: "Business Casual",
+      time: "6:00 PM - 9:00 PM",
+      "open-ness": "Open Invite",
+    },
+    {
       name: "Alumni Night",
-      date: "Thursday, April 2",
+      date: "Friday, October 2",
       location: "SB1 1200",
       attire: "Business Professional",
       time: "6:00 PM - 9:00 PM",
       "open-ness": "Open Invite",
     },
     {
-      name: "Game Night",
-      date: "Friday, April 3",
-      location: "SB1 1200",
-      attire: "Business Casual",
-      time: "6:00 PM - 9:00 PM",
-      "open-ness": "Open Invite",
-    },
-    {
-      name: "Social Barbeque",
-      date: "Tuesday, April 7th",
+      name: "Social BBQ",
+      date: "Tuesday, October 6",
       location: "Sent via Email",
       attire: "Casual",
-      time: "6:00 PM",
+      time: "6:00 PM - 9:00 PM",
       "open-ness": "Invite Only",
     },
     {
       name: "Interviews",
-      date: "Thursday, April 9th + Friday, April 10th",
+      date: "Thursday, October 8 + Friday, October 9",
       location: "Sent via Email",
       attire: "Business Professional",
       time: "6:00 PM",
@@ -190,9 +197,39 @@ export default function Recruitment() {
             >
               <b>Add Rush Events to Calendar</b>
             </RushButton>
-            <RushButton href="https://forms.gle/hhx3Kfi2YS9cqUGd7">
-              <b>Rush Application</b>
-            </RushButton>
+            {/* The application button is out until the Fall 2026 form
+                exists: it pointed at a previous cycle's form, and a dead
+                link on the page's main call to action is worse than no
+                button. Put it back with the new URL. */}
+          </div>
+        )}
+        {!isComingSoon && (
+          <div className="rush-announce">
+            <p className="rush-announce__deadline">
+              Applications due {APPLICATION_DEADLINE}
+            </p>
+            <p className="rush-announce__contact">
+              Questions? Tommy Nguyen, VP of Membership —{" "}
+              <a href={`mailto:${RUSH_EMAIL}`}>{RUSH_EMAIL}</a>
+            </p>
+            <div className="rush-partners">
+              <span className="rush-partners__label">In partnership with</span>
+              <div className="rush-partners__logos">
+                <img
+                  className="rush-partners__mark"
+                  src={CelsiusLogo}
+                  alt="Celsius"
+                />
+                <span className="rush-partners__pair">
+                  <img
+                    className="rush-partners__mark rush-partners__mark--icon"
+                    src={CopilotLogo}
+                    alt=""
+                  />
+                  Copilot
+                </span>
+              </div>
+            </div>
           </div>
         )}
       </div>

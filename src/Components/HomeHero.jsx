@@ -1,46 +1,56 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { TeaserHero } from "../Assets";
-import "./HomeHero.css";
+import { HomeHeroPoster } from "../Assets";
+import { videoUrl } from "../utils/videoCdn";
 
 /* Re-exported so callers already importing it from here keep working
    (Countdown.test.js pins it, and /rush counts down to it). */
 export { RUSH_START } from "../utils/rushDate";
 
-/** The video the 'video' variant plays. Not bundled — served from CloudFront. */
-const RUSH_VIDEO_URL =
-  "https://d395js6c4h8h6h.cloudfront.net/Videos/SpringRushVideo2026.mp4";
+/** The video the 'video' variant plays. Not bundled — served from CloudFront.
+ *
+ *  HOME_HERO is the new distribution's video and wins as soon as it is set in
+ *  videoCdn.js; until then this falls back to the rush video, so the 'video'
+ *  variant is never left sourceless. Both resolve to undefined when unset, and
+ *  a <video> with no src is handled — see videoUrl. */
+const HERO_VIDEO_URL = videoUrl("HOME_HERO") ?? videoUrl("RUSH");
 
 /**
- * The Home hero, in three interchangeable states.
+ * The Home hero, in two interchangeable states.
  *
- *   'teaser'  — now. Tartan backdrop, title, countdown to RUSH_START.
- *   'video'   — rush week. The CloudFront rush video behind the title.
+ *   'video'   — now. The rush video behind the title.
  *   'default' — after. Title alone, no video request, no timer.
  *
- * All three are built and styled, so moving between them on the day is a
- * one-value edit to HERO_VARIANT in Home.jsx, not a code change made under
- * time pressure.
+ * Both are built and styled, so moving between them on the day is a one-value
+ * edit to HERO_VARIANT in Home.jsx, not a code change made under time
+ * pressure.
+ *
+ * A third state, 'teaser', backed the title with a tartan graphic while rush
+ * was unannounced. It came out with the artwork once the video landed; it was
+ * a backdrop and a label, and git has both if a future cycle wants them.
  *
  * videoRef is only attached by the 'video' variant. Home's loader waits on the
  * video's canplay/error to reveal the page and falls through immediately when
  * the ref is empty, so the other two variants reveal without waiting.
  */
 export default function HomeHero({
-  variant = "teaser",
+  variant = "video",
   videoRef,
   onTitleClick,
 }) {
   const isVideo = variant === "video";
-  const isTeaser = variant === "teaser";
 
   return (
     <>
       {isVideo && (
         <div className="background-video">
+          {/* The poster is the video's own first frame, so there is no jump
+              when playback starts — it just stops being a still. Without it
+              the hero is flat black until enough of a 9MB file has arrived. */}
           <video
             ref={videoRef}
-            src={RUSH_VIDEO_URL}
+            src={HERO_VIDEO_URL}
+            poster={HomeHeroPoster}
             autoPlay
             muted
             playsInline
@@ -52,10 +62,7 @@ export default function HomeHero({
         </div>
       )}
 
-      <motion.div
-        className={`hero-section hero-section--${variant}`}
-        style={isTeaser ? { backgroundImage: `url(${TeaserHero})` } : undefined}
-      >
+      <motion.div className={`hero-section hero-section--${variant}`}>
         <div className="hero-content">
           <motion.h1
             className="hero-title"
@@ -65,15 +72,8 @@ export default function HomeHero({
             ΑΚΨ - UCI
           </motion.h1>
 
-          {/* The countdown lives on /rush only for now. The teaser hero keeps
-              the tartan and the title; the clock is one page's job, not two.
-              Restore by putting <Countdown target={RUSH_START} /> back here —
-              both imports are still in place for exactly that. */}
-          {isTeaser && (
-            <div className="hero-teaser__countdown">
-              <p className="hero-teaser__label">FALL RUSH 2026</p>
-            </div>
-          )}
+          {/* The countdown lives on /rush, not here: the clock is one page's
+              job, not two. */}
         </div>
       </motion.div>
     </>

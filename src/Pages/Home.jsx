@@ -13,37 +13,38 @@ import HomeHero from "../Components/HomeHero";
    hero between the teaser countdown, the rush-week video, and the plain title —
    all three are already built and styled in HomeHero.jsx.
 
-   'teaser' -> 'video' when rush week opens, 'video' -> 'default' after. */
-const HERO_VARIANT = "teaser";
+   'video' -> 'default' once rush is over — the title alone, no video
+   request, no timer. */
+const HERO_VARIANT = "video";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const videoRef = useRef(null);
   const infoSectionRef = useRef(null);
-  
+
   // Animation variants
   const fadeInVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
-      transition: { 
+      transition: {
         duration: 0.5,
-        ease: [0.16, 1, 0.3, 1]
-      }
-    }
+        ease: [0.16, 1, 0.3, 1],
+      },
+    },
   };
-  
+
   const scaleInVariants = {
     hidden: { opacity: 0, scale: 0.95 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       scale: 1,
-      transition: { 
+      transition: {
         duration: 0.5,
-        ease: [0.16, 1, 0.3, 1]
-      }
-    }
+        ease: [0.16, 1, 0.3, 1],
+      },
+    },
   };
 
   useEffect(() => {
@@ -98,7 +99,7 @@ export default function Home() {
     const observer = new IntersectionObserver(animateOnScroll, observerOptions);
 
     const sections = document.querySelectorAll(
-      ".info-content, .info-image-container, .info-button-container, .wrapup-section, .summary-item, .final-statements, .social-links"
+      ".info-content, .info-image-container, .info-button-container, .wrapup-section, .summary-item, .final-statements, .social-links",
     );
     sections.forEach((section) => observer.observe(section));
 
@@ -122,44 +123,53 @@ export default function Home() {
             infoSectionRef.current?.scrollIntoView({ behavior: "smooth" })
           }
         />
-        <div className="section-background info-background" ref={infoSectionRef}>
+        <div
+          className="section-background info-background"
+          ref={infoSectionRef}
+        >
           <div className="section-overlay"></div>
           <div className="info-section">
-            <h2 className="section-title">THE FIRST AND LARGEST BUSINESS FRATERNITY</h2>
-            <motion.div 
+            <h2 className="section-title">
+              THE FIRST AND LARGEST BUSINESS FRATERNITY
+            </h2>
+            <motion.div
               className="info-content"
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.2 }}
               variants={{
                 hidden: { opacity: 0, y: 20 },
-                visible: { 
-                  opacity: 1, 
+                visible: {
+                  opacity: 1,
                   y: 0,
-                  transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] }
-                }
+                  transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] },
+                },
               }}
             >
               <p>
                 The organization of Alpha Kappa Psi was founded in New York
                 University in 1904. Spanning decades, Alpha Kappa Psi has helped
-                over 300,000 individuals create lifelong friends and pursue their
-                dreams. Our goal is to help Anteaters become the best versions of
-                themselves.
+                over 300,000 individuals create lifelong friends and pursue
+                their dreams. Our goal is to help Anteaters become the best
+                versions of themselves.
               </p>
             </motion.div>
-            <motion.div 
+            <motion.div
               className="info-image-container"
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.2 }}
               variants={{
                 hidden: { opacity: 0, scale: 0.9 },
-                visible: { 
-                  opacity: 1, 
+                visible: {
+                  opacity: 1,
                   scale: 1,
-                  transition: { duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }
-                }
+                  transition: {
+                    duration: 0.5,
+                    delay: 0.1,
+                    ease: [0.16, 1, 0.3, 1],
+                  },
+                },
               }}
             >
               <img
@@ -169,18 +179,22 @@ export default function Home() {
               />
               <div className="image-glow"></div>
             </motion.div>
-            <motion.div 
+            <motion.div
               className="info-button-container"
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.2 }}
               variants={{
                 hidden: { opacity: 0, y: 20 },
-                visible: { 
-                  opacity: 1, 
+                visible: {
+                  opacity: 1,
                   y: 0,
-                  transition: { duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }
-                }
+                  transition: {
+                    duration: 0.5,
+                    delay: 0.2,
+                    ease: [0.16, 1, 0.3, 1],
+                  },
+                },
               }}
             >
               <SleekButton
@@ -200,7 +214,7 @@ export default function Home() {
           <div className="wrapup-section">
             <h2 className="pillar-title">OUR PILLARS</h2>
             <div className="summary-section">
-              <motion.div 
+              <motion.div
                 className="summary-item brotherhood"
                 initial="hidden"
                 whileInView="visible"
@@ -215,9 +229,9 @@ export default function Home() {
                     <div className="image-overlay"></div>
                   </div>
                   <p>
-                    In Alpha Kappa Psi, you meet as strangers but leave as lifelong
-                    friends. Our brotherhood sets us apart and shapes us into who we
-                    are.
+                    In Alpha Kappa Psi, you meet as strangers but leave as
+                    lifelong friends. Our brotherhood sets us apart and shapes
+                    us into who we are.
                   </p>
                   <SleekButton className="sleekButton" href="/meet-us">
                     Brothers
@@ -225,7 +239,7 @@ export default function Home() {
                 </div>
               </motion.div>
 
-              <motion.div 
+              <motion.div
                 className="summary-item professionalism"
                 initial="hidden"
                 whileInView="visible"
@@ -241,9 +255,9 @@ export default function Home() {
                     <div className="image-overlay"></div>
                   </div>
                   <p>
-                    We inspire one another to chase our passions with confidence by
-                    equipping ourselves with the tools necessary to succeed in any
-                    industry.
+                    We inspire one another to chase our passions with confidence
+                    by equipping ourselves with the tools necessary to succeed
+                    in any industry.
                   </p>
                   <SleekButton className="sleekButton" href="/careers">
                     Careers
@@ -251,7 +265,7 @@ export default function Home() {
                 </div>
               </motion.div>
 
-              <motion.div 
+              <motion.div
                 className="summary-item personal-growth"
                 initial="hidden"
                 whileInView="visible"
@@ -267,9 +281,9 @@ export default function Home() {
                     <div className="image-overlay"></div>
                   </div>
                   <p>
-                    Our unique culture inspires, encourages, and motivates you to
-                    step out of your comfort zone and live the life you've always
-                    imagined.
+                    Our unique culture inspires, encourages, and motivates you
+                    to step out of your comfort zone and live the life you've
+                    always imagined.
                   </p>
                   {/* Was href="/recruitment", which is not a route — App.jsx
                       registers this page at /rush, so the button 404'd. */}
@@ -281,7 +295,7 @@ export default function Home() {
             </div>
             <footer className="site-footer">
               <div className="footer-content">
-                <motion.div 
+                <motion.div
                   className="social-links"
                   initial="hidden"
                   whileInView="visible"
@@ -312,11 +326,14 @@ export default function Home() {
                   >
                     <LinkedIn />
                   </a>
-                  <a href="mailto:akpsi.uci.rush@gmail.com" className="email-link">
+                  <a
+                    href="mailto:akpsi.uci.rush@gmail.com"
+                    className="email-link"
+                  >
                     akpsi.uci.rush@gmail.com
                   </a>
                 </motion.div>
-                <motion.div 
+                <motion.div
                   className="final-statements"
                   initial="hidden"
                   whileInView="visible"

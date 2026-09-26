@@ -12,9 +12,32 @@ html {
   min-height: 100dvh;
   position: relative;
   font-family: "Anton", "Arial Narrow", Arial, sans-serif;
-  /* The Spring 2026 skyline is gone; the page reads as flat dark until there
-     is Fall artwork to put here. */
+  /* The Fall photo backs the whole route the way the Spring skyline did:
+     fixed, so the schedule cards scroll over a still field rather than
+     running out onto flat black below the hero. The colour underneath is
+     what shows while the webp decodes. */
   background-color: #121212;
+  background-image: url("../Assets/Frames/Fall2026.webp");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+
+/* Vignette over the photo, fixed alongside it. The cards and the hero type
+   both sit on this rather than on the bare image, which is bright at the
+   sky and busy at the treeline. */
+.recruitmentContainer::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(
+    circle at center,
+    rgba(0, 0, 0, 0.45) 0%,
+    rgba(0, 0, 0, 0.72) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
 }
 
 .viewport {
@@ -343,6 +366,97 @@ html {
 }
 
 /* ----- coming-soon state --------------------------------------------------- */
+/* The announcement furniture under the buttons: deadline, who to ask, and
+   who is backing it. Mobile-first, like the countdown block below. */
+.rush-announce {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  font-family: Arial, Helvetica, sans-serif;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+}
+
+.rush-announce__deadline {
+  margin: 0;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.rush-announce__contact {
+  margin: 0;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.85);
+  text-align: center;
+}
+
+.rush-announce__contact a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.rush-partners {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.rush-partners__label {
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.rush-partners__logos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+/* Celsius publishes a wordmark; Copilot's mark is the ribbon alone, so it is
+   paired with its name to read as a brand rather than a decoration. */
+.rush-partners__pair {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.1rem;
+  letter-spacing: 0.02em;
+}
+
+.rush-partners__mark {
+  height: 28px;
+  width: auto;
+}
+
+.rush-partners__mark--icon {
+  height: 26px;
+}
+
+@media (min-width: 768px) {
+  .rush-announce__deadline {
+    font-size: 1.15rem;
+  }
+
+  .rush-announce__contact {
+    font-size: 0.95rem;
+  }
+
+  .rush-partners__mark {
+    height: 34px;
+  }
+
+  .rush-partners__mark--icon {
+    height: 32px;
+  }
+}
+
 /* Shown instead of .rush-buttons while RUSH_STATE is 'coming-soon'. Designed
    at 390px first; the desktop step-up is at the bottom. */
 

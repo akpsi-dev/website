@@ -104,6 +104,10 @@ body {
   }
   .brother-soundtrack {
     position: static; /* Remove absolute positioning so it flows naturally */
+    /* The centring transform has to go with the absolute positioning. Left
+       on, it lifted the player half its own height up the flow and sat it on
+       top of the details above — the whole thing overlapped on a phone. */
+    transform: none;
     order: 2; /* Ensure it appears after the photo/info */
     width: 100%; /* Span full available width */
     margin-top: 1rem; /* Add spacing from above elements */

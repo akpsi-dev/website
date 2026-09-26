@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { videoUrl } from "../utils/videoCdn";
 import "./Brotherhood.css";
 import { useMobile } from "../Components/Navbar";
 import { motion } from "framer-motion";
@@ -249,9 +250,7 @@ export default function Brotherhood() {
             {!isMobile && (
               <video
                 ref={videoRef}
-                src={
-                  "https://d395js6c4h8h6h.cloudfront.net/Videos/CruiseVideo2026.mp4"
-                }
+                src={videoUrl("CRUISE")}
                 autoPlay
                 muted
                 playsInline
@@ -263,9 +262,7 @@ export default function Brotherhood() {
             {isMobile && (
               <video
                 ref={videoRef}
-                src={
-                  "https://d395js6c4h8h6h.cloudfront.net/Videos/CruiseReelWebsite.mp4"
-                }
+                src={videoUrl("CRUISE_MOBILE")}
                 autoPlay
                 muted
                 loop
