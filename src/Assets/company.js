@@ -89,7 +89,7 @@ export const companyHash = {
     "Carl Qiao": PWCLogo,
     "Logan Kim": CenterviewPartnersLogo,
     "Ryan Park": ExperianLogo,
-    "Melinda Do": TacoBellLogo,
+    "Melinda Do": SAPLogo,
     "Travis Yen": JobrightLogo,
     "Tyler Ho": BarclaysLogo,
     "Erin Tran": ReitLogo,
