@@ -20,12 +20,21 @@ describe("LOCAL_CAREERS", () => {
     LOCAL_CAREERS.forEach((row) => expect(["2026", "2027"]).toContain(row[1]));
   });
 
-  it("files the incoming brothers under 2027, not 2026", () => {
-    const incoming = ["Braeden Yeoh", "Logan Kim", "Tyler Ho"];
+  it("files an incoming role under the year it starts, not this summer", () => {
+    // Everyone here wrote "incoming" against that seat on the form: it is
+    // signed, but it begins next summer, and the Year column is what files a
+    // row under a tab. Several of them hold a 2026 role as well, which is why
+    // this asks whether a 2027 row exists rather than counting rows.
+    const incoming = [
+      "Braeden Yeoh",
+      "Logan Kim",
+      "Max Truong",
+      "Rishi Murumkar",
+      "Tyler Ho",
+    ];
     incoming.forEach((name) => {
       const rows = LOCAL_CAREERS.filter((row) => row[0] === name);
-      expect(rows).toHaveLength(1);
-      expect(rows[0][1]).toBe("2027");
+      expect(rows.some((row) => row[1] === "2027")).toBe(true);
     });
   });
 

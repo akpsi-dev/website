@@ -33,16 +33,20 @@ import { Button, styled } from "@mui/material";
 
 const ChromeButton = styled(Button)(({ theme }) => ({
   display: "inline-block",
-  padding: "12px 28px", // Exact same padding as calendar button
+  padding: "14px 34px",
   backgroundColor: "transparent", // Exact same background as calendar button
   color: "white",
   textDecoration: "none", // Same as calendar button
-  border: "4px solid rgb(255, 255, 255)", // Exact same border as calendar button
+  border: "2px solid rgba(255, 255, 255, 0.85)",
   borderRadius: "0px", // Exact same border radius as calendar button
-  fontFamily: "'Anton', 'Arial Narrow', Arial, sans-serif",
-  fontSize: "1rem", // Exact same font size as calendar button
-  fontWeight: 700,
-  letterSpacing: "1px", // Exact same letter spacing as calendar button
+  /* Anton is a condensed poster face at 700: on a two-word label inside a
+     4px border it read as a wall of letters. Playfair at 500 is the serif the
+     rest of this page now sets its notice in, and tracking it out gives the
+     words room the condensed face never had. */
+  fontFamily: "'Playfair Display', Georgia, 'Times New Roman', serif",
+  fontSize: "1.05rem",
+  fontWeight: 500,
+  letterSpacing: "0.16em",
   transition: "all 0.3s ease", // Exact same transition as calendar button
   textTransform: "uppercase", // Exact same text transform as calendar button
   boxShadow: "0 2px 10px rgba(0, 0, 0, 0.2)", // Exact same shadow as calendar button

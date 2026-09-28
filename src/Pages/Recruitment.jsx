@@ -23,6 +23,8 @@ const RUSH_STATE = "live";
    so the deadline belongs on the hero next to the button, not buried at the
    end of the schedule. */
 const APPLICATION_DEADLINE = "Friday, October 3";
+const APPLICATION_URL =
+  "https://docs.google.com/forms/d/e/1FAIpQLSeoABLpdoUg0TtfbX5C43WFUOzqkZl6D3kWQ5QRH1mJB4pRkw/viewform";
 const RUSH_EMAIL = "akpsi.uci.rush@gmail.com";
 
 /* The Calvin Harris loop that used to autoplay on this page. Backlogged, not
@@ -197,10 +199,9 @@ export default function Recruitment() {
             >
               <b>Add Rush Events to Calendar</b>
             </RushButton>
-            {/* The application button is out until the Fall 2026 form
-                exists: it pointed at a previous cycle's form, and a dead
-                link on the page's main call to action is worse than no
-                button. Put it back with the new URL. */}
+            <RushButton href={APPLICATION_URL}>
+              <b>Rush Application</b>
+            </RushButton>
           </div>
         )}
         {!isComingSoon && (
