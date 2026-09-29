@@ -1,5 +1,4 @@
 import axios from "axios";
-import { headshotHash } from "../Assets/headshot";
 import { BETA_CLASS_VISIBLE, betaClassRows } from "./betaClass";
 
 export const ROSTER_SHEET_ID = "167TmecKc4cduWtdounqiXDkYgQjssu9cSz4QLljuKLg";

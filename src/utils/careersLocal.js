@@ -71,6 +71,14 @@ export const LOCAL_CAREERS = [
   ],
   ["Anna Shan", "2026", "Finance", "Asset Management", "BlackRock", "Analyst"],
   [
+    "Annabelle Butarbutar",
+    "2026",
+    "Marketing",
+    "Social Media Marketing",
+    "RBS Wellness Spa",
+    "Social Media and Marketing Manager",
+  ],
+  [
     "Annie Nguyen",
     "2026",
     "Consulting",
@@ -127,6 +135,14 @@ export const LOCAL_CAREERS = [
     "Creative Services Intern",
   ],
   [
+    "Audrey Lam",
+    "2026",
+    "Misc",
+    "Education",
+    "Foster City Elementary School",
+    "ESL and Art Therapist",
+  ],
+  [
     "Ava Lily Tran",
     "2026",
     "Marketing",
@@ -174,6 +190,14 @@ export const LOCAL_CAREERS = [
     "Research",
     "Liu Lab CIRC",
     "Undergraduate Researcher",
+  ],
+  [
+    "Cindy Chen",
+    "2026",
+    "Misc",
+    "Healthcare",
+    "Capri Medical Group",
+    "Medical Assistant",
   ],
   [
     "Daniela Herrera",
@@ -438,7 +462,7 @@ export const LOCAL_CAREERS = [
     "Misc",
     "Entrepreneurship",
     "Teon Atelier",
-    "Owner and Founder",
+    "Owner & Founder",
   ],
   [
     "Tyler Ho",
@@ -457,7 +481,7 @@ export const LOCAL_CAREERS = [
     "Accounting",
     "Audit and Assurance",
     "Deloitte",
-    "Audit and Assurance Intern",
+    "Summer Analyst",
   ],
   [
     "Logan Kim",
