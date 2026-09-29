@@ -14,13 +14,11 @@ jest.mock("axios");
    the real class on would otherwise have broken every count below. */
 let mockBetaVisible = false;
 let mockBetaRows = [];
-let mockAwaitingPhotos = new Set();
 jest.mock("./betaClass", () => ({
   get BETA_CLASS_VISIBLE() {
     return mockBetaVisible;
   },
   betaClassRows: () => mockBetaRows,
-  betaMembersAwaitingPhotos: () => mockAwaitingPhotos,
 }));
 
 /* Ranges come back in the order they were requested: the roster tab, the new
@@ -119,7 +117,6 @@ describe("fetchVisibleRoster", () => {
   beforeEach(() => {
     mockBetaVisible = false;
     mockBetaRows = [];
-    mockAwaitingPhotos = new Set();
   });
   afterEach(() => jest.clearAllMocks());
 
@@ -285,28 +282,6 @@ describe("fetchVisibleRoster", () => {
     expect(rows[0][2]).toBe("her why");
   });
 
-  it("suppresses a Beta member who submitted the form but has no headshot", async () => {
-    // The class's readiness gate only covers rows betaClassRows hands over.
-    // A Beta member who fills the update form arrives on the sheet instead.
-    mockAwaitingPhotos = new Set(["levia whang"]);
-    const rows = await fetchVisibleRosterFrom(
-      [["Erin Tran"]],
-      [],
-      [["Levia Whang", "Alameda, CA"]],
-    );
-    expect(rows.map((row) => row[0])).toEqual(["Erin Tran"]);
-  });
-
-  it("keeps a Beta member whose headshot is in", async () => {
-    mockAwaitingPhotos = new Set(["levia whang"]);
-    const rows = await fetchVisibleRosterFrom(
-      [["Pranav Rao", "Santa Clara, CA"]],
-      [],
-      [],
-    );
-    expect(rows.map((row) => row[0])).toEqual(["Pranav Rao"]);
-  });
-
   it("writes Alpha out as Alpha Alpha, the way the older rows read", async () => {
     const rows = await fetchVisibleRosterFrom(
       [["Erin Tran", "", "", "Alpha", "2028"]],
@@ -332,21 +307,6 @@ describe("fetchVisibleRoster", () => {
       [],
     );
     expect(rows.map((row) => row[3])).toEqual(["Chi", "Upsilon"]);
-  });
-
-  it("hides a Beta row with no headshot even when the name is not on the list", async () => {
-    // The awaiting-photos list spells names the way this repo does. A sheet
-    // row spelled differently would slip past it, so the class cell is the
-    // backstop.
-    mockAwaitingPhotos = new Set(["simram saini"]);
-    const rows = await fetchVisibleRosterFrom(
-      [
-        ["Erin Tran", "", "", "Chi"],
-        ["Simran Saini", "", "", "Beta", "2029"],
-      ],
-      [],
-    );
-    expect(rows.map((row) => row[0])).toEqual(["Erin Tran"]);
   });
 
   it("shows a Beta member whose headshot is registered", async () => {

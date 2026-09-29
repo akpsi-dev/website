@@ -8,12 +8,20 @@ import { headshotHash } from "../Assets/headshot";
  * Annabelle Butarbutar, Audrey Lam, Emily Chien and Simran Saini are still
  * a name and a graduation year alone.
  *
- * The class is ON, but betaClassRows only emits a member once they have
- * BOTH a write-up and a headshot registered in headshot.js, so this can
- * never put a grey placeholder on Meet Us: it shows whoever is ready and
- * holds the rest back. Today that is Pranav Rao alone — the other five who
- * have written their profiles are waiting on photos, and join the grid on
- * their own the moment a photo is registered under their name.
+ * The class is ON, and a headshot is not the price of admission: a member
+ * with no photo registered draws the chapter arms and goes on the grid
+ * anyway.
+ *
+ * Words are the price of admission. A shell entry is emitted only once it
+ * carries a write-up, because a row with nothing but a name behind it
+ * renders an empty page — so Audrey Lam and Simran Saini stay off until
+ * their form responses land. Everyone else here either wrote their profile
+ * into this file or has since filled the form in, and a sheet row supersedes
+ * the shell entirely.
+ *
+ * isBetaMemberReady and hasHeadshot are still exported. They are what a
+ * photo gate would be built from if the class should ever go back to
+ * appearing only as each member is finished.
  *
  * To finish a member: add their headshot to src/Assets/ActiveHeadshots,
  * register it in headshot.js under their exact name, and fill in the fields
@@ -284,7 +292,7 @@ const cell = (value) =>
  *    Experience, Ask Me About, Why AKPsi, Spotify]
  */
 export function betaClassRows() {
-  return BETA_CLASS.filter(isBetaMemberReady).map((member) => [
+  return BETA_CLASS.filter((member) => member.whyAkpsi).map((member) => [
     member.fullName,
     cell(member.hometown),
     cell(member.major),

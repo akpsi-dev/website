@@ -48,9 +48,12 @@ body {
 /* For large screens: position the soundtrack absolutely in the top-right */
 .brother-soundtrack {
   position: absolute;
-  /* Centred against the photo rather than pinned to its top edge: level with
-     the middle of the details, which is where the eye lands after the name. */
-  top: 50%;
+  /* Sits level with the details rather than the name. At 50% the top edge of
+     the card reached up into the line the name occupies, and "Annabelle
+     Butarbutar" — the longest on the roster at 3.5rem — ran underneath it.
+     58% drops the whole card clear of that line and still leaves it inside
+     the photo's height. */
+  top: 58%;
   transform: translateY(-50%);
   right: 0;
   width: 26rem;
@@ -85,10 +88,18 @@ body {
   min-width: 0;
 }
 
-/* Only the detail lines have to clear the player: they sit at its height,
-   and a long major would otherwise run under the artwork. The name above
-   keeps the full width — reserving it there wrapped "Tommy Nguyen" onto two
-   lines for no reason. */
+/* The name keeps the full width of the header: reserving the player's column
+   here wrapped "Tommy Nguyen" onto two lines, and a name is the one thing on
+   the page that should not break. The player is moved down out of its band
+   instead — see .brother-soundtrack. */
+.brother-name {
+  /* Left, for the same reason the detail lines are: .App sets center
+     globally, which only shows once a name is long enough to wrap. */
+  text-align: left;
+}
+
+/* The detail lines sit at the player's own height, so a long major would run
+   under the artwork without this. */
 .brother-detail {
   padding-right: 27rem;
   /* .App sets text-align: center globally, and .brother-info lays its
@@ -117,6 +128,7 @@ body {
     width: 100%;
   }
   /* The player is in the flow from here down — nothing to keep clear of. */
+  .brother-name,
   .brother-detail {
     padding-right: 0;
   }
@@ -395,7 +407,8 @@ body {
     text-align: center;
   }
 
-  /* The whole header is centred on a phone, details included. */
+  /* The whole header is centred on a phone, name and details included. */
+  .brother-name,
   .brother-detail {
     text-align: center;
   }

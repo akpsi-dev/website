@@ -9,13 +9,15 @@ import {
 import { headshotHash } from "../Assets/headshot";
 
 describe("BETA_CLASS", () => {
-  it("is on, with the readiness gate rather than the flag holding members back", () => {
+  it("is on, and a missing photo is no reason to hold a member back", () => {
     expect(BETA_CLASS_VISIBLE).toBe(true);
-    // Every member the flag lets through has to be ready, which is what
-    // makes turning it on safe while most of the class is still blank.
-    expect(betaClassRows().length).toBeLessThan(BETA_CLASS.length);
-    betaClassRows().forEach((row) => {
-      expect(headshotHash[row[0]]).toBeDefined();
+    const emitted = betaClassRows().map((row) => row[0]);
+    const withoutPhotos = BETA_CLASS.filter(
+      (member) => member.whyAkpsi && !hasHeadshot(member.fullName),
+    );
+    expect(withoutPhotos.length).toBeGreaterThan(0);
+    withoutPhotos.forEach((member) => {
+      expect(emitted).toContain(member.fullName);
     });
   });
 
@@ -92,32 +94,30 @@ describe("betaClassRows", () => {
     betaClassRows().forEach((row) => expect(row[3]).toBe("Beta"));
   });
 
-  it("emits only the members who are ready", () => {
+  it("holds back a shell entry with no write-up behind it", () => {
+    // Audrey Lam and Simran Saini have not filled the form in, so there is
+    // nothing to put on a page for them. A member who submits gets a sheet
+    // row, which supersedes the shell and never passes through here.
     const emitted = betaClassRows().map((row) => row[0]);
     expect(emitted).toEqual(
-      BETA_CLASS.filter(isBetaMemberReady).map((member) => member.fullName),
+      BETA_CLASS.filter((member) => member.whyAkpsi).map((m) => m.fullName),
     );
+    expect(emitted).not.toContain("Audrey Lam");
+    expect(emitted).not.toContain("Simran Saini");
   });
 
-  it("leaves out a member who has written their profile but has no photo", () => {
-    const written = BETA_CLASS.find(
-      (member) => member.whyAkpsi && !isBetaMemberReady(member),
-    );
-    // Skipped once every member with a write-up has their headshot in.
-    if (!written) return;
-    expect(betaClassRows().map((row) => row[0])).not.toContain(
-      written.fullName,
-    );
-  });
-
-  it("never emits a row whose member-written cells are blank", () => {
-    betaClassRows().forEach((row) => {
-      // Hometown, major, LinkedIn, interests, experience, ask-me-about,
-      // why-AKPsi and the Spotify link all come from the member.
-      [1, 2, 5, 6, 7, 8, 9, 10].forEach((i) =>
-        expect(String(row[i]).trim()).not.toBe(""),
-      );
-    });
+  it("still fills every cell for a member who has written their profile", () => {
+    // A member who has not filled the form in yet has blank cells by
+    // definition; this is about the ones who have.
+    betaClassRows()
+      .filter((row) => String(row[9]).trim() !== "")
+      .forEach((row) => {
+        // Hometown, major, LinkedIn, interests, experience, ask-me-about,
+        // why-AKPsi and the Spotify link all come from the member.
+        [1, 2, 5, 6, 7, 8, 9, 10].forEach((i) =>
+          expect(String(row[i]).trim()).not.toBe(""),
+        );
+      });
   });
 
   it("joins the list cells with newlines, the way splitItems reads them", () => {

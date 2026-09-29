@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { BrotherhoodCover } from "../Assets";
 import { videoUrl } from "../utils/videoCdn";
 import "./Brotherhood.css";
 import { useMobile } from "../Components/Navbar";
@@ -251,6 +252,7 @@ export default function Brotherhood() {
               <video
                 ref={videoRef}
                 src={videoUrl("CRUISE")}
+                poster={BrotherhoodCover}
                 autoPlay
                 muted
                 playsInline
@@ -259,10 +261,13 @@ export default function Brotherhood() {
                 Your browser does not support the video tag.
               </video>
             )}
+            {/* The cover sits behind both cuts while the CloudFront video
+                arrives, and stands in wherever autoplay is refused. */}
             {isMobile && (
               <video
                 ref={videoRef}
                 src={videoUrl("CRUISE_MOBILE")}
+                poster={BrotherhoodCover}
                 autoPlay
                 muted
                 loop

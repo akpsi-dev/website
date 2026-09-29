@@ -1,10 +1,6 @@
 import axios from "axios";
 import { headshotHash } from "../Assets/headshot";
-import {
-  BETA_CLASS_VISIBLE,
-  betaClassRows,
-  betaMembersAwaitingPhotos,
-} from "./betaClass";
+import { BETA_CLASS_VISIBLE, betaClassRows } from "./betaClass";
 
 export const ROSTER_SHEET_ID = "167TmecKc4cduWtdounqiXDkYgQjssu9cSz4QLljuKLg";
 const API_KEY = process.env.REACT_APP_ACTIVE_INFO_KEY;
@@ -122,26 +118,6 @@ function spellPledgeClass(row) {
   return spelled;
 }
 
-/* The Beta class is hidden until each member has a headshot, and
-   betaMembersAwaitingPhotos names them — but only as this repo spells them.
-   A Beta member whose sheet row is spelled even slightly differently would
-   miss that list and land on Meet Us behind a grey placeholder, which is the
-   exact failure the list exists to prevent. So the pledge class cell is
-   checked too: Beta, and no photo registered under the name as written, is
-   held back whoever it turns out to be. */
-const BETA_PLEDGE_CLASSES = new Set(["beta", "alpha beta"]);
-
-function isPhotolessBeta(row) {
-  const pledgeClass = String(row?.[3] ?? "")
-    .trim()
-    .toLowerCase();
-  if (!BETA_PLEDGE_CLASSES.has(pledgeClass)) return false;
-  const name = String(row?.[0] ?? "")
-    .trim()
-    .replace(/\s+/g, " ");
-  return !Object.prototype.hasOwnProperty.call(headshotHash, name);
-}
-
 /* An IMPORTRANGE that has lost its source — the spreadsheet renamed, moved,
    or its permission revoked — fills the tab with error text rather than going
    empty. Left alone, "#REF!" arrives here as a brother's name and renders a
@@ -216,10 +192,7 @@ export async function fetchVisibleRoster() {
      sheet row does not pass through betaClassRows — so the class's readiness
      gate never saw it and they landed on Meet Us behind a grey placeholder.
      Suppressed here instead, which covers every tab at once. */
-  const awaitingPhotos = betaMembersAwaitingPhotos();
-  const sheetRows = [...byName.entries()]
-    .filter(([key, row]) => !awaitingPhotos.has(key) && !isPhotolessBeta(row))
-    .map(([, row]) => row);
+  const sheetRows = [...byName.values()];
 
   // Beta is a shell with no headshots or write-ups yet, so it stays off the
   // site behind its own flag. Once a member has a real row in the sheet, that

@@ -48,6 +48,7 @@ import {
     doordashlogo,
     InyoLogo,
     UPSLogo,
+    CSBHALogo,
     intellogo,
     PalantirLogo,
     RobloxLogo,
@@ -120,6 +121,10 @@ export const companyHash = {
     "Daniela Herrera": RobloxLogo,
     "Megan Dinh": TeslaLogo,
     "Emily Chien": UPSLogo,
+    /* Cropped to the apple alone: the published lockup carries the name in
+       type beside it, which reads as a caption rather than a mark at the size
+       this overlay draws. Waiting on her headshot, like the rest of Beta. */
+    "Sophie Choi": CSBHALogo,
     "Pranav Rao": TeslaLogo,
     "Default Headshot": DefaultHeadshot,
   };
