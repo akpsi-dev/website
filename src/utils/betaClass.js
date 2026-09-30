@@ -4,9 +4,10 @@ import { headshotHash } from "../Assets/headshot";
  * The Beta pledge class.
  *
  * Their form responses, held here rather than in the roster sheet, in the
- * same shape a sheet row has. Six of the ten have filled the form out;
- * Annabelle Butarbutar, Audrey Lam, Emily Chien and Simran Saini are still
- * a name and a graduation year alone.
+ * same shape a sheet row has. All ten are on the site now: six wrote their
+ * profiles into this file, and Annabelle Butarbutar, Audrey Lam, Emily Chien
+ * and Simran Saini have since answered the roster form, so they arrive as
+ * real sheet rows and their entries below are inert name-and-year shells.
  *
  * The class is ON, and a headshot is not the price of admission: a member
  * with no photo registered draws the chapter arms and goes on the grid
@@ -14,10 +15,9 @@ import { headshotHash } from "../Assets/headshot";
  *
  * Words are the price of admission. A shell entry is emitted only once it
  * carries a write-up, because a row with nothing but a name behind it
- * renders an empty page — so Audrey Lam and Simran Saini stay off until
- * their form responses land. Everyone else here either wrote their profile
- * into this file or has since filled the form in, and a sheet row supersedes
- * the shell entirely.
+ * renders an empty page. That gate is what held Audrey and Simran back
+ * before their responses landed, and it is what would hold the next empty
+ * shell back — a sheet row supersedes the shell entirely.
  *
  * isBetaMemberReady and hasHeadshot are still exported. They are what a
  * photo gate would be built from if the class should ever go back to

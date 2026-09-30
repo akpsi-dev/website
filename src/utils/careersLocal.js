@@ -441,6 +441,14 @@ export const LOCAL_CAREERS = [
     "Powertrain Engineer Intern",
   ],
   [
+    "Simran Saini",
+    "2026",
+    "Misc",
+    "Product Management",
+    "GoTo Retreats",
+    "Product Manager Intern",
+  ],
+  [
     "Sophie Choi",
     "2026",
     "Misc",
