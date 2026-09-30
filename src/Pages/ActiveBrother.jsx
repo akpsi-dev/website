@@ -3,6 +3,8 @@ import "./ActiveBrother.css";
 import { headshotHash } from "../Assets/headshot";
 import { splitItems } from "../utils/splitItems";
 import { spotifyEmbedUrl } from "../utils/spotifyEmbed";
+import { songStartSeconds } from "../utils/songStart";
+import SpotifyPlayer from "../Components/SpotifyPlayer";
 
 export default function ActiveBrother({ brotherInfo }) {
   const containerRef = useRef(null);
@@ -51,6 +53,10 @@ export default function ActiveBrother({ brotherInfo }) {
   /* The form asks for a link, not an embed, so build the player from it. null
      when the cell holds no Spotify id, and the section is left out entirely. */
   const songEmbedUrl = spotifyEmbedUrl(favoriteSong);
+
+  /* Some members care where their song starts. Zero for everyone else, which
+     is the plain lazy iframe. */
+  const songStartAt = songStartSeconds(name, favoriteSong);
 
   const interests = splitItems(interestsRaw);
   const experience = splitItems(experienceRaw);
@@ -101,18 +107,11 @@ export default function ActiveBrother({ brotherInfo }) {
         </div>
         {songEmbedUrl && (
           <div className="brother-soundtrack">
-            {/* Height lives in the stylesheet next to the width it has to
-                stay inside; this attribute is only the pre-CSS fallback. */}
-            <iframe
-              className="brother-soundtrack__player"
-              src={songEmbedUrl}
+            <SpotifyPlayer
+              embedUrl={songEmbedUrl}
+              startAt={songStartAt}
               title={`${name}'s favorite song`}
-              width="100%"
-              height="232"
-              frameBorder="0"
-              loading="lazy"
-              allow="clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-            ></iframe>
+            />
           </div>
         )}
       </div>
