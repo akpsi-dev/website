@@ -1,5 +1,5 @@
 import { render, screen, waitFor } from "@testing-library/react";
-import SpotifyPlayer, { spotifyUri } from "./SpotifyPlayer";
+import SongPlayer, { spotifyUri } from "./SongPlayer";
 
 const EMBED = "https://open.spotify.com/embed/track/4j13h3sia1FhQG18bjSXEC";
 
@@ -47,13 +47,13 @@ describe("spotifyUri", () => {
   });
 });
 
-describe("SpotifyPlayer", () => {
+describe("SongPlayer", () => {
   afterEach(() => {
     delete window.SpotifyIframeApi;
   });
 
   it("renders the plain lazy iframe when no start time is asked for", () => {
-    render(<SpotifyPlayer embedUrl={EMBED} title="song" />);
+    render(<SongPlayer embedUrl={EMBED} title="song" />);
 
     const frame = screen.getByTitle("song");
     expect(frame.tagName).toBe("IFRAME");
@@ -63,11 +63,46 @@ describe("SpotifyPlayer", () => {
     expect(document.querySelector('script[src*="iframe-api"]')).toBeNull();
   });
 
+  it("gives a member with a start time and a video the YouTube player", () => {
+    render(
+      <SongPlayer
+        embedUrl={EMBED}
+        startAt={158}
+        name="Annabelle Butarbutar"
+        title="song"
+      />,
+    );
+
+    const frame = screen.getByTitle("song");
+    /* Cued at the second she asked for, for every visitor. */
+    expect(frame).toHaveAttribute(
+      "src",
+      "https://www.youtube-nocookie.com/embed/SmCgdsZfRHc?start=158&rel=0",
+    );
+    /* And Spotify is not consulted at all. */
+    expect(document.querySelector('script[src*="iframe-api"]')).toBeNull();
+  });
+
+  it("leaves her on Spotify when she has not asked for a start time", () => {
+    render(
+      <SongPlayer embedUrl={EMBED} name="Annabelle Butarbutar" title="song" />,
+    );
+
+    expect(screen.getByTitle("song")).toHaveAttribute("src", EMBED);
+  });
+
   it("seeks to the requested second once the track plays from the top", async () => {
     const spotify = fakeApi();
     window.SpotifyIframeApi = stub;
 
-    render(<SpotifyPlayer embedUrl={EMBED} startAt={158} title="song" />);
+    render(
+      <SongPlayer
+        embedUrl={EMBED}
+        startAt={158}
+        name="Nobody With A Video"
+        title="song"
+      />,
+    );
     await waitFor(() => expect(spotify.listening).toBe(true));
 
     spotify.update(PLAYING_FROM_TOP);
@@ -78,7 +113,14 @@ describe("SpotifyPlayer", () => {
     const spotify = fakeApi();
     window.SpotifyIframeApi = stub;
 
-    render(<SpotifyPlayer embedUrl={EMBED} startAt={158} title="song" />);
+    render(
+      <SongPlayer
+        embedUrl={EMBED}
+        startAt={158}
+        name="Nobody With A Video"
+        title="song"
+      />,
+    );
     await waitFor(() => expect(spotify.listening).toBe(true));
 
     spotify.update(PLAYING_FROM_TOP);
@@ -92,7 +134,14 @@ describe("SpotifyPlayer", () => {
     const spotify = fakeApi();
     window.SpotifyIframeApi = stub;
 
-    render(<SpotifyPlayer embedUrl={EMBED} startAt={158} title="song" />);
+    render(
+      <SongPlayer
+        embedUrl={EMBED}
+        startAt={158}
+        name="Nobody With A Video"
+        title="song"
+      />,
+    );
     await waitFor(() => expect(spotify.listening).toBe(true));
 
     /* 2:38 is past the end of a 30 second clip: seeking there would strand
@@ -105,7 +154,14 @@ describe("SpotifyPlayer", () => {
     const spotify = fakeApi();
     window.SpotifyIframeApi = stub;
 
-    render(<SpotifyPlayer embedUrl={EMBED} startAt={158} title="song" />);
+    render(
+      <SongPlayer
+        embedUrl={EMBED}
+        startAt={158}
+        name="Nobody With A Video"
+        title="song"
+      />,
+    );
     await waitFor(() => expect(spotify.listening).toBe(true));
 
     spotify.update({
@@ -124,7 +180,14 @@ describe("SpotifyPlayer", () => {
     const spotify = fakeApi();
     window.SpotifyIframeApi = stub;
 
-    render(<SpotifyPlayer embedUrl={EMBED} startAt={158} title="song" />);
+    render(
+      <SongPlayer
+        embedUrl={EMBED}
+        startAt={158}
+        name="Nobody With A Video"
+        title="song"
+      />,
+    );
     await waitFor(() => expect(spotify.listening).toBe(true));
 
     spotify.update({ isPaused: true, position: 0, duration: 198000 });
@@ -136,7 +199,12 @@ describe("SpotifyPlayer", () => {
     window.SpotifyIframeApi = stub;
 
     const { unmount } = render(
-      <SpotifyPlayer embedUrl={EMBED} startAt={158} title="song" />,
+      <SongPlayer
+        embedUrl={EMBED}
+        startAt={158}
+        name="Nobody With A Video"
+        title="song"
+      />,
     );
     await waitFor(() => expect(spotify.listening).toBe(true));
 

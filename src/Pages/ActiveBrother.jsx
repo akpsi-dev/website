@@ -4,7 +4,7 @@ import { headshotHash } from "../Assets/headshot";
 import { splitItems } from "../utils/splitItems";
 import { spotifyEmbedUrl } from "../utils/spotifyEmbed";
 import { songStartSeconds } from "../utils/songStart";
-import SpotifyPlayer from "../Components/SpotifyPlayer";
+import SongPlayer from "../Components/SongPlayer";
 
 export default function ActiveBrother({ brotherInfo }) {
   const containerRef = useRef(null);
@@ -107,9 +107,10 @@ export default function ActiveBrother({ brotherInfo }) {
         </div>
         {songEmbedUrl && (
           <div className="brother-soundtrack">
-            <SpotifyPlayer
+            <SongPlayer
               embedUrl={songEmbedUrl}
               startAt={songStartAt}
+              name={name}
               title={`${name}'s favorite song`}
             />
           </div>

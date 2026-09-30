@@ -11,9 +11,37 @@
  */
 export const SONG_START_TIMES = {
   // Interstate 10 (feat. Future) — asked for 2:38, the point her timeline
-  // showed as -0:38 remaining.
+  // showed as -0:38 remaining. The track runs 3:18, so it is a real spot.
   "Annabelle Butarbutar": "2:38",
 };
+
+/**
+ * The same song on YouTube, for the members whose start time has to hold for
+ * everybody.
+ *
+ * Spotify's embed serves a signed-out visitor a thirty second preview, and
+ * a request like 2:38 is simply not inside that clip. YouTube's player takes
+ * a start parameter and honours it for anyone, signed in or not, and lands
+ * there before the first note rather than jumping once playback begins.
+ *
+ * So a member listed here gets their song from YouTube. The trade is that
+ * the card looks like a video rather than a Spotify player; the trade is
+ * worth it only for somebody who actually asked for a timestamp, which is
+ * why this table and SONG_START_TIMES are separate.
+ *
+ * Use the official upload, and check the id plays embedded before adding it:
+ * plenty of music videos refuse to.
+ */
+export const SONG_VIDEOS = {
+  // Mustard — "Interstate 10 feat. Future (Audio)", the artist's own channel.
+  "Annabelle Butarbutar": "SmCgdsZfRHc",
+};
+
+/* The YouTube id for a member's song, or null. Only meaningful alongside a
+   start time: without one the Spotify player is the nicer card. */
+export function songVideoId(name) {
+  return SONG_VIDEOS[String(name ?? "").trim()] ?? null;
+}
 
 /* "2:38" -> 158. Also accepts "1:02:30" and a plain seconds count, and
    returns 0 for anything that is not a time, so a typo can only mean "play

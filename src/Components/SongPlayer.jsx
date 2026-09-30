@@ -1,22 +1,27 @@
 import { useEffect, useRef, useState } from "react";
 
+import { songVideoId } from "../utils/songStart";
+
 /**
- * A brother's favorite-song player.
+ * A brother's favorite-song player, in three shapes.
  *
- * Almost every member gets the plain embed iframe: cheap, lazy, no third
- * party script. A member who asked for their song to begin part way in gets
- * the same player driven by Spotify's iFrame API instead, because the embed
- * URL has no start-time parameter — seeking is the only way in.
+ * Almost every member gets the plain Spotify embed: cheap, lazy, no third
+ * party script.
  *
- * The seek happens on the first playback update that reports the track
- * running from the top, which is as early as the API will let us touch it:
- * browsers block autoplay, so nothing can move until the viewer presses
- * play. The first moment of the song is therefore audible before the jump.
- * That is a property of the embed, not of this code.
+ * A member who asked for their song to begin part way in gets YouTube
+ * instead, whose player takes a start parameter and is cued there before a
+ * note plays, for every visitor. Spotify cannot do this: its embed URL has
+ * no start-time parameter, and a signed-out listener is served a thirty
+ * second preview that a request like 2:38 falls outside of altogether.
  *
- * If the API script fails to load — blocked, offline, Spotify having a day —
- * the component falls back to the ordinary iframe, so the worst case is a
- * player that starts at 0:00 rather than no player at all.
+ * The third shape is for a member who asks for a timestamp before anybody
+ * has found their song on YouTube: the Spotify player driven by its iFrame
+ * API, seeking on the first playback update that reports the track running
+ * from the top. It works only for signed-in listeners and the opening
+ * moment is audible before the jump, which is exactly why the YouTube path
+ * exists — but it is better than ignoring the request. If the API script
+ * fails to load, this falls back to the ordinary iframe, so the worst case
+ * is a player that starts at 0:00 rather than no player at all.
  */
 
 const IFRAME_API_SRC = "https://open.spotify.com/embed/iframe-api/v1";
@@ -59,12 +64,13 @@ export function spotifyUri(embedUrl) {
   return match ? `spotify:${match[1].toLowerCase()}:${match[2]}` : null;
 }
 
-export default function SpotifyPlayer({ embedUrl, startAt = 0, title }) {
+export default function SongPlayer({ embedUrl, startAt = 0, name, title }) {
   const hostRef = useRef(null);
   const [apiUnavailable, setApiUnavailable] = useState(false);
 
+  const videoId = startAt > 0 ? songVideoId(name) : null;
   const uri = spotifyUri(embedUrl);
-  const seeking = startAt > 0 && Boolean(uri) && !apiUnavailable;
+  const seeking = startAt > 0 && !videoId && Boolean(uri) && !apiUnavailable;
 
   useEffect(() => {
     if (!seeking) return undefined;
@@ -117,6 +123,24 @@ export default function SpotifyPlayer({ embedUrl, startAt = 0, title }) {
       if (controller) controller.destroy();
     };
   }, [seeking, uri, startAt]);
+
+  if (videoId) {
+    /* start= is honoured for everyone, and nocookie keeps YouTube from
+       writing anything until the viewer actually presses play. */
+    return (
+      <iframe
+        className="brother-soundtrack__player"
+        src={`https://www.youtube-nocookie.com/embed/${videoId}?start=${startAt}&rel=0`}
+        title={title}
+        width="100%"
+        height="232"
+        frameBorder="0"
+        loading="lazy"
+        allow="encrypted-media; clipboard-write; picture-in-picture"
+        allowFullScreen
+      ></iframe>
+    );
+  }
 
   if (!seeking) {
     return (
