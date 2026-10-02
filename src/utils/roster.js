@@ -117,6 +117,47 @@ function spellPledgeClass(row) {
   return spelled;
 }
 
+/**
+ * Lines a brother has asked us to take down.
+ *
+ * Their answers live on the sheet, and the sheet is still where they belong:
+ * this is the site honouring a request now rather than waiting on the cell to
+ * be edited. Clear the cell when convenient and the entry here can go — it is
+ * written so that a line already gone from the sheet costs nothing.
+ *
+ * Matching ignores case, spacing and hyphens, because a member asking for
+ * "Pre-law" to come off means the "Prelaw" they typed.
+ */
+export const REMOVED_LIST_ITEMS = {
+  // Asked for on 2 Oct 2026.
+  "Bradly Ho": ["Pre-law"],
+};
+
+/* Interests, Experience, Ask Me About: the three newline-separated columns. */
+const LIST_COLUMNS = [6, 7, 8];
+
+const itemKey = (value) =>
+  String(value ?? "")
+    .trim()
+    .toLowerCase()
+    .replace(/[\s-]+/g, "");
+
+export function scrubRemovedItems(row) {
+  const unwanted = REMOVED_LIST_ITEMS[String(row?.[0] ?? "").trim()];
+  if (!unwanted || !unwanted.length) return row;
+
+  const drop = new Set(unwanted.map(itemKey));
+  const scrubbed = [...row];
+  LIST_COLUMNS.forEach((column) => {
+    if (typeof scrubbed[column] !== "string") return;
+    scrubbed[column] = scrubbed[column]
+      .split(LINES)
+      .filter((line) => !drop.has(itemKey(line)))
+      .join("\n");
+  });
+  return scrubbed;
+}
+
 /* An IMPORTRANGE that has lost its source — the spreadsheet renamed, moved,
    or its permission revoked — fills the tab with error text rather than going
    empty. Left alone, "#REF!" arrives here as a brother's name and renders a
@@ -211,6 +252,7 @@ export async function fetchVisibleRoster() {
 
   return [...sheetRows, ...shellRows]
     .filter((row) => row?.[0] && !isHiddenBrother(row[0]))
+    .map(scrubRemovedItems)
     .map(spellPledgeClass)
     .sort((a, b) =>
       String(a[0]).trim().localeCompare(String(b[0]).trim(), "en", {
