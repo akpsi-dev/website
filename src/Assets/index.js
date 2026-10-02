@@ -248,6 +248,7 @@ export { default as PalantirLogo } from "./Logos/PalantirLogo.png";
 export { default as InyoLogo } from "./Logos/InyoLogo.png";
 export { default as UPSLogo } from "./Logos/UPSLogo.png";
 export { default as CSBHALogo } from "./Logos/CSBHALogo.png";
+export { default as WeiAestheticLogo } from "./Logos/WeiAestheticLogo.png";
 export { default as RobloxLogo } from "./Logos/RobloxLogo.png";
 export { default as CelsiusLogo } from "./Logos/CelsiusLogo.png";
 export { default as TacoBellLogo } from "./Logos/TacoBellLogo.png";
