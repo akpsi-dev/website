@@ -500,6 +500,14 @@ export const LOCAL_CAREERS = [
     "Summer Analyst",
   ],
   [
+    "Daniela Herrera",
+    "2027",
+    "Technology",
+    "Product Design",
+    "Roblox",
+    "Associate Product Designer",
+  ],
+  [
     "Logan Kim",
     "2027",
     "Finance",
